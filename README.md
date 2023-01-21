@@ -1,1 +1,1 @@
-# bock-explorer
+# MobileCoin Block Explorer
