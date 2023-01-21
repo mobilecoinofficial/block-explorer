@@ -1,5 +1,6 @@
-import { Button } from "@mui/material";
+import { RouterProvider } from "react-router-dom";
+import router from "routes";
 
 export default function App() {
-    return <Button>Hello</Button>;
+    return <RouterProvider router={router}></RouterProvider>;
 }
