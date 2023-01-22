@@ -68,4 +68,15 @@ export type NetworkStatus = {
     numTxos: number;
 };
 
+export type SearchResult = {
+    results: any;
+};
+
+export type NetworkStatusResponse = {
+    network_status: {
+        local_block_height: number;
+        local_num_txos: number;
+    };
+};
+
 export type Block = ProtoBlock & BlockContents & WatcherInfo;

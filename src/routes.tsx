@@ -1,5 +1,5 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
-import getBlocks from "api/getBlocks";
+import getRecentBlocks from "api/getRecentBlocks";
 import LatestBlocks from "pages/LatestBlocks";
 
 const router = createBrowserRouter([
@@ -9,7 +9,7 @@ const router = createBrowserRouter([
     },
     {
         path: "/blocks",
-        loader: getBlocks,
+        loader: getRecentBlocks,
         element: <LatestBlocks />
     }
 ]);

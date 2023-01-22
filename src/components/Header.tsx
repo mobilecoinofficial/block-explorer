@@ -1,17 +1,14 @@
 import { useState, useEffect } from "react";
 import { css } from "@emotion/react";
+import { AppBar } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 import MobileCoinLogo from "components/MobileCoinLogo";
 import { NetworkStatus } from "api/types";
 import SearchBar from "./SearchBar";
+import getNetowrkStatus from "api/getNetworkStatus";
 
-type HeaderNumberProps = {
-    title: string;
-    value: number;
-};
-
-// TODO clean up styles and move search bar styles to search bar component
-const headerCSS = {
+const styles = {
     header: css`
         height: 256px;
         background-color: black;
@@ -37,70 +34,30 @@ const headerCSS = {
     `,
 
     headerNumbersContainer: css`
-    display: flex;
-    justify-content: center;
-}`,
+        display: flex;
+        justify-content: center;
+    `
+};
 
-    headerSearchbar: css`
-    position: absolute;
-    bottom: -28px;
-    left: 50%;
-    transform: translate(-50%, 0%);
-    width: 65%;
-    background-color: white;
-    border: 2px solid #eff1f1;
-    border-radius: 8px;
-    height: 56px;
-    color: #666666;
-    text-align: left;
-    display: flex;
-    align-items: center;
-    padding-left: 16px;
-    padding-right: 16px;
-}`,
-
-    searchInput: css`
-    width: 100%;
-    border: none;
-    height: 100%;
-    font-size: 16px;
-    &:focus {
-        outline: none;
-    }
-}`
+type HeaderNumberProps = {
+    title: string;
+    value?: number;
 };
 
 const HeaderNumber = ({ title, value }: HeaderNumberProps) => (
-    <div>
+    <div style={{ width: 200 }}>
         <div style={{ fontSize: 16, marginBottom: 8 }}>{title}</div>
-        <div style={{ fontSize: 32 }}>{value.toLocaleString("en-US")}</div>
+        <div style={{ fontSize: 32 }}>{value?.toLocaleString("en-US")}</div>
     </div>
 );
 
 export default function Header() {
+    const navigateTo = useNavigate();
     const [networkStatus, setNetworkStatus] = useState<NetworkStatus | null>(null);
 
-    // TODO, move this to standalone api fn
     const getNwStatus = async () => {
-        const response = await fetch("http://localhost:9090/wallet/v2", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*"
-            },
-            body: JSON.stringify({
-                method: "get_network_status",
-                jsonrpc: "2.0",
-                id: 1
-            })
-        });
-
-        const json = await response.json();
-        const nwStatus = {
-            networkBlockHeight: json.result.network_status.network_block_height,
-            numTxos: json.result.network_status.local_num_txos
-        };
-        setNetworkStatus(nwStatus);
+        const status = await getNetowrkStatus();
+        setNetworkStatus(status);
     };
 
     useEffect(() => {
@@ -108,29 +65,20 @@ export default function Header() {
     }, []);
 
     return (
-        <div css={headerCSS.header}>
-            <div
-                css={headerCSS.logoText}
-                onClick={() => {
-                    window.location.href = `/blocks`;
-                }}
-            >
-                <MobileCoinLogo />
-                &nbsp;Block Explorer
+        <AppBar css={styles.header}>
+            <div css={styles.logoText} onClick={() => navigateTo("/blocks")}>
+                <>
+                    <MobileCoinLogo />
+                    <span style={{ marginBottom: -7 }}>&nbsp;Block Explorer </span>
+                </>
             </div>
-            <div css={headerCSS.headerNumbersContainer}>
-                <div css={headerCSS.headerNumbers}>
-                    <HeaderNumber
-                        title="Number of Blocks"
-                        value={networkStatus?.networkBlockHeight ?? 0}
-                    />
-                    <HeaderNumber
-                        title="Number of Transaction Outputs"
-                        value={networkStatus?.numTxos ?? 0}
-                    />
+            <div css={styles.headerNumbersContainer}>
+                <div css={styles.headerNumbers}>
+                    <HeaderNumber title="Blocks" value={networkStatus?.networkBlockHeight} />
+                    <HeaderNumber title="Transaction Outputs" value={networkStatus?.numTxos} />
                 </div>
             </div>
             <SearchBar />
-        </div>
+        </AppBar>
     );
 }

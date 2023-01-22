@@ -1,25 +1,14 @@
 import makeRequest from "api/makeRequest";
 import { Block, BlocksResponse } from "api/types";
 import camelCaseObjectKeys from "utils/camelize";
+import { mergeBlocksResponse } from "api/getRecentBlocks";
 
-function mergeBlocksResponse(blocksResponse: BlocksResponse): Block[] {
-    const blocks: Block[] = [];
-    blocksResponse.blocks.forEach((block, index) => {
-        blocks.push({
-            ...block,
-            ...blocksResponse.blockContents[index],
-            ...blocksResponse.watcherInfos[index]
-        });
-    });
-
-    return blocks;
-}
-
-export default async function getBlocks(): Promise<Block[]> {
+export default async function getBlocks(firstBlockIndex: number, limit: number): Promise<Block[]> {
     const { result, error } = await makeRequest<BlocksResponse>({
-        method: "get_recent_blocks",
+        method: "get_blocks",
         params: {
-            limit: 50
+            first_block_index: firstBlockIndex.toString(),
+            limit: limit
         }
     });
 

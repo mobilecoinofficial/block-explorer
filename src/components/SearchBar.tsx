@@ -1,52 +1,76 @@
 import { useState } from "react";
+import { css } from "@emotion/react";
+import { Button } from "@mui/material";
+
+import searchBlock from "api/searchBlock";
 // import { useNavigate } from "react-router-dom";
+
+const styles = {
+    headerSearchbar: css`
+    position: absolute;
+    bottom: -28px;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    width: 65%;
+    background-color: white;
+    border: 2px solid #eff1f1;
+    border-radius: 8px;
+    height: 56px;
+    color: #666666;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    padding-left: 16px;
+    padding-right: 16px;
+}`,
+
+    searchInput: css`
+    width: 100%;
+    border: none;
+    height: 100%;
+    font-size: 16px;
+    &:focus {
+        outline: none;
+    }
+}`
+};
 
 export default function SearchBar() {
     // const navigate = useNavigate();
     const [query, setQuery] = useState("");
 
+    function handleInputEnter(event) {
+        // enter key
+        if (event.keyCode == 13) {
+            search();
+        }
+    }
+
     async function search() {
-        console.log(query);
-
-        const response = await fetch("http://localhost:9090/wallet/v2", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*"
-            },
-            body: JSON.stringify({
-                method: "search_ledger",
-                jsonrpc: "2.0",
-                params: {
-                    query
-                },
-                id: 1
-            })
-        });
-
-        const json = await response.json();
-        const foundBlock = json.result.results[0];
+        const foundBlock = await searchBlock(query);
         if (foundBlock) {
             // TODO refactor CSS to allow this to go inside of router or something
             // navigate(`/blocks/${foundBlock.block.index}`);
             window.location.href = `/blocks/${foundBlock.block.index}`;
         } else {
-            window.location.href = `/no-block-found`;
+            console.log("NO BLOCK!");
+            // window.location.href = `/no-block-found`;
         }
     }
 
     return (
-        <div className="headersearchbar">
+        <div css={styles.headerSearchbar}>
             <input
-                className="searchInput"
+                css={styles.searchInput}
                 placeholder="Search by txo public key or key image"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
+                onKeyDown={handleInputEnter}
             />
             {query.length ? (
-                <button style={{ height: 40, fontSize: 16 }} onClick={search}>
+                <Button type="submit" onClick={search}>
                     search
-                </button>
+                </Button>
             ) : null}
         </div>
     );

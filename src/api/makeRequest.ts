@@ -1,6 +1,6 @@
 type MakeRequestArgs = {
     method: string;
-    params: Record<string, string | number>;
+    params: Record<string, string | number> | null;
 };
 
 type MakeRequestResult<T> = {
