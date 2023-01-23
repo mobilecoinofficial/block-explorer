@@ -1,0 +1,16 @@
+{
+  "name": "view-key-scan",
+  "collaborators": [
+    "MobileCoin"
+  ],
+  "version": "4.0.1",
+  "files": [
+    "mc_wasm_test_bg.wasm",
+    "mc_wasm_test.js",
+    "mc_wasm_test_bg.js",
+    "mc_wasm_test.d.ts"
+  ],
+  "module": "mc_wasm_test.js",
+  "types": "mc_wasm_test.d.ts",
+  "sideEffects": false
+}

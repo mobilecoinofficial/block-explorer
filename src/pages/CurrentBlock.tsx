@@ -5,7 +5,7 @@ import { Block } from "api/types";
 import Page from "components/Page";
 import { getTimeStamp } from "components/BlockRow";
 import { abbreviateHash, truncate } from "utils/truncate";
-// import ViewkeyScan from "./ViewKeyScan";
+import ViewkeyScan from "components/ViewKeyScan";
 
 const styles = {
     blockContainer: css`
@@ -59,6 +59,7 @@ export default function BlockPage() {
             <div css={styles.blockContainer}>
                 <div css={styles.header}>
                     <span css={styles.headerTitle}>Block {block.index}</span>
+                    <ViewkeyScan block={block} />
                 </div>
                 <div>
                     <table css={styles.blockTable}>
@@ -148,7 +149,4 @@ export default function BlockPage() {
             </div>
         </Page>
     );
-}
-{
-    /* <ViewkeyScan block={block} /> */
 }
