@@ -39,10 +39,7 @@ export default async function makeRequest<T>({
         const result = await response.json();
 
         return { result: result.result };
-
-        // TODO: better error handling
     } catch (e) {
-        console.log(e);
-        return e;
+        throw new Error(e);
     }
 }

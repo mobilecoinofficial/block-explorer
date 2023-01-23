@@ -87,7 +87,7 @@ export default function LatestBlocks() {
                     loader={<h4>Loading...</h4>}
                     endMessage={
                         <p style={{ textAlign: "center" }}>
-                            <b>Yay! You have seen it all</b>
+                            <b>Wow! you scrolled through all the blocks. Impressive!</b>
                         </p>
                     }
                 >

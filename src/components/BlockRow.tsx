@@ -17,7 +17,7 @@ export function getTimeStamp(block: Block): string {
 
 export default function BlockRow({ block }: BlockRowProps) {
     return (
-        <tr className="latestblocks-table-row">
+        <tr>
             <td>{block.index}</td>
             <td>{abbreviateHash(block.contentsHash)}</td>
             <td>{block.outputs.length}</td>

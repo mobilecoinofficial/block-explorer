@@ -17,7 +17,7 @@ export function mergeBlocksResponse(blocksResponse: BlocksResponse): Block[] {
     return blocks;
 }
 
-export default async function getBlocks(): Promise<Block[]> {
+export default async function getRecentBlocks(): Promise<Block[]> {
     const { result, error } = await makeRequest<BlocksResponse>({
         method: "get_recent_blocks",
         params: {
