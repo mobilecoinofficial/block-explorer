@@ -1,4 +1,4 @@
-// TODO clean up this file. it's copied over from DW. might be able to just use lodash instead
+// Copied over from dekstop wallet
 
 const convertToString = (input: unknown): string => {
     if (input) {

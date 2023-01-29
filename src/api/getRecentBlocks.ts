@@ -1,4 +1,4 @@
-import makeRequest from "api/makeRequest";
+import makeFSRequest from "api/makeFSRequest";
 import { Block, BlocksResponse } from "api/types";
 import camelCaseObjectKeys from "utils/camelize";
 
@@ -10,7 +10,8 @@ export function mergeBlocksResponse(blocksResponse: BlocksResponse): Block[] {
         blocks.push({
             ...block,
             ...blocksResponse.blockContents[index],
-            ...blocksResponse.watcherInfos[index]
+            // in case watcher isn't running
+            ...(blocksResponse.watcherInfos[index] ?? {})
         });
     });
 
@@ -18,7 +19,7 @@ export function mergeBlocksResponse(blocksResponse: BlocksResponse): Block[] {
 }
 
 export default async function getRecentBlocks(): Promise<Block[]> {
-    const { result, error } = await makeRequest<BlocksResponse>({
+    const { result, error } = await makeFSRequest<BlocksResponse>({
         method: "get_recent_blocks",
         params: {
             limit: 50

@@ -1,8 +1,8 @@
-import makeRequest from "api/makeRequest";
+import makeFSRequest from "api/makeFSRequest";
 import { NetworkStatus, NetworkStatusResponse } from "api/types";
 
 export default async function getNetowrkStatus(): Promise<NetworkStatus> {
-    const { result, error } = await makeRequest<NetworkStatusResponse>({
+    const { result, error } = await makeFSRequest<NetworkStatusResponse>({
         method: "get_network_status",
         params: null
     });

@@ -1,8 +1,8 @@
-import makeRequest from "api/makeRequest";
-import { SearchResult } from "api/types";
+import makeFSRequest from "api/makeFSRequest";
+import { LedgerSearchResult } from "api/types";
 
 export default async function searchBlock(query: string) {
-    const { result, error } = await makeRequest<SearchResult>({
+    const { result, error } = await makeFSRequest<{ results: LedgerSearchResult }>({
         method: "search_ledger",
         params: { query }
     });

@@ -1,9 +1,10 @@
-type MakeRequestArgs = {
+// Request to full-service
+type makeFSRequestArgs = {
     method: string;
     params: Record<string, string | number> | null;
 };
 
-type MakeRequestResult<T> = {
+type makeFSRequestResult<T> = {
     error?: string;
     result: T;
 };
@@ -21,10 +22,10 @@ const headers = {
     "Access-Control-Allow-Origin": "*"
 };
 
-export default async function makeRequest<T>({
+export default async function makeFSRequest<T>({
     method,
     params
-}: MakeRequestArgs): Promise<MakeRequestResult<T>> {
+}: makeFSRequestArgs): Promise<makeFSRequestResult<T>> {
     try {
         const response = await fetch(address, {
             method: "POST",
