@@ -1,84 +1,115 @@
-import { useState, useEffect } from "react";
-import { css } from "@emotion/react";
-import { AppBar } from "@mui/material";
+import React, { useState } from "react";
+import { AppBar, Box, Container, Toolbar, Typography, InputBase } from "@mui/material";
+import { styled, alpha } from "@mui/material/styles";
+import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate } from "react-router-dom";
 
 import MobileCoinLogo from "components/MobileCoinLogo";
-import { NetworkStatus } from "api/types";
-import SearchBar from "./SearchBar";
-import getNetowrkStatus from "api/getNetworkStatus";
+import searchBlock from "api/searchBlock";
 
-const styles = {
-    header: css`
-        height: 256px;
-        background-color: black;
-        color: white;
-        padding-top: 32px;
-        padding-bottom: 32px;
-        padding-left: 56px;
-        padding-right: 56px;
-        position: relative;
-    `,
-    logoText: css`
-        display: flex;
-        align-items: center;
-        font-size: 32px;
-        text-align: left;
-        margin-bottom: 56px;
-        cursor: pointer;
-    `,
-    headerNumbers: css`
-        display: flex;
-        justify-content: space-around;
-        width: 70%;
-    `,
+const Search = styled("div")(({ theme }) => ({
+    position: "relative",
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: alpha(theme.palette.common.white, 0.15),
+    "&:hover": {
+        backgroundColor: alpha(theme.palette.common.white, 0.25)
+    },
+    marginRight: theme.spacing(2),
+    marginLeft: 0,
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
+        marginLeft: theme.spacing(3),
+        width: "auto"
+    }
+}));
 
-    headerNumbersContainer: css`
-        display: flex;
-        justify-content: center;
-    `
-};
+const SearchIconWrapper = styled("div")(({ theme }) => ({
+    padding: theme.spacing(0, 2),
+    height: "100%",
+    position: "absolute",
+    pointerEvents: "none",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
+}));
 
-type HeaderNumberProps = {
-    title: string;
-    value?: number;
-};
-
-const HeaderNumber = ({ title, value }: HeaderNumberProps) => (
-    <div style={{ width: 200 }}>
-        <div style={{ fontSize: 16, marginBottom: 8 }}>{title}</div>
-        <div style={{ fontSize: 32 }}>{value?.toLocaleString("en-US")}</div>
-    </div>
-);
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+    color: "inherit",
+    "& .MuiInputBase-input": {
+        padding: theme.spacing(1, 1, 1, 0),
+        // vertical padding + font size from searchIcon
+        paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+        transition: theme.transitions.create("width"),
+        width: "100%",
+        [theme.breakpoints.up("md")]: {
+            width: "64ch"
+        }
+    }
+}));
 
 export default function Header() {
-    const navigateTo = useNavigate();
-    const [networkStatus, setNetworkStatus] = useState<NetworkStatus | null>(null);
+    const navigate = useNavigate();
+    const [query, setQuery] = useState("");
 
-    const getNwStatus = async () => {
-        const status = await getNetowrkStatus();
-        setNetworkStatus(status);
-    };
+    function handleSearchInputChange(event: React.ChangeEvent<HTMLInputElement>) {
+        setQuery(event.target.value);
+    }
 
-    useEffect(() => {
-        getNwStatus();
-    }, []);
+    function handleInputEnter(event) {
+        // enter key
+        if (event.keyCode == 13) {
+            search();
+        }
+    }
 
+    async function search() {
+        const foundBlock = await searchBlock(query);
+        if (foundBlock) {
+            navigate(`/blocks/${foundBlock.block.index}`);
+        } else {
+            console.log("NO BLOCK!");
+        }
+    }
+
+    function goHome() {
+        navigate("/blocks");
+    }
     return (
-        <AppBar css={styles.header}>
-            <div css={styles.logoText} onClick={() => navigateTo("/blocks")}>
-                <>
-                    <MobileCoinLogo />
-                    <span style={{ marginBottom: -7 }}>&nbsp;Block Explorer </span>
-                </>
-            </div>
-            <div css={styles.headerNumbersContainer}>
-                <div css={styles.headerNumbers}>
-                    <HeaderNumber title="Blocks" value={networkStatus?.networkBlockHeight} />
-                    <HeaderNumber title="Transaction Outputs" value={networkStatus?.numTxos} />
-                </div>
-            </div>
-            <SearchBar />
+        <AppBar>
+            <Container maxWidth="xl">
+                <Toolbar disableGutters>
+                    <Box
+                        display="flex"
+                        alignItems="center"
+                        onClick={goHome}
+                        sx={{ cursor: "pointer" }}
+                    >
+                        <MobileCoinLogo />
+                        <Typography
+                            variant="h5"
+                            noWrap
+                            sx={{
+                                flexGrow: 1,
+                                display: { xs: "none", sm: "block" },
+                                marginLeft: 1
+                            }}
+                        >
+                            MobileCoin Block Explorer
+                        </Typography>
+                    </Box>
+                    <Search>
+                        <SearchIconWrapper>
+                            <SearchIcon />
+                        </SearchIconWrapper>
+                        <StyledInputBase
+                            placeholder="Search by txo public key or key image"
+                            inputProps={{ "aria-label": "search" }}
+                            onChange={handleSearchInputChange}
+                            onKeyDown={handleInputEnter}
+                        />
+                    </Search>
+                </Toolbar>
+            </Container>
         </AppBar>
     );
 }

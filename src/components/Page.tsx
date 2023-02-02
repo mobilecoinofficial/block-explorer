@@ -5,7 +5,7 @@ import Header from "components/Header";
 
 export default function Page({ children }: { children: ReactNode }) {
     const styles = css`
-        padding-top: 64px;
+        padding-top: 96px;
         padding-left: 96px;
         padding-right: 96px;
     `;
