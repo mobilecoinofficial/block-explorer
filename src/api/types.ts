@@ -64,8 +64,8 @@ export type BlockResponse = {
 };
 
 export type NetworkStatus = {
-    networkBlockHeight: number;
-    numTxos: number;
+    networkBlockHeight: string;
+    numTxos: string;
 };
 
 export type LedgerTxOutSearchResult = {
@@ -88,8 +88,8 @@ export type LedgerSearchResult = {
 
 export type NetworkStatusResponse = {
     network_status: {
-        local_block_height: number;
-        local_num_txos: number;
+        local_block_height: string;
+        local_num_txos: string;
     };
 };
 

@@ -1,22 +1,12 @@
-import { Link } from "react-router-dom";
-import { css } from "@emotion/react";
+import { TableRow, TableCell, Link } from "@mui/material";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import moment from "moment";
 
 import { Block } from "api/types";
-import { abbreviateHash } from "utils/truncate";
+import CopyableField from "components/CopyableField";
 
 type BlockRowProps = {
     block: Block;
-};
-
-const styles = {
-    // TODO constants for all these colors
-    link: css`
-        color: #666666;
-        text-decoration: none;
-    `
 };
 
 export function getTimeStamp(block: Block): string {
@@ -28,27 +18,22 @@ export function getTimeStamp(block: Block): string {
 }
 
 export default function BlockRow({ block }: BlockRowProps) {
-    function copyHash() {
-        navigator.clipboard.writeText(block.contentsHash);
-    }
-
     return (
-        <tr>
-            <td>{block.index}</td>
-            <td style={{ display: "flex", alignItems: "center", cursor: "pointer" }}>
-                <span style={{ width: 108 }}>{abbreviateHash(block.contentsHash)}</span>
-                <ContentCopyIcon css={styles.link} fontSize="small" onClick={copyHash} />
-            </td>
-            <td>{block.outputs.length}</td>
-            <td>{block.keyImages.length}</td>
-            <td>{block.signatures?.length}</td>
-            <td>{getTimeStamp(block)}</td>
-            <td style={{ cursor: "pointer", display: "flex", alignItems: "center" }}>
-                <Link css={styles.link} to={block.index}>
+        <TableRow>
+            <TableCell>{block.index}</TableCell>
+            <TableCell>
+                <CopyableField text={block.contentsHash} />
+            </TableCell>
+            <TableCell>{block.outputs.length}</TableCell>
+            <TableCell>{block.keyImages.length}</TableCell>
+            <TableCell>{block.signatures?.length}</TableCell>
+            <TableCell>{getTimeStamp(block)}</TableCell>
+            <TableCell style={{ cursor: "pointer", display: "flex", alignItems: "center" }}>
+                <Link href={`blocks/${block.index}`} underline="none">
                     details
                 </Link>
-                <NavigateNextIcon css={styles.link} fontSize="small" />
-            </td>
-        </tr>
+                <NavigateNextIcon fontSize="small" color="primary" />
+            </TableCell>
+        </TableRow>
     );
 }
