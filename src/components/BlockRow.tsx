@@ -3,7 +3,7 @@ import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import moment from "moment";
 
 import { Block } from "api/types";
-import CopyableField from "components/copyableField";
+import CopyableField from "components/CopyableField";
 
 type BlockRowProps = {
     block: Block;
