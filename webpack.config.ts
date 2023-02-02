@@ -11,16 +11,13 @@ const webpackConfig = (env): Configuration => ({
     entry: "./src/index.tsx",
     ...(env.production || !env.development ? {} : { devtool: "eval-source-map" }),
     resolve: {
-        extensions: [".ts", ".tsx", ".js", ".wasm"],
+        extensions: [".ts", ".tsx", ".js"],
         plugins: [new TsconfigPathsPlugin()]
     },
     output: {
         path: path.join(__dirname, "/dist"),
         filename: "build.js",
         publicPath: "/"
-    },
-    experiments: {
-        asyncWebAssembly: true
     },
     devServer: {
         historyApiFallback: true
@@ -34,10 +31,6 @@ const webpackConfig = (env): Configuration => ({
                     transpileOnly: true
                 },
                 exclude: /dist/
-            },
-            {
-                test: /\.wasm$/,
-                type: "webassembly/async"
             }
         ]
     },
