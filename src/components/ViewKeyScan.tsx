@@ -1,3 +1,9 @@
+// this component isn't currently used in the app because we're not sure
+// exactly how we want to use it yet. It uses a web-assembly module
+// to scan a block's txos without the user's keys ever leaving the brower tab.
+// we might figure out a way to make it more useful, so it's here as an example/template
+// until that happens.
+
 import { useEffect, useState } from "react";
 import {
     Button,

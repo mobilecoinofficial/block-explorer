@@ -3,7 +3,7 @@ import { css } from "@emotion/react";
 import { Button } from "@mui/material";
 
 import searchBlock from "api/searchBlock";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const styles = {
     headerSearchbar: css`
@@ -36,7 +36,7 @@ const styles = {
 };
 
 export default function SearchBar() {
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
     const [query, setQuery] = useState("");
 
     function handleInputEnter(event) {
@@ -49,12 +49,9 @@ export default function SearchBar() {
     async function search() {
         const foundBlock = await searchBlock(query);
         if (foundBlock) {
-            // TODO refactor CSS to allow this to go inside of router or something
-            // navigate(`/blocks/${foundBlock.block.index}`);
-            window.location.href = `/blocks/${foundBlock.block.index}`;
+            navigate(`/blocks/${foundBlock.block.index}`);
         } else {
             console.log("NO BLOCK!");
-            // window.location.href = `/no-block-found`;
         }
     }
 
