@@ -10,20 +10,20 @@ import {
 } from "@mui/material";
 
 import { StyledCard, None } from "pages/CurrentBlock";
-import { MintInfoResponse } from "api/types";
+import { BurnTx } from "api/types";
 import { TOKENS } from "utils/tokens";
 import CopyableField from "components/CopyableField";
 
-export default function Mints({ mintInfo }: { mintInfo: MintInfoResponse }) {
-    if (!mintInfo.mintTxs.length) {
-        return <None title="Mints" />;
+export default function Burns({ burns }: { burns: BurnTx[] }) {
+    if (!burns.length) {
+        return <None title="Burns" />;
     }
 
     return (
         <StyledCard>
             <CardContent>
                 <Typography variant="h6" gutterBottom>
-                    Mints
+                    Burns
                 </Typography>
                 <TableContainer>
                     <Table>
@@ -31,23 +31,17 @@ export default function Mints({ mintInfo }: { mintInfo: MintInfoResponse }) {
                             <TableRow>
                                 <TableCell>Amount</TableCell>
                                 <TableCell>Token</TableCell>
-                                <TableCell>Nonce</TableCell>
-                                <TableCell>Recipient Address</TableCell>
-                                <TableCell>Config Limit</TableCell>
+                                <TableCell>Public Key</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {mintInfo.mintTxs.map(({ mintTx, mintConfig }) => (
-                                <TableRow key={mintTx.nonceHex}>
-                                    <TableCell>{mintTx.amount}</TableCell>
-                                    <TableCell>{TOKENS[mintTx.tokenId]}</TableCell>
+                            {burns.map((burn) => (
+                                <TableRow key={burn.publicKeyHex}>
+                                    <TableCell>{burn.amount}</TableCell>
+                                    <TableCell>{TOKENS[burn.tokenId]}</TableCell>
                                     <TableCell>
-                                        <CopyableField text={mintTx.nonceHex} />
+                                        <CopyableField text={burn.publicKeyHex} />
                                     </TableCell>
-                                    <TableCell>
-                                        <CopyableField text={mintTx.recipientB58Addr} />
-                                    </TableCell>
-                                    <TableCell>{mintConfig.mintLimit}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

@@ -14,40 +14,34 @@ import { MintInfoResponse } from "api/types";
 import { TOKENS } from "utils/tokens";
 import CopyableField from "components/CopyableField";
 
-export default function Mints({ mintInfo }: { mintInfo: MintInfoResponse }) {
-    if (!mintInfo.mintTxs.length) {
-        return <None title="Mints" />;
+export default function MintConfigTxs({ mintInfo }: { mintInfo: MintInfoResponse }) {
+    if (!mintInfo.mintConfigTxs.length) {
+        return <None title="Mint Config Txs" />;
     }
 
     return (
         <StyledCard>
             <CardContent>
                 <Typography variant="h6" gutterBottom>
-                    Mints
+                    Mint Config Txs
                 </Typography>
                 <TableContainer>
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <TableCell>Amount</TableCell>
+                                <TableCell>Mint Limit</TableCell>
                                 <TableCell>Token</TableCell>
                                 <TableCell>Nonce</TableCell>
-                                <TableCell>Recipient Address</TableCell>
-                                <TableCell>Config Limit</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {mintInfo.mintTxs.map(({ mintTx, mintConfig }) => (
-                                <TableRow key={mintTx.nonceHex}>
-                                    <TableCell>{mintTx.amount}</TableCell>
-                                    <TableCell>{TOKENS[mintTx.tokenId]}</TableCell>
+                            {mintInfo.mintConfigTxs.map((mintConfigTx) => (
+                                <TableRow key={mintConfigTx.nonceHex}>
+                                    <TableCell>{mintConfigTx.totalMintLimit}</TableCell>
+                                    <TableCell>{TOKENS[mintConfigTx.tokenId]}</TableCell>
                                     <TableCell>
-                                        <CopyableField text={mintTx.nonceHex} />
+                                        <CopyableField text={mintConfigTx.nonceHex} />
                                     </TableCell>
-                                    <TableCell>
-                                        <CopyableField text={mintTx.recipientB58Addr} />
-                                    </TableCell>
-                                    <TableCell>{mintConfig.mintLimit}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

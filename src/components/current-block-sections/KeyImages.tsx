@@ -7,7 +7,7 @@ import {
     TableCell,
     TableRow
 } from "@mui/material";
-import { StyledCard } from "pages/CurrentBlock";
+import { StyledCard, None } from "pages/CurrentBlock";
 import { Block } from "api/types";
 
 // handle full-service tech debt
@@ -20,6 +20,10 @@ function removeProtoBuffFromKeyImage(keyImage: string) {
 }
 
 export default function KeyImages({ blockContents }: { blockContents: Block }) {
+    if (!blockContents.keyImages.length) {
+        return <None title="Key Images" />;
+    }
+
     return (
         <StyledCard>
             <CardContent>

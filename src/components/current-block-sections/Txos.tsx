@@ -8,11 +8,15 @@ import {
     TableCell,
     TableRow
 } from "@mui/material";
-import { StyledCard } from "pages/CurrentBlock";
+import { StyledCard, None } from "pages/CurrentBlock";
 import CopyableField from "components/CopyableField";
 import { Block } from "api/types";
 
 export default function Txos({ blockContents }: { blockContents: Block }) {
+    if (!blockContents.outputs.length) {
+        return <None title="Transaction Outputs" />;
+    }
+
     return (
         <StyledCard>
             <CardContent>

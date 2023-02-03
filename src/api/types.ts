@@ -130,11 +130,6 @@ export type MintTx = {
     mintConfigId: number;
 };
 
-export type MintConfigTxWithConfigs = {
-    mintConfigTx: MintConfigTx;
-    mintConfigs: MintConfig[];
-};
-
 export type MintWithConfig = {
     mintTx: MintTx;
     mintConfig: MintConfig;
@@ -142,9 +137,22 @@ export type MintWithConfig = {
 
 export type MintInfoResponse = {
     mintTxs: MintWithConfig[];
-    mintConfigTxs: MintConfigTxWithConfigs[];
+    mintConfigTxs: MintConfigTx[];
 };
 
 export type MintConfigResponse = {
     mintConfig: MintConfig;
+};
+
+export type BurnTx = {
+    id: number;
+    blockIndex: number;
+    tokenId: number;
+    amount: number;
+    publicKeyHex: string;
+    protobuf: number[];
+};
+
+export type BurnsResponse = {
+    burn_txs: BurnTx[];
 };

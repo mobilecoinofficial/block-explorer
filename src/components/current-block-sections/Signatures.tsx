@@ -10,11 +10,15 @@ import {
 } from "@mui/material";
 import moment from "moment";
 
-import { StyledCard } from "pages/CurrentBlock";
+import { StyledCard, None } from "pages/CurrentBlock";
 import CopyableField from "components/CopyableField";
 import { Block } from "api/types";
 
 export default function signatures({ blockContents }: { blockContents: Block }) {
+    if (!blockContents.signatures?.length) {
+        return <None title="Signatures" />;
+    }
+
     return (
         <StyledCard>
             <CardContent>
@@ -32,7 +36,7 @@ export default function signatures({ blockContents }: { blockContents: Block }) 
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {(blockContents.signatures ?? []).map((sig) => (
+                            {blockContents.signatures.map((sig) => (
                                 <TableRow key={sig.blockSignature.signature}>
                                     <TableCell>{sig.srcUrl}</TableCell>
                                     <TableCell>

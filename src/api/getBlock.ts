@@ -1,7 +1,6 @@
 import makeFSRequest from "api/makeFSRequest";
 import { Block, BlockResponse } from "api/types";
 import camelCaseObjectKeys from "utils/camelize";
-import getMintInfo from "./getMintInfo";
 
 function mergeBlockResponse(blockResponse: BlockResponse): Block {
     return {
@@ -19,9 +18,6 @@ export default async function getBlock(blockIndex: string): Promise<Block> {
             block_index: blockIndex
         }
     });
-
-    const info = await getMintInfo(blockIndex);
-    console.log(info);
 
     if (result) {
         return mergeBlockResponse(camelCaseObjectKeys(result));
