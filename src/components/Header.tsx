@@ -50,6 +50,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function Header() {
     const navigate = useNavigate();
     const [query, setQuery] = useState("");
+    // TODO add search by block
 
     function handleSearchInputChange(event: React.ChangeEvent<HTMLInputElement>) {
         setQuery(event.target.value);

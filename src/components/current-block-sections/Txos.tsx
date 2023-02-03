@@ -27,7 +27,7 @@ export default function Txos({ blockContents }: { blockContents: Block }) {
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <TableCell>TXO Pubkey</TableCell>
+                                <TableCell>TXO Public Key</TableCell>
                                 <TableCell>Target Address</TableCell>
                                 <TableCell>Amount</TableCell>
                             </TableRow>

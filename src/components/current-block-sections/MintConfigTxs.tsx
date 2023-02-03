@@ -13,6 +13,7 @@ import { StyledCard, None } from "pages/CurrentBlock";
 import { MintInfoResponse } from "api/types";
 import { TOKENS } from "utils/tokens";
 import CopyableField from "components/CopyableField";
+import MintConfig from "components/current-block-sections/MintConfig";
 
 export default function MintConfigTxs({ mintInfo }: { mintInfo: MintInfoResponse }) {
     if (!mintInfo.mintConfigTxs.length) {
@@ -32,15 +33,28 @@ export default function MintConfigTxs({ mintInfo }: { mintInfo: MintInfoResponse
                                 <TableCell>Mint Limit</TableCell>
                                 <TableCell>Token</TableCell>
                                 <TableCell>Nonce</TableCell>
+                                <TableCell>Mint Configs</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {mintInfo.mintConfigTxs.map((mintConfigTx) => (
-                                <TableRow key={mintConfigTx.nonceHex}>
-                                    <TableCell>{mintConfigTx.totalMintLimit}</TableCell>
-                                    <TableCell>{TOKENS[mintConfigTx.tokenId]}</TableCell>
+                                <TableRow key={mintConfigTx.mintConfigTx.nonceHex}>
                                     <TableCell>
-                                        <CopyableField text={mintConfigTx.nonceHex} />
+                                        {mintConfigTx.mintConfigTx.totalMintLimit}
+                                    </TableCell>
+                                    <TableCell>
+                                        {TOKENS[mintConfigTx.mintConfigTx.tokenId]}
+                                    </TableCell>
+                                    <TableCell>
+                                        <CopyableField text={mintConfigTx.mintConfigTx.nonceHex} />
+                                    </TableCell>
+                                    <TableCell>
+                                        {mintConfigTx.mintConfigs.map((config, i) => (
+                                            <MintConfig
+                                                config={config}
+                                                key={`configTxconfig-${i}`}
+                                            />
+                                        ))}
                                     </TableCell>
                                 </TableRow>
                             ))}

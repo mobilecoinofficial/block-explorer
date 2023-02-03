@@ -49,9 +49,12 @@ export default function BlockPage() {
             >
                 <Box>
                     <Typography variant="h4">Block {blockContents.index}</Typography>
+                    <Typography color="text.secondary">{getTimeStamp(blockContents)}</Typography>
+                </Box>
+                <Box display="flex">
+                    <Typography sx={{ marginRight: 1 }}>Hash:</Typography>
                     <Typography color="text.secondary">{blockContents.contentsHash}</Typography>
                 </Box>
-                <Typography color="text.secondary">{getTimeStamp(blockContents)}</Typography>
             </Box>
             <Txos blockContents={blockContents} />
             <KeyImages blockContents={blockContents} />

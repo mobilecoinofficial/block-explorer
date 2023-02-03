@@ -112,10 +112,11 @@ export type MintConfigTx = {
 };
 
 export type MintConfig = {
-    id: number;
-    mintConfigTxId: number;
+    tokenId: number;
+    signerSet: {
+        signers: number[][];
+    };
     mintLimit: number;
-    protobuf: number[];
 };
 
 export type MintTx = {
@@ -133,11 +134,17 @@ export type MintTx = {
 export type MintWithConfig = {
     mintTx: MintTx;
     mintConfig: MintConfig;
+    mintConfigTx: MintConfigTx;
+};
+
+export type MintConfigTxWithConfigs = {
+    mintConfigTx: MintConfigTx;
+    mintConfigs: MintConfig[];
 };
 
 export type MintInfoResponse = {
     mintTxs: MintWithConfig[];
-    mintConfigTxs: MintConfigTx[];
+    mintConfigTxs: MintConfigTxWithConfigs[];
 };
 
 export type MintConfigResponse = {

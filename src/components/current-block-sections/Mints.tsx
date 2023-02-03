@@ -13,6 +13,7 @@ import { StyledCard, None } from "pages/CurrentBlock";
 import { MintInfoResponse } from "api/types";
 import { TOKENS } from "utils/tokens";
 import CopyableField from "components/CopyableField";
+import MintConfig from "components/current-block-sections/MintConfig";
 
 export default function Mints({ mintInfo }: { mintInfo: MintInfoResponse }) {
     if (!mintInfo.mintTxs.length) {
@@ -33,7 +34,7 @@ export default function Mints({ mintInfo }: { mintInfo: MintInfoResponse }) {
                                 <TableCell>Token</TableCell>
                                 <TableCell>Nonce</TableCell>
                                 <TableCell>Recipient Address</TableCell>
-                                <TableCell>Config Limit</TableCell>
+                                <TableCell>Mint Config</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -47,7 +48,9 @@ export default function Mints({ mintInfo }: { mintInfo: MintInfoResponse }) {
                                     <TableCell>
                                         <CopyableField text={mintTx.recipientB58Addr} />
                                     </TableCell>
-                                    <TableCell>{mintConfig.mintLimit}</TableCell>
+                                    <TableCell>
+                                        <MintConfig config={mintConfig} />
+                                    </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

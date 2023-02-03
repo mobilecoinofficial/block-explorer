@@ -13,7 +13,7 @@ export default function CopyableField({ text }: { text: string }) {
             <Typography style={{ width: 108 }}>{abbreviateHash(text)}</Typography>
             <Tooltip title={`Copy ${text} to clipboard`}>
                 <ContentCopyIcon
-                    sx={{ cursor: "pointer" }}
+                    sx={{ cursor: "pointer", color: "text.secondary" }}
                     fontSize="small"
                     onClick={copyToClipboard}
                 />
