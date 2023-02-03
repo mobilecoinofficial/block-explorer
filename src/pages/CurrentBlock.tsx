@@ -2,7 +2,7 @@ import { useLoaderData } from "react-router-dom";
 import { Box, Typography, Card, CardContent } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
-import { Block, MintInfoResponse } from "api/types";
+import { Block, BurnTx, MintInfoResponse } from "api/types";
 import Page from "components/Page";
 import { getTimeStamp } from "components/BlockRow";
 import Txos from "components/current-block-sections/Txos";
@@ -32,9 +32,10 @@ export function None({ title }: { title: string }) {
 }
 
 export default function BlockPage() {
-    const { blockContents, mintInfo } = useLoaderData() as {
+    const { blockContents, mintInfo, burns } = useLoaderData() as {
         blockContents: Block;
         mintInfo: MintInfoResponse;
+        burns: BurnTx[];
     };
 
     return (
@@ -61,7 +62,7 @@ export default function BlockPage() {
             <Signatures blockContents={blockContents} />
             <Mints mintInfo={mintInfo} />
             <MintConfigTxs mintInfo={mintInfo} />
-            <Burns burns={[]} />
+            <Burns burns={burns} />
         </Page>
     );
 }

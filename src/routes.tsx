@@ -5,6 +5,7 @@ import LatestBlocks from "pages/LatestBlocks";
 import CurrentBlock from "pages/CurrentBlock";
 import NoBlockFound from "pages/NoBlockFound";
 import getMintInfo from "api/getMintInfo";
+import getBurns from "api/getBurns";
 
 const router = createBrowserRouter([
     {
@@ -21,9 +22,11 @@ const router = createBrowserRouter([
         loader: async ({ params }) => {
             const blockContents = await getBlock(params.blockIndex);
             const mintInfo = await getMintInfo(params.blockIndex);
+            const burns = await getBurns(params.blockIndex);
             return {
                 blockContents,
-                mintInfo
+                mintInfo,
+                burns
             };
         },
         element: <CurrentBlock />,
