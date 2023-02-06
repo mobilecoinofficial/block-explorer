@@ -37,7 +37,7 @@ export default function Burns({ burns }: { burns: BurnTx[] }) {
                         <TableBody>
                             {burns.map((burn) => (
                                 <TableRow key={burn.publicKeyHex}>
-                                    <TableCell>{burn.amount}</TableCell>
+                                    <TableCell>{burn.amount.toLocaleString("en-US")}</TableCell>
                                     <TableCell>{TOKENS[burn.tokenId]}</TableCell>
                                     <TableCell>
                                         <CopyableField text={burn.publicKeyHex} />

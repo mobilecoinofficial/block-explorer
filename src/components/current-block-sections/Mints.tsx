@@ -40,7 +40,7 @@ export default function Mints({ mintInfo }: { mintInfo: MintInfoResponse }) {
                         <TableBody>
                             {mintInfo.mintTxs.map(({ mintTx, mintConfig }) => (
                                 <TableRow key={mintTx.nonceHex}>
-                                    <TableCell>{mintTx.amount}</TableCell>
+                                    <TableCell>{mintTx.amount.toLocaleString("en-US")}</TableCell>
                                     <TableCell>{TOKENS[mintTx.tokenId]}</TableCell>
                                     <TableCell>
                                         <CopyableField text={mintTx.nonceHex} />

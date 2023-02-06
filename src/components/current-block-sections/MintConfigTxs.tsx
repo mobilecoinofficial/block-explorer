@@ -40,7 +40,9 @@ export default function MintConfigTxs({ mintInfo }: { mintInfo: MintInfoResponse
                             {mintInfo.mintConfigTxs.map((mintConfigTx) => (
                                 <TableRow key={mintConfigTx.mintConfigTx.nonceHex}>
                                     <TableCell>
-                                        {mintConfigTx.mintConfigTx.totalMintLimit}
+                                        {mintConfigTx.mintConfigTx.totalMintLimit.toLocaleString(
+                                            "en-US"
+                                        )}
                                     </TableCell>
                                     <TableCell>
                                         {TOKENS[mintConfigTx.mintConfigTx.tokenId]}

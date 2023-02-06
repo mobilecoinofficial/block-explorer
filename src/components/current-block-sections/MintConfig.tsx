@@ -27,7 +27,7 @@ export default function MintConfig({ config }: { config: MintConfig }) {
                 <Box>
                     <Box display="flex" justifyContent={"space-between"} sx={{ marginBottom: 1 }}>
                         <Typography color="text.secondary">Limit:</Typography>
-                        <Typography>{config.mintLimit}</Typography>
+                        <Typography>{config.mintLimit.toLocaleString("en-US")}</Typography>
                     </Box>
                     <Divider />
                     <Box display="flex" justifyContent={"space-between"} sx={{ marginTop: 1 }}>
