@@ -22,6 +22,10 @@ const webpackConfig = (env): Configuration => ({
     devServer: {
         historyApiFallback: true
     },
+    performance: {
+        maxEntrypointSize: 1536000,
+        maxAssetSize: 1536000
+    },
     module: {
         rules: [
             {
