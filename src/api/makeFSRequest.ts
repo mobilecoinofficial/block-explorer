@@ -9,10 +9,6 @@ type makeFSRequestResult<T> = {
     result: T;
 };
 
-// TODO add port & host as env config for deployment
-const port = "9090";
-const host = "localhost";
-const address = `http://${host}:${port}/wallet/v2`;
 const FSRequiredArgs = {
     jsonrpc: "2.0",
     id: 1
@@ -27,7 +23,7 @@ export default async function makeFSRequest<T>({
     params
 }: makeFSRequestArgs): Promise<makeFSRequestResult<T>> {
     try {
-        const response = await fetch(address, {
+        const response = await fetch(process.env.REACT_APP_FULL_SERVICE_URL, {
             method: "POST",
             headers,
             body: JSON.stringify({

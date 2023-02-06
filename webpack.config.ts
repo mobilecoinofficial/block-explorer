@@ -4,6 +4,7 @@ import HtmlWebpackPlugin from "html-webpack-plugin";
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import ESLintPlugin from "eslint-webpack-plugin";
 import { TsconfigPathsPlugin } from "tsconfig-paths-webpack-plugin";
+import Dotenv from "dotenv-webpack";
 // needed for historyApiFallback
 import * as webpackDevServer from "webpack-dev-server";
 
@@ -43,7 +44,8 @@ const webpackConfig = (env): Configuration => ({
             template: "./public/index.html"
         }),
         new ForkTsCheckerWebpackPlugin(),
-        new ESLintPlugin({ files: "./src/**/*.{ts,tsx,js,jsx}" })
+        new ESLintPlugin({ files: "./src/**/*.{ts,tsx,js,jsx}" }),
+        new Dotenv()
     ]
 });
 

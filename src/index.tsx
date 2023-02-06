@@ -6,6 +6,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import { RouterProvider } from "react-router-dom";
 
 import router from "routes";
+console.log(process.env);
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(
