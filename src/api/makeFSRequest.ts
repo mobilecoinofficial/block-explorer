@@ -22,8 +22,6 @@ const headers = {
     "Access-Control-Allow-Origin": "*"
 };
 
-export const FULL_SERVICE_BLOCK_NOT_FOUND_ERROR = "FULL_SERVICE_BLOCK_NOT_FOUND";
-
 export default async function makeFSRequest<T>({
     method,
     params
@@ -40,6 +38,10 @@ export default async function makeFSRequest<T>({
         });
 
         const result = await response.json();
+
+        if (result.error) {
+            throw new Error(result.error.data?.details);
+        }
 
         return { result: result.result };
     } catch (e) {

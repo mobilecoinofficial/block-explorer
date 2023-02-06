@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { AppBar, Box, Container, Toolbar, Typography, InputBase } from "@mui/material";
+import { AppBar, Box, Container, Toolbar, Typography, InputBase, Snackbar } from "@mui/material";
 import { styled, alpha } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate } from "react-router-dom";
 
 import MobileCoinLogo from "components/MobileCoinLogo";
 import searchBlock from "api/searchBlock";
+import getBlock from "api/getBlock";
 
 const Search = styled("div")(({ theme }) => ({
     position: "relative",
@@ -50,7 +51,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function Header() {
     const navigate = useNavigate();
     const [query, setQuery] = useState("");
-    // TODO add search by block
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
 
     function handleSearchInputChange(event: React.ChangeEvent<HTMLInputElement>) {
         setQuery(event.target.value);
@@ -64,12 +65,23 @@ export default function Header() {
     }
 
     async function search() {
+        if (!isNaN(Number(query))) {
+            try {
+                await getBlock(query);
+                navigate(`/blocks/${query}`);
+                return;
+            } catch {
+                setSnackbarOpen(true);
+            }
+        }
+
         const foundBlock = await searchBlock(query);
         if (foundBlock) {
             navigate(`/blocks/${foundBlock.block.index}`);
-        } else {
-            console.log("NO BLOCK!");
+            return;
         }
+
+        setSnackbarOpen(true);
     }
 
     function goHome() {
@@ -103,7 +115,7 @@ export default function Header() {
                             <SearchIcon />
                         </SearchIconWrapper>
                         <StyledInputBase
-                            placeholder="Search by txo public key or key image"
+                            placeholder="Search by block index, txo public key, or key image"
                             inputProps={{ "aria-label": "search" }}
                             onChange={handleSearchInputChange}
                             onKeyDown={handleInputEnter}
@@ -111,6 +123,12 @@ export default function Header() {
                     </Search>
                 </Toolbar>
             </Container>
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={6000}
+                onClose={() => setSnackbarOpen(false)}
+                message="Unable to find matching block"
+            />
         </AppBar>
     );
 }
