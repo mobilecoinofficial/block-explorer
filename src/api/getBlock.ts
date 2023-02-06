@@ -23,7 +23,5 @@ export default async function getBlock(blockIndex: string): Promise<Block> {
         return mergeBlockResponse(camelCaseObjectKeys(result));
     } else if (error) {
         throw new Error(error);
-    } else {
-        throw new Error(`Block Index ${blockIndex} not found`);
     }
 }

@@ -28,11 +28,15 @@ export default function BlockRow({ block }: BlockRowProps) {
             <TableCell>{block.keyImages.length}</TableCell>
             <TableCell>{block.signatures?.length}</TableCell>
             <TableCell>{getTimeStamp(block)}</TableCell>
-            <TableCell style={{ cursor: "pointer", display: "flex", alignItems: "center" }}>
+            <TableCell style={{ cursor: "pointer" }}>
                 <Link href={`blocks/${block.index}`} underline="none">
                     details
                 </Link>
-                <NavigateNextIcon fontSize="small" color="primary" />
+                <NavigateNextIcon
+                    fontSize="small"
+                    color="primary"
+                    sx={{ verticalAlign: "middle" }}
+                />
             </TableCell>
         </TableRow>
     );

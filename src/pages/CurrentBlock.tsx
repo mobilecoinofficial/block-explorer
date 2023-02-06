@@ -52,7 +52,6 @@ export default function BlockPage() {
                 <Box>
                     <Typography variant="h4">Block {blockContents.index}</Typography>
                     <Typography color="text.secondary">{getTimeStamp(blockContents)}</Typography>
-                    {/* <Typography color="text.secondary">{blockContents.contentsHash}</Typography> */}
                     <CopyableField text={blockContents.contentsHash} />
                 </Box>
             </Box>
