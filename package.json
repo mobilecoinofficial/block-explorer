@@ -46,6 +46,7 @@
         "@emotion/styled": "^11.10.5",
         "@mui/icons-material": "^5.11.0",
         "@mui/material": "^5.11.5",
+        "js-base64": "^3.7.4",
         "moment": "^2.29.4",
         "react": "^18.0.0",
         "react-dom": "^18.0.0",

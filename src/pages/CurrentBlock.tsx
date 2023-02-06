@@ -11,6 +11,7 @@ import Signatures from "components/current-block-sections/Signatures";
 import Mints from "components/current-block-sections/Mints";
 import MintConfigTxs from "components/current-block-sections/MintConfigTxs";
 import Burns from "components/current-block-sections/Burns";
+import CopyableField from "components/CopyableField";
 
 export const StyledCard = styled(Card)(({ theme }) => ({
     marginBottom: theme.spacing(3),
@@ -51,10 +52,8 @@ export default function BlockPage() {
                 <Box>
                     <Typography variant="h4">Block {blockContents.index}</Typography>
                     <Typography color="text.secondary">{getTimeStamp(blockContents)}</Typography>
-                </Box>
-                <Box display="flex">
-                    <Typography sx={{ marginRight: 1 }}>Hash:</Typography>
-                    <Typography color="text.secondary">{blockContents.contentsHash}</Typography>
+                    {/* <Typography color="text.secondary">{blockContents.contentsHash}</Typography> */}
+                    <CopyableField text={blockContents.contentsHash} />
                 </Box>
             </Box>
             <Txos blockContents={blockContents} />

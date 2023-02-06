@@ -10,7 +10,7 @@ import {
 import { styled } from "@mui/material/styles";
 
 import CopyableField from "components/CopyableField";
-import toHexString from "utils/toHex";
+import { base64PEMEncode } from "utils/bytesToPEM";
 import { MintConfig } from "api/types";
 
 const StyledAccordion = styled(Accordion)(() => ({
@@ -34,7 +34,7 @@ export default function MintConfig({ config }: { config: MintConfig }) {
                         <Typography color="text.secondary">Signers</Typography>
                         <Box>
                             {config.signerSet.signers.map((s) => (
-                                <CopyableField text={toHexString(s)} key={toHexString(s)} />
+                                <CopyableField text={base64PEMEncode(s)} key={base64PEMEncode(s)} />
                             ))}
                         </Box>
                     </Box>
