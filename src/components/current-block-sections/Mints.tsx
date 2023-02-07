@@ -11,7 +11,7 @@ import {
 
 import { StyledCard, None } from "pages/CurrentBlock";
 import { MintInfoResponse } from "api/types";
-import { TOKENS } from "utils/tokens";
+import { TOKENS, getTokenAmount } from "utils/tokens";
 import CopyableField from "components/CopyableField";
 import MintConfig from "components/current-block-sections/MintConfig";
 
@@ -40,8 +40,10 @@ export default function Mints({ mintInfo }: { mintInfo: MintInfoResponse }) {
                         <TableBody>
                             {mintInfo.mintTxs.map(({ mintTx, mintConfig }) => (
                                 <TableRow key={mintTx.nonceHex}>
-                                    <TableCell>{mintTx.amount.toLocaleString("en-US")}</TableCell>
-                                    <TableCell>{TOKENS[mintTx.tokenId]}</TableCell>
+                                    <TableCell>
+                                        {getTokenAmount(mintTx.tokenId, mintTx.amount)}
+                                    </TableCell>
+                                    <TableCell>{TOKENS[mintTx.tokenId].name}</TableCell>
                                     <TableCell>
                                         <CopyableField text={mintTx.nonceHex} />
                                     </TableCell>

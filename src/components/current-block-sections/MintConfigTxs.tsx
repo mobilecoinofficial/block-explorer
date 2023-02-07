@@ -45,7 +45,7 @@ export default function MintConfigTxs({ mintInfo }: { mintInfo: MintInfoResponse
                                         )}
                                     </TableCell>
                                     <TableCell>
-                                        {TOKENS[mintConfigTx.mintConfigTx.tokenId]}
+                                        {TOKENS[mintConfigTx.mintConfigTx.tokenId].name}
                                     </TableCell>
                                     <TableCell>
                                         <CopyableField text={mintConfigTx.mintConfigTx.nonceHex} />

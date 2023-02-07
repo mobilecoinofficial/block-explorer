@@ -11,7 +11,7 @@ import {
 
 import { StyledCard, None } from "pages/CurrentBlock";
 import { BurnTx } from "api/types";
-import { TOKENS } from "utils/tokens";
+import { TOKENS, getTokenAmount } from "utils/tokens";
 import CopyableField from "components/CopyableField";
 
 export default function Burns({ burns }: { burns: BurnTx[] }) {
@@ -37,8 +37,10 @@ export default function Burns({ burns }: { burns: BurnTx[] }) {
                         <TableBody>
                             {burns.map((burn) => (
                                 <TableRow key={burn.publicKeyHex}>
-                                    <TableCell>{burn.amount.toLocaleString("en-US")}</TableCell>
-                                    <TableCell>{TOKENS[burn.tokenId]}</TableCell>
+                                    <TableCell>
+                                        {getTokenAmount(burn.tokenId, burn.amount)}
+                                    </TableCell>
+                                    <TableCell>{TOKENS[burn.tokenId].name}</TableCell>
                                     <TableCell>
                                         <CopyableField text={burn.publicKeyHex} />
                                     </TableCell>
