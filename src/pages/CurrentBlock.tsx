@@ -1,6 +1,8 @@
-import { useLoaderData } from "react-router-dom";
-import { Box, Typography, Card } from "@mui/material";
+import { useLoaderData, useNavigate } from "react-router-dom";
+import { Box, Typography, Card, Link } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 
 import { Block, BurnTx, MintInfoResponse } from "api/types";
 import Page from "components/Page";
@@ -19,11 +21,19 @@ export const StyledCard = styled(Card)(({ theme }) => ({
 }));
 
 export default function BlockPage() {
+    const navigate = useNavigate();
     const { blockContents, mintInfo, burns } = useLoaderData() as {
         blockContents: Block;
         mintInfo: MintInfoResponse;
         burns: BurnTx[];
     };
+
+    function goPrevious() {
+        navigate(`/blocks/${Number(blockContents.index) - 1}`);
+    }
+    function goNext() {
+        navigate(`/blocks/${Number(blockContents.index) + 1}`);
+    }
 
     return (
         <Page>
@@ -32,13 +42,34 @@ export default function BlockPage() {
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "flex-end",
-                    marginBottom: 4
+                    marginBottom: 1
                 }}
             >
                 <Box>
                     <Typography variant="h4">Block {blockContents.index}</Typography>
                     <Typography color="text.secondary">{getTimeStamp(blockContents)}</Typography>
                     <CopyableField text={blockContents.contentsHash} />
+                </Box>
+            </Box>
+            <Box
+                sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    marginBottom: 4
+                }}
+            >
+                <Box
+                    sx={{ cursor: "pointer" }}
+                    display="flex"
+                    alignItems="center"
+                    onClick={goPrevious}
+                >
+                    <NavigateBeforeIcon color="primary" />
+                    <Link underline="none">Previous Block</Link>
+                </Box>
+                <Box sx={{ cursor: "pointer" }} display="flex" alignItems="center" onClick={goNext}>
+                    <Link underline="none">Next Block</Link>
+                    <NavigateNextIcon color="primary" />
                 </Box>
             </Box>
             <Txos blockContents={blockContents} burns={burns} />
