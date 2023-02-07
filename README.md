@@ -21,9 +21,16 @@ Make sure that both full-service and the reserve auditor are using the same netw
 
 ## Running the front-end
 
+1. add a .env file in the project root directory with the backend URLS. example:
+
+```
+REACT_APP_RESERVE_AUDITOR_URL=http://localhost:8080
+REACT_APP_FULL_SERVICE_URL=http://localhost:9090/wallet/v2
+```
+
 If you dont have `yarn` isntalled. Install yarn: `npm install --global yarn`
 
-1. run
+2. run
 
 ```sh
     yarn
@@ -31,7 +38,7 @@ If you dont have `yarn` isntalled. Install yarn: `npm install --global yarn`
 
 in the root of the repo to install dependencies.
 
-2. run
+3. run
 
 ```sh
     yarn dev

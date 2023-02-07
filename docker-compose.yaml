@@ -1,0 +1,8 @@
+services:
+    app:
+        container_name: block-explorer-container
+        image: block-explorer-image
+        build:
+            context: .
+        ports:
+            - 8765:80

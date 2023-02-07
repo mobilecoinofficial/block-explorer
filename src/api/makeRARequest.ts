@@ -8,15 +8,11 @@ type makeRARequestResult<T> = {
     result: T;
 };
 
-// TODO replace const with config or env vars or something
-const host = "localhost";
-const AUDITOR_URL = `http://${host}:8080/`;
-
 export default async function makeRARequest<T>({
     route
 }: makeRARequestArgs): Promise<makeRARequestResult<T>> {
     try {
-        const response = await fetch(`${AUDITOR_URL}${route}`, {
+        const response = await fetch(`${process.env.REACT_APP_RESERVE_AUDITOR_URL}/${route}`, {
             method: "GET"
         });
         if (response.status === 404) {
