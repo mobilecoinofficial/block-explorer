@@ -10,7 +10,6 @@ import KeyImages from "components/current-block-sections/KeyImages";
 import Signatures from "components/current-block-sections/Signatures";
 import Mints from "components/current-block-sections/Mints";
 import MintConfigTxs from "components/current-block-sections/MintConfigTxs";
-import Burns from "components/current-block-sections/Burns";
 import CopyableField from "components/CopyableField";
 
 export const StyledCard = styled(Card)(({ theme }) => ({
@@ -42,11 +41,10 @@ export default function BlockPage() {
                     <CopyableField text={blockContents.contentsHash} />
                 </Box>
             </Box>
-            <Txos blockContents={blockContents} />
+            <Txos blockContents={blockContents} burns={burns} />
             <KeyImages blockContents={blockContents} />
             <Mints mintInfo={mintInfo} />
             <MintConfigTxs mintInfo={mintInfo} />
-            <Burns burns={burns} />
             <Signatures blockContents={blockContents} />
         </Page>
     );
