@@ -52,7 +52,6 @@ export default function Header() {
     const navigate = useNavigate();
     const [query, setQuery] = useState("");
     const [snackbarOpen, setSnackbarOpen] = useState(false);
-
     function handleSearchInputChange(event: React.ChangeEvent<HTMLInputElement>) {
         setQuery(event.target.value);
     }
@@ -68,6 +67,7 @@ export default function Header() {
         if (!isNaN(Number(query))) {
             try {
                 await getBlock(query);
+                setQuery("");
                 navigate(`/blocks/${query}`);
                 return;
             } catch {
@@ -77,6 +77,7 @@ export default function Header() {
 
         const foundBlock = await searchBlock(query);
         if (foundBlock) {
+            setQuery("");
             navigate(`/blocks/${foundBlock.block.index}`);
             return;
         }
@@ -119,6 +120,7 @@ export default function Header() {
                             inputProps={{ "aria-label": "search" }}
                             onChange={handleSearchInputChange}
                             onKeyDown={handleInputEnter}
+                            value={query}
                         />
                     </Search>
                 </Toolbar>
