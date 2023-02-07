@@ -4,7 +4,7 @@ import { styled } from "@mui/material/styles";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 
-import { Block, BurnTx, MintInfoResponse } from "api/types";
+import { Block, BurnTx, MintInfoResponse, NetworkStatus } from "api/types";
 import Page from "components/Page";
 import { getTimeStamp } from "components/BlockRow";
 import Txos from "components/current-block-sections/Txos";
@@ -22,15 +22,19 @@ export const StyledCard = styled(Card)(({ theme }) => ({
 
 export default function BlockPage() {
     const navigate = useNavigate();
-    const { blockContents, mintInfo, burns } = useLoaderData() as {
+    const { blockContents, mintInfo, burns, networkStatus } = useLoaderData() as {
         blockContents: Block;
         mintInfo: MintInfoResponse;
         burns: BurnTx[];
+        networkStatus: NetworkStatus;
     };
 
+    const isPrevDisabled = Number(blockContents.index) === 0;
     function goPrevious() {
         navigate(`/blocks/${Number(blockContents.index) - 1}`);
     }
+    const isNextDisabled =
+        Number(networkStatus.networkBlockHeight) <= Number(blockContents.index) + 1;
     function goNext() {
         navigate(`/blocks/${Number(blockContents.index) + 1}`);
     }
@@ -64,10 +68,23 @@ export default function BlockPage() {
                     alignItems="center"
                     onClick={goPrevious}
                 >
-                    <NavigateBeforeIcon color="primary" />
-                    <Link underline="none">Previous Block</Link>
+                    {isPrevDisabled ? (
+                        <div />
+                    ) : (
+                        <>
+                            <NavigateBeforeIcon color="primary" />
+                            <Link underline="none" color="primary">
+                                Previous Block
+                            </Link>
+                        </>
+                    )}
                 </Box>
-                <Box sx={{ cursor: "pointer" }} display="flex" alignItems="center" onClick={goNext}>
+                <Box
+                    sx={{ cursor: "pointer" }}
+                    display={isNextDisabled ? "none" : "flex"}
+                    alignItems="center"
+                    onClick={goNext}
+                >
                     <Link underline="none">Next Block</Link>
                     <NavigateNextIcon color="primary" />
                 </Box>

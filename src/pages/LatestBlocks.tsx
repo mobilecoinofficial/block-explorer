@@ -1,6 +1,6 @@
 import { useLoaderData } from "react-router-dom";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import {
     Box,
     Typography,
@@ -17,7 +17,6 @@ import { Block, NetworkStatus } from "api/types";
 import { INITIAL_BLOCK_COUNT } from "api/getRecentBlocks";
 import getBlocks from "api/getBlocks";
 import BlockRow from "components/BlockRow";
-import getNetworkStatus from "api/getNetworkStatus";
 
 type HeaderNumberProps = {
     title: string;
@@ -34,19 +33,12 @@ const HeaderNumber = ({ title, value }: HeaderNumberProps) => (
 );
 
 export default function LatestBlocks() {
-    const preLoadedBlocks = useLoaderData();
+    const { preLoadedBlocks, networkStatus } = useLoaderData() as {
+        preLoadedBlocks: Block[];
+        networkStatus: NetworkStatus;
+    };
     const [blocks, setBlocks] = useState<Block[]>(preLoadedBlocks as Block[]);
     const [hasMoreBlocks, setHasMoreBlocks] = useState<boolean>(true);
-    const [networkStatus, setNetworkStatus] = useState<NetworkStatus | null>(null);
-
-    const getNwStatus = async () => {
-        const status = await getNetworkStatus();
-        setNetworkStatus(status);
-    };
-
-    useEffect(() => {
-        getNwStatus();
-    }, []);
 
     const getMoreBlocks = useCallback(async () => {
         let blockIndex = parseInt(blocks[blocks.length - 1].index) - INITIAL_BLOCK_COUNT;
