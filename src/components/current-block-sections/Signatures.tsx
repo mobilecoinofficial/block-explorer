@@ -10,13 +10,13 @@ import {
 } from "@mui/material";
 import moment from "moment";
 
-import { StyledCard, None } from "pages/CurrentBlock";
+import { StyledCard } from "pages/CurrentBlock";
 import CopyableField from "components/CopyableField";
 import { Block } from "api/types";
 
 export default function signatures({ blockContents }: { blockContents: Block }) {
     if (!blockContents.signatures?.length) {
-        return <None title="Signatures" />;
+        return null;
     }
 
     return (

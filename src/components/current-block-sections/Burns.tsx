@@ -9,14 +9,14 @@ import {
     TableRow
 } from "@mui/material";
 
-import { StyledCard, None } from "pages/CurrentBlock";
+import { StyledCard } from "pages/CurrentBlock";
 import { BurnTx } from "api/types";
 import { TOKENS, getTokenAmount } from "utils/tokens";
 import CopyableField from "components/CopyableField";
 
 export default function Burns({ burns }: { burns: BurnTx[] }) {
     if (!burns.length) {
-        return <None title="Burns" />;
+        return null;
     }
 
     return (

@@ -1,5 +1,5 @@
 import { useLoaderData } from "react-router-dom";
-import { Box, Typography, Card, CardContent } from "@mui/material";
+import { Box, Typography, Card } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 import { Block, BurnTx, MintInfoResponse } from "api/types";
@@ -18,19 +18,6 @@ export const StyledCard = styled(Card)(({ theme }) => ({
     boxShadow: "none",
     backgroundColor: "inherit"
 }));
-
-export function None({ title }: { title: string }) {
-    return (
-        <StyledCard>
-            <CardContent>
-                <Typography variant="h6" gutterBottom>
-                    {title}
-                </Typography>
-                <Typography>None</Typography>
-            </CardContent>
-        </StyledCard>
-    );
-}
 
 export default function BlockPage() {
     const { blockContents, mintInfo, burns } = useLoaderData() as {
@@ -57,10 +44,10 @@ export default function BlockPage() {
             </Box>
             <Txos blockContents={blockContents} />
             <KeyImages blockContents={blockContents} />
-            <Signatures blockContents={blockContents} />
             <Mints mintInfo={mintInfo} />
             <MintConfigTxs mintInfo={mintInfo} />
             <Burns burns={burns} />
+            <Signatures blockContents={blockContents} />
         </Page>
     );
 }

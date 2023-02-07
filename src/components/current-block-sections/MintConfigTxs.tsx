@@ -9,7 +9,7 @@ import {
     TableRow
 } from "@mui/material";
 
-import { StyledCard, None } from "pages/CurrentBlock";
+import { StyledCard } from "pages/CurrentBlock";
 import { MintInfoResponse } from "api/types";
 import { TOKENS } from "utils/tokens";
 import CopyableField from "components/CopyableField";
@@ -17,7 +17,7 @@ import MintConfig from "components/current-block-sections/MintConfig";
 
 export default function MintConfigTxs({ mintInfo }: { mintInfo: MintInfoResponse }) {
     if (!mintInfo.mintConfigTxs.length) {
-        return <None title="Mint Config Txs" />;
+        return null;
     }
 
     return (
