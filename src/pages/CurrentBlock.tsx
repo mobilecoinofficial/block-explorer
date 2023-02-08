@@ -1,5 +1,5 @@
 import { useLoaderData, useNavigate } from "react-router-dom";
-import { Box, Typography, Card, Link } from "@mui/material";
+import { Box, Typography, Card, Tooltip, Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
@@ -59,36 +59,37 @@ export default function BlockPage() {
             <Box
                 sx={{
                     display: "flex",
-                    justifyContent: "space-between",
                     marginBottom: 4
                 }}
             >
-                <Box
-                    sx={{ cursor: "pointer" }}
-                    display="flex"
-                    alignItems="center"
-                    onClick={goPrevious}
-                >
-                    {isPrevDisabled ? (
-                        <div />
-                    ) : (
-                        <>
-                            <NavigateBeforeIcon color="primary" />
-                            <Link underline="none" color="primary">
-                                Previous Block
-                            </Link>
-                        </>
-                    )}
-                </Box>
-                <Box
-                    sx={{ cursor: "pointer" }}
-                    display={isNextDisabled ? "none" : "flex"}
-                    alignItems="center"
-                    onClick={goNext}
-                >
-                    <Link underline="none">Next Block</Link>
-                    <NavigateNextIcon color="primary" />
-                </Box>
+                {isPrevDisabled ? (
+                    <div />
+                ) : (
+                    <Tooltip title="Previous Block">
+                        <Button
+                            onClick={goPrevious}
+                            variant="outlined"
+                            size="small"
+                            sx={{ minWidth: 0, marginRight: 1 }}
+                        >
+                            <NavigateBeforeIcon color="primary" fontSize="small" />
+                        </Button>
+                    </Tooltip>
+                )}
+                {isNextDisabled ? (
+                    <div />
+                ) : (
+                    <Tooltip title="Next Block">
+                        <Button
+                            onClick={goNext}
+                            variant="outlined"
+                            size="small"
+                            sx={{ minWidth: 0 }}
+                        >
+                            <NavigateNextIcon color="primary" fontSize="small" />
+                        </Button>
+                    </Tooltip>
+                )}
             </Box>
             <Txos blockContents={blockContents} burns={burns} />
             <KeyImages blockContents={blockContents} />
