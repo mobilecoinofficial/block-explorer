@@ -65,6 +65,7 @@ export type BlockResponse = {
 
 export type NetworkStatus = {
     networkBlockHeight: string;
+    localBlockHeight: string;
     numTxos: string;
 };
 
@@ -87,9 +88,10 @@ export type LedgerSearchResult = {
 };
 
 export type NetworkStatusResponse = {
-    network_status: {
-        local_block_height: string;
-        local_num_txos: string;
+    networkStatus: {
+        localBlockHeight: string;
+        networkBlockHeight: string;
+        localNumTxos: string;
     };
 };
 
@@ -161,5 +163,11 @@ export type BurnTx = {
 };
 
 export type BurnsResponse = {
-    burn_txs: BurnTx[];
+    burnTxs: BurnTx[];
+};
+
+export type CountersResponse = {
+    // Number of blocks synced so far by auditor
+    numBlocksSynced: number;
+    // there are more fields returned by the api but we don't care about them
 };

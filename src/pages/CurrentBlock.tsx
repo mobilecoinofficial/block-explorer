@@ -4,7 +4,7 @@ import { styled } from "@mui/material/styles";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 
-import { Block, BurnTx, MintInfoResponse, NetworkStatus } from "api/types";
+import { Block, BurnTx, MintInfoResponse } from "api/types";
 import Page from "components/Page";
 import { getTimeStamp } from "components/BlockRow";
 import Txos from "components/current-block-sections/Txos";
@@ -13,6 +13,7 @@ import Signatures from "components/current-block-sections/Signatures";
 import Mints from "components/current-block-sections/Mints";
 import MintConfigTxs from "components/current-block-sections/MintConfigTxs";
 import CopyableField from "components/CopyableField";
+import { useSyncData } from "./Layout";
 
 export const StyledCard = styled(Card)(({ theme }) => ({
     marginBottom: theme.spacing(3),
@@ -22,11 +23,11 @@ export const StyledCard = styled(Card)(({ theme }) => ({
 
 export default function BlockPage() {
     const navigate = useNavigate();
-    const { blockContents, mintInfo, burns, networkStatus } = useLoaderData() as {
+    const { networkStatus } = useSyncData();
+    const { blockContents, mintInfo, burns } = useLoaderData() as {
         blockContents: Block;
         mintInfo: MintInfoResponse;
         burns: BurnTx[];
-        networkStatus: NetworkStatus;
     };
 
     const isPrevDisabled = Number(blockContents.index) === 0;

@@ -1,3 +1,5 @@
+import camelCaseObjectKeys from "utils/camelize";
+
 // Request to Reserve Auditor
 type makeRARequestArgs = {
     route: string;
@@ -19,7 +21,7 @@ export default async function makeRARequest<T>({
             throw new Error("RESERVE_AUDITOR_BLOCK_NOT_FOUND_ERROR");
         }
         const result = await response.json();
-        return { result };
+        return { result: camelCaseObjectKeys(result) };
     } catch (e) {
         throw new Error(e);
     }

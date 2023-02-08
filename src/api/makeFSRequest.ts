@@ -1,3 +1,5 @@
+import camelCaseObjectKeys from "utils/camelize";
+
 // Request to full-service
 type makeFSRequestArgs = {
     method: string;
@@ -39,7 +41,7 @@ export default async function makeFSRequest<T>({
             throw new Error(result.error.data?.details);
         }
 
-        return { result: result.result };
+        return { result: camelCaseObjectKeys(result.result) };
     } catch (e) {
         throw new Error(e);
     }

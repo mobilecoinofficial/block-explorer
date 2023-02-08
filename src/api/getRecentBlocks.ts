@@ -1,6 +1,5 @@
 import makeFSRequest from "api/makeFSRequest";
 import { Block, BlocksResponse } from "api/types";
-import camelCaseObjectKeys from "utils/camelize";
 
 export const INITIAL_BLOCK_COUNT = 50;
 
@@ -27,7 +26,7 @@ export default async function getRecentBlocks(): Promise<Block[]> {
     });
 
     if (result) {
-        return mergeBlocksResponse(camelCaseObjectKeys(result));
+        return mergeBlocksResponse(result);
     } else {
         throw new Error(error);
     }

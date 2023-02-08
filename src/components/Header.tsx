@@ -4,6 +4,7 @@ import { styled, alpha } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate } from "react-router-dom";
 
+import SyncStatus, { SyncData } from "components/SyncStatus";
 import MobileCoinLogo from "components/MobileCoinLogo";
 import searchBlock from "api/searchBlock";
 import getBlock from "api/getBlock";
@@ -48,7 +49,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     }
 }));
 
-export default function Header() {
+export default function Header({ syncData }: { syncData: SyncData }) {
     const navigate = useNavigate();
     const [query, setQuery] = useState("");
     const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -123,6 +124,7 @@ export default function Header() {
                             value={query}
                         />
                     </Search>
+                    <SyncStatus syncData={syncData} />
                 </Toolbar>
             </Container>
             <Snackbar

@@ -7,10 +7,23 @@ import ErrorPage from "pages/ErrorPage";
 import getMintInfo from "api/getMintInfo";
 import getBurns from "api/getBurns";
 import getNetworkStatus from "api/getNetworkStatus";
+import Layout from "pages/Layout";
+import getCounters from "api/getCounters";
 
 const router = createBrowserRouter([
     {
+        element: <Layout />,
         errorElement: <ErrorPage />,
+        loader: async () => {
+            const networkStatus = await getNetworkStatus();
+            const preLoadedBlocks = await getRecentBlocks();
+            const counters = await getCounters();
+            return {
+                networkStatus,
+                preLoadedBlocks,
+                counters
+            };
+        },
         children: [
             {
                 path: "/",
@@ -18,28 +31,18 @@ const router = createBrowserRouter([
             },
             {
                 path: "blocks",
-                loader: async () => {
-                    const networkStatus = await getNetworkStatus();
-                    const preLoadedBlocks = await getRecentBlocks();
-                    return {
-                        networkStatus,
-                        preLoadedBlocks
-                    };
-                },
                 element: <LatestBlocks />
             },
             {
                 path: "blocks/:blockIndex",
                 loader: async ({ params }) => {
-                    const networkStatus = await getNetworkStatus();
                     const blockContents = await getBlock(params.blockIndex);
                     const mintInfo = await getMintInfo(params.blockIndex);
                     const burns = await getBurns(params.blockIndex);
                     return {
                         blockContents,
                         mintInfo,
-                        burns,
-                        networkStatus
+                        burns
                     };
                 },
                 element: <CurrentBlock />

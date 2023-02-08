@@ -1,4 +1,3 @@
-import { useLoaderData } from "react-router-dom";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useState, useCallback } from "react";
 import {
@@ -13,7 +12,8 @@ import {
 } from "@mui/material";
 
 import Page from "components/Page";
-import { Block, NetworkStatus } from "api/types";
+import { useSyncData } from "pages/Layout";
+import { Block } from "api/types";
 import { INITIAL_BLOCK_COUNT } from "api/getRecentBlocks";
 import getBlocks from "api/getBlocks";
 import BlockRow from "components/BlockRow";
@@ -33,10 +33,7 @@ const HeaderNumber = ({ title, value }: HeaderNumberProps) => (
 );
 
 export default function LatestBlocks() {
-    const { preLoadedBlocks, networkStatus } = useLoaderData() as {
-        preLoadedBlocks: Block[];
-        networkStatus: NetworkStatus;
-    };
+    const { preLoadedBlocks, networkStatus } = useSyncData();
     const [blocks, setBlocks] = useState<Block[]>(preLoadedBlocks as Block[]);
     const [hasMoreBlocks, setHasMoreBlocks] = useState<boolean>(true);
 
@@ -70,7 +67,7 @@ export default function LatestBlocks() {
                 >
                     <HeaderNumber
                         title="Number of Blocks"
-                        value={networkStatus?.networkBlockHeight}
+                        value={networkStatus?.localBlockHeight}
                     />
                     <HeaderNumber title="Transaction Outputs" value={networkStatus?.numTxos} />
                 </Box>
