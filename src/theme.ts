@@ -16,17 +16,6 @@ const theme = createTheme({
     },
     typography: {
         fontFamily: "Sohne-Buch"
-    },
-    components: {
-        MuiCssBaseline: {
-            styleOverrides: `
-            @font-face {
-            font-family: "Sohne-Buch";
-            src: url("./assets/fonts/Sohne-Buch.otf") format("opentype");
-            }
-            
-          `
-        }
     }
 });
 export default theme;
