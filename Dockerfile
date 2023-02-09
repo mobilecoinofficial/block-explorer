@@ -3,8 +3,8 @@ FROM node:19.5.0-buster-slim AS builder
 WORKDIR /app
 COPY package.json .
 RUN yarn install
-ENV REACT_APP_RESERVE_AUDITOR_URL http://localhost:8080
-ENV REACT_APP_FULL_SERVICE_URL http://localhost:9090/wallet/v2
+ENV REACT_APP_RESERVE_AUDITOR_URL=https://auditor.mobilecoin.foundation/api
+ENV REACT_APP_FULL_SERVICE_URL=https://readonly-fs-mainnet.mobilecoin.com/wallet/v2
 COPY . . 
 RUN yarn build
 
