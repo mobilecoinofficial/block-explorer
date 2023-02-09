@@ -9,8 +9,8 @@ export default function CopyableField({ text }: { text: string }) {
     }
 
     return (
-        <Box display="flex" justifyContent="space-between" sx={{ width: 144 }}>
-            <Typography>{abbreviateHash(text)}</Typography>
+        <Box display="flex" justifyContent="space-between" sx={{ width: 120 }}>
+            <Typography sx={{ fontSize: 14 }}>{abbreviateHash(text)}</Typography>
             <Tooltip title={`Copy ${text} to clipboard`}>
                 <ContentCopyIcon
                     sx={{ cursor: "pointer", color: "text.secondary" }}
