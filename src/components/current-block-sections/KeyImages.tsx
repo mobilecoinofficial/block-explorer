@@ -5,7 +5,8 @@ import {
     TableContainer,
     TableBody,
     TableCell,
-    TableRow
+    TableRow,
+    Grid
 } from "@mui/material";
 import { StyledCard } from "pages/CurrentBlock";
 import { Block } from "api/types";
@@ -26,25 +27,27 @@ export default function KeyImages({ blockContents }: { blockContents: Block }) {
     }
 
     return (
-        <StyledCard>
-            <CardContent>
-                <Typography variant="h6" gutterBottom>
-                    Key Images
-                </Typography>
-                <TableContainer>
-                    <Table>
-                        <TableBody>
-                            {blockContents.keyImages.map((k) => (
-                                <TableRow key={k}>
-                                    <TableCell>
-                                        <CopyableField text={removeProtoBuffFromKeyImage(k)} />
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </CardContent>
-        </StyledCard>
+        <Grid item xs={12}>
+            <StyledCard>
+                <CardContent>
+                    <Typography variant="h6" gutterBottom>
+                        Key Images
+                    </Typography>
+                    <TableContainer>
+                        <Table>
+                            <TableBody>
+                                {blockContents.keyImages.map((k) => (
+                                    <TableRow key={k}>
+                                        <TableCell>
+                                            <CopyableField text={removeProtoBuffFromKeyImage(k)} />
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </CardContent>
+            </StyledCard>
+        </Grid>
     );
 }

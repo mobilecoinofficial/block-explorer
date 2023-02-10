@@ -6,7 +6,8 @@ import {
     TableHead,
     TableBody,
     TableCell,
-    TableRow
+    TableRow,
+    Grid
 } from "@mui/material";
 import { StyledCard } from "pages/CurrentBlock";
 import CopyableField from "components/CopyableField";
@@ -61,28 +62,30 @@ export default function Txos({ blockContents, burns }: { blockContents: Block; b
     }
 
     return (
-        <StyledCard>
-            <CardContent>
-                <Typography variant="h6" gutterBottom>
-                    Transaction Outputs
-                </Typography>
-                <TableContainer>
-                    <Table>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>TXO Public Key</TableCell>
-                                <TableCell>Target Address</TableCell>
-                                <TableCell>Amount</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {blockContents.outputs.map((txout) => (
-                                <RenderOutput txout={txout} key={txout.publicKey} />
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </CardContent>
-        </StyledCard>
+        <Grid item xs={12}>
+            <StyledCard>
+                <CardContent>
+                    <Typography variant="h6" gutterBottom>
+                        Transaction Outputs
+                    </Typography>
+                    <TableContainer>
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>TXO Public Key</TableCell>
+                                    <TableCell>Target Address</TableCell>
+                                    <TableCell>Amount</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {blockContents.outputs.map((txout) => (
+                                    <RenderOutput txout={txout} key={txout.publicKey} />
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </CardContent>
+            </StyledCard>
+        </Grid>
     );
 }
