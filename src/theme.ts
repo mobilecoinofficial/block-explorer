@@ -1,15 +1,15 @@
 import { createTheme } from "@mui/material/styles";
-import { teal } from "@mui/material/colors";
 
 const theme = createTheme({
     palette: {
         primary: {
-            main: "#8D5FFF"
+            main: "#000000",
+            light: "#757575",
+            dark: "#000000"
         },
         warning: {
             main: "#ffa726"
         },
-        secondary: teal,
         background: {
             default: "#faf8f6"
         }
