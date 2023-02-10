@@ -10,9 +10,17 @@ type BlockRowProps = {
     block: Block;
 };
 
-export const StyledTableCell = styled(TableCell)(() => ({
+const borderStyle = "1px solid #cecece";
+
+const StyledTableCell = styled(TableCell)(() => ({
     border: "none",
-    backgroundColor: "White"
+    backgroundColor: "inherit",
+    borderTop: borderStyle,
+    borderBottom: borderStyle
+}));
+
+const StyledTableRow = styled(TableRow)(() => ({
+    backgroundColor: "white"
 }));
 
 export function getTimeStamp(block: Block): string {
@@ -25,24 +33,23 @@ export function getTimeStamp(block: Block): string {
 
 export default function BlockRow({ block }: BlockRowProps) {
     return (
-        <TableRow>
-            <TableCell
-                style={{ cursor: "pointer" }}
-                sx={{ backgroundColor: "white", border: "none" }}
-            >
+        <StyledTableRow>
+            <StyledTableCell style={{ borderLeft: borderStyle }}>
                 <Button>
                     <Link to={`${block.index}`} component={RouterLink}>
                         {block.index}
                     </Link>
                 </Button>
-            </TableCell>
+            </StyledTableCell>
             <StyledTableCell>
                 <CopyableField text={block.contentsHash} />
             </StyledTableCell>
             <StyledTableCell>{block.outputs.length}</StyledTableCell>
             <StyledTableCell>{block.keyImages.length}</StyledTableCell>
             <StyledTableCell>{block.signatures?.length}</StyledTableCell>
-            <StyledTableCell>{getTimeStamp(block)}</StyledTableCell>
-        </TableRow>
+            <StyledTableCell sx={{ borderRight: borderStyle }}>
+                {getTimeStamp(block)}
+            </StyledTableCell>
+        </StyledTableRow>
     );
 }
