@@ -24,7 +24,9 @@ export default function Txos({ blockContents, burns }: { blockContents: Block; b
         if (matchingBurn) {
             return (
                 <TableRow>
-                    <TableCell>{txout.publicKey}</TableCell>
+                    <TableCell>
+                        <CopyableField text={txout.publicKey} />
+                    </TableCell>
                     <TableCell>
                         <Typography>Burn</Typography>
                     </TableCell>
@@ -41,7 +43,9 @@ export default function Txos({ blockContents, burns }: { blockContents: Block; b
 
         return (
             <TableRow>
-                <TableCell>{txout.publicKey}</TableCell>
+                <TableCell>
+                    <CopyableField text={txout.publicKey} />
+                </TableCell>
                 <TableCell>
                     <CopyableField text={txout.targetKey} />
                 </TableCell>

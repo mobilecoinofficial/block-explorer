@@ -1,11 +1,10 @@
 import { useLoaderData, useNavigate } from "react-router-dom";
-import { Box, Typography, Card, Tooltip, Button } from "@mui/material";
+import { Box, Typography, Card, Tooltip, Button, Container } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 
 import { Block, BurnTx, MintInfoResponse } from "api/types";
-import Page from "components/Page";
 import { getTimeStamp } from "components/BlockRow";
 import Txos from "components/current-block-sections/Txos";
 import KeyImages from "components/current-block-sections/KeyImages";
@@ -41,7 +40,7 @@ export default function BlockPage() {
     }
 
     return (
-        <Page>
+        <Container>
             <Box
                 sx={{
                     display: "flex",
@@ -96,6 +95,6 @@ export default function BlockPage() {
             <Mints mintInfo={mintInfo} />
             <MintConfigTxs mintInfo={mintInfo} />
             <Signatures blockContents={blockContents} />
-        </Page>
+        </Container>
     );
 }

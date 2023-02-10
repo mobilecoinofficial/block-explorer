@@ -1,6 +1,5 @@
 import { TableRow, TableCell, Link, Button } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
-import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import moment from "moment";
 
 import { Block } from "api/types";
@@ -21,7 +20,13 @@ export function getTimeStamp(block: Block): string {
 export default function BlockRow({ block }: BlockRowProps) {
     return (
         <TableRow>
-            <TableCell>{block.index}</TableCell>
+            <TableCell style={{ cursor: "pointer" }}>
+                <Button>
+                    <Link to={`${block.index}`} component={RouterLink}>
+                        {block.index}
+                    </Link>
+                </Button>
+            </TableCell>
             <TableCell>
                 <CopyableField text={block.contentsHash} />
             </TableCell>
@@ -29,22 +34,6 @@ export default function BlockRow({ block }: BlockRowProps) {
             <TableCell>{block.keyImages.length}</TableCell>
             <TableCell>{block.signatures?.length}</TableCell>
             <TableCell>{getTimeStamp(block)}</TableCell>
-            <TableCell style={{ cursor: "pointer" }}>
-                <Link to={`${block.index}`} underline="none" component={RouterLink}>
-                    <Button
-                        sx={{ textTransform: "none" }}
-                        endIcon={
-                            <NavigateNextIcon
-                                fontSize="small"
-                                color="primary"
-                                sx={{ marginBottom: "-2px" }}
-                            />
-                        }
-                    >
-                        Details
-                    </Button>
-                </Link>
-            </TableCell>
         </TableRow>
     );
 }

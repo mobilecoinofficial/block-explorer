@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { StyledCard } from "pages/CurrentBlock";
 import { Block } from "api/types";
+import CopyableField from "components/CopyableField";
 
 // handle full-service tech debt
 function removeProtoBuffFromKeyImage(keyImage: string) {
@@ -35,7 +36,9 @@ export default function KeyImages({ blockContents }: { blockContents: Block }) {
                         <TableBody>
                             {blockContents.keyImages.map((k) => (
                                 <TableRow key={k}>
-                                    <TableCell>{removeProtoBuffFromKeyImage(k)}</TableCell>
+                                    <TableCell>
+                                        <CopyableField text={removeProtoBuffFromKeyImage(k)} />
+                                    </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

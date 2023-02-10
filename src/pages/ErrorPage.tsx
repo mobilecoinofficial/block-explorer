@@ -1,7 +1,5 @@
-import { Box, Typography, Link } from "@mui/material";
+import { Box, Typography, Link, Container } from "@mui/material";
 import { useRouteError, isRouteErrorResponse } from "react-router-dom";
-
-import Page from "components/Page";
 
 export default function ErrorPage() {
     const error = useRouteError();
@@ -21,7 +19,7 @@ export default function ErrorPage() {
 
 function ErrorWrapper({ title, errorText }: { title: string; errorText?: string }) {
     return (
-        <Page>
+        <Container>
             <Box
                 width="100%"
                 height="100%"
@@ -37,7 +35,7 @@ function ErrorWrapper({ title, errorText }: { title: string; errorText?: string 
                 </Link>
                 <Typography color="error">{errorText}</Typography>
             </Box>
-        </Page>
+        </Container>
     );
 }
 
