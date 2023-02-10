@@ -1,5 +1,6 @@
 import { TableRow, TableCell, Link, Button } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
+import { styled } from "@mui/material/styles";
 import moment from "moment";
 
 import { Block } from "api/types";
@@ -8,6 +9,11 @@ import CopyableField from "components/CopyableField";
 type BlockRowProps = {
     block: Block;
 };
+
+export const StyledTableCell = styled(TableCell)(() => ({
+    border: "none",
+    backgroundColor: "White"
+}));
 
 export function getTimeStamp(block: Block): string {
     if (block.timestampResultCode !== "TimestampFound") {
@@ -20,20 +26,23 @@ export function getTimeStamp(block: Block): string {
 export default function BlockRow({ block }: BlockRowProps) {
     return (
         <TableRow>
-            <TableCell style={{ cursor: "pointer" }}>
+            <TableCell
+                style={{ cursor: "pointer" }}
+                sx={{ backgroundColor: "white", border: "none" }}
+            >
                 <Button>
                     <Link to={`${block.index}`} component={RouterLink}>
                         {block.index}
                     </Link>
                 </Button>
             </TableCell>
-            <TableCell>
+            <StyledTableCell>
                 <CopyableField text={block.contentsHash} />
-            </TableCell>
-            <TableCell>{block.outputs.length}</TableCell>
-            <TableCell>{block.keyImages.length}</TableCell>
-            <TableCell>{block.signatures?.length}</TableCell>
-            <TableCell>{getTimeStamp(block)}</TableCell>
+            </StyledTableCell>
+            <StyledTableCell>{block.outputs.length}</StyledTableCell>
+            <StyledTableCell>{block.keyImages.length}</StyledTableCell>
+            <StyledTableCell>{block.signatures?.length}</StyledTableCell>
+            <StyledTableCell>{getTimeStamp(block)}</StyledTableCell>
         </TableRow>
     );
 }
