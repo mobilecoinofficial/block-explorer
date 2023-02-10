@@ -2,9 +2,8 @@
 FROM node:19.5.0-buster-slim AS builder
 WORKDIR /app
 COPY package.json .
+COPY .env .
 RUN yarn install
-ENV REACT_APP_RESERVE_AUDITOR_URL=https://auditor.mobilecoin.foundation/api
-ENV REACT_APP_FULL_SERVICE_URL=https://readonly-fs-mainnet.mobilecoin.com/wallet/v2
 COPY . . 
 RUN yarn build
 
@@ -15,5 +14,5 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 WORKDIR /usr/share/nginx/html
 RUN rm -rf ./*
 COPY --from=builder /app/dist .
-EXPOSE 80
+EXPOSE 8080
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
