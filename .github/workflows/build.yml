@@ -85,4 +85,39 @@ jobs:
           chart_version: ${{ steps.version_output.outputs.version }}
           chart_path: ${{ env.CHART_PATH }}
 
+  deploy:
+    name: Deploy
+    runs-on: [self-hosted, Linux]
+    needs: build
 
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        if: "! contains(github.event.head_commit.message, '[deploy]')"
+
+      - name: Create namespace
+        uses: mobilecoinofficial/gha-k8s-toolbox@v1
+        if: "! contains(github.event.head_commit.message, '[deploy]')"
+        with:
+          action: namespace-create
+          namespace: block-explorer
+          rancher_cluster: ${{ env.TARGET_CLUSTER }}
+          rancher_url: ${{ secrets.RANCHER_B_URL }}
+          rancher_token: ${{ secrets.RANCHER_B_TOKEN }}    
+
+      - name: Deploy release
+        uses: mobilecoinofficial/gha-k8s-toolbox@v1
+        if: "! contains(github.event.head_commit.message, '[deploy]')"
+        with:
+          action: helm-deploy
+          rancher_cluster: ${{ env.TARGET_CLUSTER }}
+          namespace: block-explorer
+          release_name: ${{ env.REPO_NAME }}
+          rancher_url: ${{ secrets.RANCHER_B_URL }}
+          rancher_token: ${{ secrets.RANCHER_B_TOKEN }}
+          chart_repo: ${{ env.CHART_REPO }}
+          chart_name: ${{ env.REPO_NAME}}
+          chart_version: ${{ needs.build.outputs.version }}
+          chart_values: ${{ env.CHART_PATH }}/values.yaml
+          chart_set: |
+            --set=frontend.image.tag=${{ needs.build.outputs.version }}
