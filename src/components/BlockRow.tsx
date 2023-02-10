@@ -1,4 +1,4 @@
-import { TableRow, TableCell, Link } from "@mui/material";
+import { TableRow, TableCell, Link, Button } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import moment from "moment";
@@ -31,13 +31,19 @@ export default function BlockRow({ block }: BlockRowProps) {
             <TableCell>{getTimeStamp(block)}</TableCell>
             <TableCell style={{ cursor: "pointer" }}>
                 <Link to={`${block.index}`} underline="none" component={RouterLink}>
-                    details
+                    <Button
+                        sx={{ textTransform: "none" }}
+                        endIcon={
+                            <NavigateNextIcon
+                                fontSize="small"
+                                color="primary"
+                                sx={{ marginBottom: "-2px" }}
+                            />
+                        }
+                    >
+                        Details
+                    </Button>
                 </Link>
-                <NavigateNextIcon
-                    fontSize="small"
-                    color="primary"
-                    sx={{ verticalAlign: "middle" }}
-                />
             </TableCell>
         </TableRow>
     );
