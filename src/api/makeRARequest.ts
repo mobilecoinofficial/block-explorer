@@ -14,9 +14,15 @@ export default async function makeRARequest<T>({
     route
 }: makeRARequestArgs): Promise<makeRARequestResult<T>> {
     try {
-        const response = await fetch(`${process.env.REACT_APP_RESERVE_AUDITOR_URL}/${route}`, {
-            method: "GET"
-        });
+        const response = await fetch(
+            `${
+                process.env.REACT_APP_RESERVE_AUDITOR_URL ??
+                "https://auditor.mobilecoin.foundation/api"
+            }/${route}`,
+            {
+                method: "GET"
+            }
+        );
         if (response.status === 404) {
             throw new Error("RESERVE_AUDITOR_BLOCK_NOT_FOUND_ERROR");
         }

@@ -25,15 +25,19 @@ export default async function makeFSRequest<T>({
     params
 }: makeFSRequestArgs): Promise<makeFSRequestResult<T>> {
     try {
-        const response = await fetch(process.env.REACT_APP_FULL_SERVICE_URL, {
-            method: "POST",
-            headers,
-            body: JSON.stringify({
-                method,
-                ...FSRequiredArgs,
-                params
-            })
-        });
+        const response = await fetch(
+            process.env.REACT_APP_FULL_SERVICE_URL ??
+                "https://readonly-fs-mainnet.mobilecoin.com/wallet/v2",
+            {
+                method: "POST",
+                headers,
+                body: JSON.stringify({
+                    method,
+                    ...FSRequiredArgs,
+                    params
+                })
+            }
+        );
 
         const result = await response.json();
 
