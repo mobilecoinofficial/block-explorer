@@ -4,8 +4,7 @@ import { Typography, Box, Tooltip } from "@mui/material";
 import { abbreviateHash } from "utils/truncate";
 
 export default function CopyableField({ text }: { text: string }) {
-    function copyToClipboard(e) {
-        e.stopPropagation();
+    function copyToClipboard() {
         navigator.clipboard.writeText(text);
     }
 
