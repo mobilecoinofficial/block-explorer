@@ -1,5 +1,5 @@
-import { TableRow, TableCell, Link, Button } from "@mui/material";
-import { Link as RouterLink } from "react-router-dom";
+import { TableRow, TableCell } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import moment from "moment";
 
@@ -23,7 +23,8 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     backgroundColor: "white",
     "&:hover": {
         backgroundColor: theme.palette.action.hover
-    }
+    },
+    cursor: "pointer"
 }));
 
 export function getTimeStamp(block: Block): string {
@@ -35,15 +36,14 @@ export function getTimeStamp(block: Block): string {
 }
 
 export default function BlockRow({ block }: BlockRowProps) {
+    const navigate = useNavigate();
+    function goToBlock() {
+        navigate(`/blocks/${block.index}`);
+    }
+
     return (
-        <StyledTableRow>
-            <StyledTableCell style={{ borderLeft: borderStyle }}>
-                <Button>
-                    <Link to={`${block.index}`} component={RouterLink}>
-                        {block.index}
-                    </Link>
-                </Button>
-            </StyledTableCell>
+        <StyledTableRow onClick={goToBlock}>
+            <StyledTableCell style={{ borderLeft: borderStyle }}>{block.index}</StyledTableCell>
             <StyledTableCell>
                 <CopyableField text={block.contentsHash} />
             </StyledTableCell>
