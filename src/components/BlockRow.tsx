@@ -19,8 +19,11 @@ const StyledTableCell = styled(TableCell)(() => ({
     borderBottom: borderStyle
 }));
 
-const StyledTableRow = styled(TableRow)(() => ({
-    backgroundColor: "white"
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+    backgroundColor: "white",
+    "&:hover": {
+        backgroundColor: theme.palette.action.hover
+    }
 }));
 
 export function getTimeStamp(block: Block): string {
