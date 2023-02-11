@@ -50,20 +50,12 @@ jobs:
         with:
           action: generate-metadata
 
-      - name: dumpVar
-        run: |
-          echo "react_app_full_service_url: ${{ env.REACT_APP_FULL_SERVICE_URL }}"
-          echo "react_app_reserve_auditor_url: ${{ env.REACT_APP_RESERVE_AUDITOR_URL }}"
-    
       - name: Setup Docker Buildx
         id: buildx
         if: "! contains(github.event.head_commit.message, '[skip docker]')"
         uses: docker/setup-buildx-action@v2
         with:
           install: true    
-        env:
-          REACT_APP_RESERVE_AUDITOR_URL: ${{ env.REACT_APP_RESERVE_AUDITOR_URL }}
-          REACT_APP_FULL_SERVICE_URL: ${{ env.REACT_APP_FULL_SERVICE_URL }}
 
       - name: Login to DockerHub
         if: "! contains(github.event.head_commit.message, '[skip docker]')"
@@ -84,6 +76,7 @@ jobs:
           push: true
           cache-from: type=registry,ref=${{ env.DOCKERHUB_ORG }}/${{ env.REPO_NAME }}:buildcache-${{ steps.version_output.outputs.version }}
           cache-to: type=registry,ref=${{ env.DOCKERHUB_ORG }}/${{ env.REPO_NAME }}:buildcache-${{ steps.version_output.outputs.version }}
+          build-args: REACT_APP_RESERVE_AUDITOR_URL=${{ env.REACT_APP_RESERVE_AUDITOR_URL }}, REACT_APP_FULL_SERVICE_URL=${{ env.REACT_APP_FULL_SERVICE_URL }}
 
       - name: Package and publish chart
         uses: mobilecoinofficial/gha-k8s-toolbox@v1
