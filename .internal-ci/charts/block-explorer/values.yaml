@@ -9,7 +9,8 @@ image:
   pullPolicy: IfNotPresent
   tag: ""
 
-imagePullSecrets: docker-credentials
+imagePullSecrets:
+- name: docker-credentials
 nameOverride: ""
 fullnameOverride: ""
 
