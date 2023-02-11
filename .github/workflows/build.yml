@@ -117,7 +117,7 @@ jobs:
           rancher_token: ${{ secrets.RANCHER_B_TOKEN }}
           chart_repo: ${{ env.CHART_REPO }}
           chart_name: ${{ env.REPO_NAME}}
-          chart_version: ${{ needs.build.outputs.version }}
+          chart_version: ${{ github.ref_name }}
           chart_values: ${{ env.CHART_PATH }}/values.yaml
           chart_set: |
             --set=frontend.image.tag=${{ needs.build.outputs.version }}
