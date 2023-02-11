@@ -16,7 +16,7 @@ import { useSyncData } from "./Layout";
 
 export const StyledCard = styled(Card)(() => ({
     boxShadow: "none",
-    // border: "1px solid #cecece",
+    border: "1px solid #cecece",
     height: "100%"
     // backgroundColor: "inherit"
 }));
@@ -79,7 +79,7 @@ export default function BlockPage() {
                     )}
                 </Box>
             </Box>
-            <Box sx={{ backgroundColor: "white", marginTop: 2, border: "1px solid #cecece" }}>
+            <Box sx={{ marginTop: 2 }}>
                 <Grid container spacing={2}>
                     <Txos blockContents={blockContents} burns={burns} />
                     <KeyImages blockContents={blockContents} />

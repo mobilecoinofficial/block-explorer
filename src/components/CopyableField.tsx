@@ -3,21 +3,29 @@ import { Typography, Box, Tooltip, IconButton } from "@mui/material";
 
 import { abbreviateHash } from "utils/truncate";
 
-export default function CopyableField({ text }: { text: string }) {
-    function copyToClipboard(e: React.MouseEvent<SVGSVGElement>) {
+export default function CopyableField({
+    text,
+    abbreviate = true
+}: {
+    text: string;
+    abbreviate?: boolean;
+}) {
+    function copyToClipboard(e: React.MouseEvent<HTMLButtonElement>) {
         e.stopPropagation();
         navigator.clipboard.writeText(text);
     }
 
+    const renderedText = abbreviate ? abbreviateHash(text) : text;
+    const width = abbreviate ? 88 : null;
+
     return (
-        <Box display="flex" justifyContent="space-between" sx={{ width: 120 }} alignItems="center">
-            <Typography sx={{ fontSize: 14 }}>{abbreviateHash(text)}</Typography>
+        <Box display="flex" alignItems="center">
+            <Typography sx={{ fontSize: 14, width }}>{renderedText}</Typography>
             <Tooltip title={`Copy ${text} to clipboard`}>
-                <IconButton>
+                <IconButton onClick={copyToClipboard}>
                     <ContentCopyIcon
                         sx={{ cursor: "pointer", color: "text.secondary" }}
                         fontSize="small"
-                        onClick={copyToClipboard}
                     />
                 </IconButton>
             </Tooltip>

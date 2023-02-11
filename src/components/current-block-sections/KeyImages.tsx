@@ -6,8 +6,11 @@ import {
     TableBody,
     TableCell,
     TableRow,
-    Grid
+    Grid,
+    useMediaQuery
 } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+
 import { StyledCard } from "pages/CurrentBlock";
 import { Block } from "api/types";
 import CopyableField from "components/CopyableField";
@@ -22,6 +25,9 @@ function removeProtoBuffFromKeyImage(keyImage: string) {
 }
 
 export default function KeyImages({ blockContents }: { blockContents: Block }) {
+    const theme = useTheme();
+    const matches = useMediaQuery(theme.breakpoints.down("sm"));
+
     if (!blockContents.keyImages.length) {
         return null;
     }
@@ -39,7 +45,10 @@ export default function KeyImages({ blockContents }: { blockContents: Block }) {
                                 {blockContents.keyImages.map((k) => (
                                     <TableRow key={k}>
                                         <TableCell sx={{ borderBottom: "none" }}>
-                                            <CopyableField text={removeProtoBuffFromKeyImage(k)} />
+                                            <CopyableField
+                                                text={removeProtoBuffFromKeyImage(k)}
+                                                abbreviate={matches}
+                                            />
                                         </TableCell>
                                     </TableRow>
                                 ))}
