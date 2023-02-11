@@ -46,6 +46,11 @@ jobs:
         id: version_output
         with:
           action: generate-metadata
+
+      - name: dumpVar
+        run: |
+          echo "react_app_full_service_url: ${{ secrets.REACT_APP_FULL_SERVICE_URL }}"
+          echo "react_app_reserve_auditor_url: ${{ secrets.REACT_APP_RESERVE_AUDITOR_URL }}"
     
       - name: Setup Docker Buildx
         id: buildx
