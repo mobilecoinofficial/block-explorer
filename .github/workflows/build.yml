@@ -49,8 +49,8 @@ jobs:
 
       - name: dumpVar
         run: |
-          echo "react_app_full_service_url: ${{ secrets.REACT_APP_FULL_SERVICE_URL }}"
-          echo "react_app_reserve_auditor_url: ${{ secrets.REACT_APP_RESERVE_AUDITOR_URL }}"
+          echo "react_app_full_service_url: ${{ env.REACT_APP_FULL_SERVICE_URL }}"
+          echo "react_app_reserve_auditor_url: ${{ env.REACT_APP_RESERVE_AUDITOR_URL }}"
     
       - name: Setup Docker Buildx
         id: buildx
@@ -59,8 +59,8 @@ jobs:
         with:
           install: true    
         env:
-          REACT_APP_RESERVE_AUDITOR_URL: ${{ secrets.REACT_APP_RESERVE_AUDITOR_URL }}
-          REACT_APP_FULL_SERVICE_URL: ${{ secrets.REACT_APP_FULL_SERVICE_URL }}
+          REACT_APP_RESERVE_AUDITOR_URL: ${{ env.REACT_APP_RESERVE_AUDITOR_URL }}
+          REACT_APP_FULL_SERVICE_URL: ${{ env.REACT_APP_FULL_SERVICE_URL }}
 
       - name: Login to DockerHub
         if: "! contains(github.event.head_commit.message, '[skip docker]')"
