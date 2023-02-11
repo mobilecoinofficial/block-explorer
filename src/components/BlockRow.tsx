@@ -1,6 +1,6 @@
-import { TableRow, TableCell, Link, Button } from "@mui/material";
-import { Link as RouterLink } from "react-router-dom";
-import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import { TableRow, TableCell } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { styled } from "@mui/material/styles";
 import moment from "moment";
 
 import { Block } from "api/types";
@@ -9,6 +9,23 @@ import CopyableField from "components/CopyableField";
 type BlockRowProps = {
     block: Block;
 };
+
+const borderStyle = "1px solid #cecece";
+
+const StyledTableCell = styled(TableCell)(() => ({
+    border: "none",
+    backgroundColor: "inherit",
+    borderTop: borderStyle,
+    borderBottom: borderStyle
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+    backgroundColor: "white",
+    "&:hover": {
+        backgroundColor: theme.palette.action.hover
+    },
+    cursor: "pointer"
+}));
 
 export function getTimeStamp(block: Block): string {
     if (block.timestampResultCode !== "TimestampFound") {
@@ -19,32 +36,23 @@ export function getTimeStamp(block: Block): string {
 }
 
 export default function BlockRow({ block }: BlockRowProps) {
+    const navigate = useNavigate();
+    function goToBlock() {
+        navigate(`/blocks/${block.index}`);
+    }
+
     return (
-        <TableRow>
-            <TableCell>{block.index}</TableCell>
-            <TableCell>
+        <StyledTableRow onClick={goToBlock}>
+            <StyledTableCell style={{ borderLeft: borderStyle }}>{block.index}</StyledTableCell>
+            <StyledTableCell>
                 <CopyableField text={block.contentsHash} />
-            </TableCell>
-            <TableCell>{block.outputs.length}</TableCell>
-            <TableCell>{block.keyImages.length}</TableCell>
-            <TableCell>{block.signatures?.length}</TableCell>
-            <TableCell>{getTimeStamp(block)}</TableCell>
-            <TableCell style={{ cursor: "pointer" }}>
-                <Link to={`${block.index}`} underline="none" component={RouterLink}>
-                    <Button
-                        sx={{ textTransform: "none" }}
-                        endIcon={
-                            <NavigateNextIcon
-                                fontSize="small"
-                                color="primary"
-                                sx={{ marginBottom: "-2px" }}
-                            />
-                        }
-                    >
-                        Details
-                    </Button>
-                </Link>
-            </TableCell>
-        </TableRow>
+            </StyledTableCell>
+            <StyledTableCell>{block.outputs.length}</StyledTableCell>
+            <StyledTableCell>{block.keyImages.length}</StyledTableCell>
+            <StyledTableCell>{block.signatures?.length}</StyledTableCell>
+            <StyledTableCell sx={{ borderRight: borderStyle }}>
+                {getTimeStamp(block)}
+            </StyledTableCell>
+        </StyledTableRow>
     );
 }

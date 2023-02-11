@@ -2,6 +2,8 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { useState, useCallback } from "react";
 import {
     Box,
+    Container,
+    Grid,
     Typography,
     Table,
     TableCell,
@@ -11,7 +13,6 @@ import {
     TableBody
 } from "@mui/material";
 
-import Page from "components/Page";
 import { useSyncData } from "pages/Layout";
 import { Block } from "api/types";
 import { INITIAL_BLOCK_COUNT } from "api/getRecentBlocks";
@@ -55,60 +56,54 @@ export default function LatestBlocks() {
     }, [blocks]);
 
     return (
-        <Page>
-            <>
-                <Box
-                    sx={{
-                        display: "flex",
-                        justifyContent: "space-around",
-                        marginBottom: 4,
-                        marginTop: 2
-                    }}
-                >
+        <Container>
+            <Grid container sx={{ marginBottom: 2, marginTop: 1 }}>
+                <Grid item xs={6} justifyContent="center" display="flex">
                     <HeaderNumber
                         title="Number of Blocks"
                         value={networkStatus?.localBlockHeight}
                     />
+                </Grid>
+                <Grid item xs={6} justifyContent="center" display="flex">
                     <HeaderNumber title="Transaction Outputs" value={networkStatus?.numTxos} />
-                </Box>
-                <Typography variant="h4">Latest Blocks</Typography>
-                <div>
-                    <InfiniteScroll
-                        dataLength={blocks.length}
-                        next={getMoreBlocks}
-                        hasMore={hasMoreBlocks}
-                        loader={<Typography variant="h4">Loading...</Typography>}
-                        endMessage={
-                            <div style={{ textAlign: "center" }}>
-                                <Typography variant="h4">
-                                    Wow! you scrolled through all the blocks. Impressive!
-                                </Typography>
-                            </div>
-                        }
-                    >
-                        <TableContainer>
-                            <Table>
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>Block Index</TableCell>
-                                        <TableCell>Hash</TableCell>
-                                        <TableCell>TXOs</TableCell>
-                                        <TableCell>IMGs</TableCell>
-                                        <TableCell>SIGs</TableCell>
-                                        <TableCell>Timestamp</TableCell>
-                                        <TableCell></TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {blocks.map((block) => (
-                                        <BlockRow block={block} key={block.id} />
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                    </InfiniteScroll>
-                </div>
-            </>
-        </Page>
+                </Grid>
+            </Grid>
+            <Typography variant="h4">Latest Blocks</Typography>
+            <div>
+                <InfiniteScroll
+                    dataLength={blocks.length}
+                    next={getMoreBlocks}
+                    hasMore={hasMoreBlocks}
+                    loader={<Typography variant="h4">Loading...</Typography>}
+                    endMessage={
+                        <div style={{ textAlign: "center" }}>
+                            <Typography variant="h4">
+                                Wow! you scrolled through all the blocks. Impressive!
+                            </Typography>
+                        </div>
+                    }
+                >
+                    <TableContainer>
+                        <Table sx={{ borderCollapse: "separate", borderSpacing: "0px 12px" }}>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Block Index</TableCell>
+                                    <TableCell>Hash</TableCell>
+                                    <TableCell>TXOs</TableCell>
+                                    <TableCell>IMGs</TableCell>
+                                    <TableCell>SIGs</TableCell>
+                                    <TableCell>Timestamp</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {blocks.map((block) => (
+                                    <BlockRow block={block} key={block.id} />
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </InfiniteScroll>
+            </div>
+        </Container>
     );
 }
