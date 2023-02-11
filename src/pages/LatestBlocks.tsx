@@ -13,7 +13,6 @@ import {
     TableBody
 } from "@mui/material";
 
-// import Page from "components/Page";
 import { useSyncData } from "pages/Layout";
 import { Block } from "api/types";
 import { INITIAL_BLOCK_COUNT } from "api/getRecentBlocks";
