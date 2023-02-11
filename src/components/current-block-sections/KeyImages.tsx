@@ -38,7 +38,7 @@ export default function KeyImages({ blockContents }: { blockContents: Block }) {
                             <TableBody>
                                 {blockContents.keyImages.map((k) => (
                                     <TableRow key={k}>
-                                        <TableCell>
+                                        <TableCell sx={{ borderBottom: "none" }}>
                                             <CopyableField text={removeProtoBuffFromKeyImage(k)} />
                                         </TableCell>
                                     </TableRow>
