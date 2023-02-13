@@ -21,7 +21,6 @@ on:
       - '**.md'
     branches:
       - main
-      - cicd-work
   push:
     tags:
       - "v*"
@@ -36,7 +35,7 @@ on:
 
 jobs:
   build:
-    runs-on: [self-hosted, Linux, large]
+    runs-on: [self-hosted, Linux, large] # remove large instance after dev work
 
     steps:
       - name: Checkout
@@ -44,9 +43,9 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Extract version
-        uses: mobilecoinofficial/gha-k8s-toolbox@v1
-        id: version_output
+      - name: Generate Docker Tags
+        id: docker_meta
+        users: docker/metadata-action@v4
         with:
           action: generate-metadata
 
@@ -72,11 +71,11 @@ jobs:
           context: .
           file: Dockerfile
           labels: ${{ steps.docker_meta.outputs.labels }}
-          tags: ${{ env.DOCKERHUB_ORG }}/${{ env.REPO_NAME }}:${{ steps.version_output.outputs.version }}
+          tags: ${{ env.DOCKERHUB_ORG }}/${{ env.REPO_NAME }}:${{ steps.docker_meta.outputs.tags }}
           push: true
-          cache-from: type=registry,ref=${{ env.DOCKERHUB_ORG }}/${{ env.REPO_NAME }}:buildcache-${{ steps.version_output.outputs.version }}
-          cache-to: type=registry,ref=${{ env.DOCKERHUB_ORG }}/${{ env.REPO_NAME }}:buildcache-${{ steps.version_output.outputs.version }}
-          build-args: REACT_APP_RESERVE_AUDITOR_URL=${{ env.REACT_APP_RESERVE_AUDITOR_URL }}, REACT_APP_FULL_SERVICE_URL=${{ env.REACT_APP_FULL_SERVICE_URL }}
+          # fix caching later
+          # cache-from: type=registry,ref=${{ env.DOCKERHUB_ORG }}/${{ env.REPO_NAME }}:buildcache-${{ steps.version_output.outputs.version }}
+          # cache-to: type=registry,ref=${{ env.DOCKERHUB_ORG }}/${{ env.REPO_NAME }}:buildcache-${{ steps.version_output.outputs.version }}
 
       - name: Package and publish chart
         uses: mobilecoinofficial/gha-k8s-toolbox@v1
@@ -85,7 +84,7 @@ jobs:
           chart_repo_username: ${{ secrets.HARBOR_USERNAME }}
           chart_repo_password: ${{ secrets.HARBOR_PASSWORD }}
           chart_repo: ${{ env.CHART_REPO }}
-          chart_app_version: ${{ steps.version_output.outputs.version }}
+          chart_app_version: ${{ steps.docker_meta.outputs.version }}
           chart_version: ${{ github.ref_name }}
           chart_path: ${{ env.CHART_PATH }}
 
