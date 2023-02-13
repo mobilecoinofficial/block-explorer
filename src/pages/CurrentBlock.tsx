@@ -1,5 +1,5 @@
 import { useLoaderData, useNavigate } from "react-router-dom";
-import { Box, Typography, Card, Tooltip, Button, Grid } from "@mui/material";
+import { Box, Typography, Card, Tooltip, Button, Grid, Container } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
@@ -41,7 +41,7 @@ export default function BlockPage() {
     }
 
     return (
-        <>
+        <Container>
             <Box>
                 <Box sx={{ marginBottom: 1 }}>
                     <Typography variant="h4">Block {blockContents.index}</Typography>
@@ -88,6 +88,6 @@ export default function BlockPage() {
                     <Signatures blockContents={blockContents} />
                 </Grid>
             </Box>
-        </>
+        </Container>
     );
 }

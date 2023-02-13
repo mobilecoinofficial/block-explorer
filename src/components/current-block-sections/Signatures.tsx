@@ -15,6 +15,13 @@ import { StyledCard } from "pages/CurrentBlock";
 import CopyableField from "components/CopyableField";
 import { Block } from "api/types";
 
+function stripNodeURl(url: string): string {
+    // anything following the first instance of .com/ and string trailing /
+    const nodeText = /(?<=\.com\/)(.*)(?=\/)/;
+    const match = url.match(nodeText);
+    return match ? match[0] : url;
+}
+
 export default function signatures({ blockContents }: { blockContents: Block }) {
     if (!blockContents.signatures?.length) {
         return null;
@@ -40,7 +47,7 @@ export default function signatures({ blockContents }: { blockContents: Block }) 
                             <TableBody>
                                 {blockContents.signatures.map((sig) => (
                                     <TableRow key={sig.blockSignature.signature}>
-                                        <TableCell>{sig.srcUrl}</TableCell>
+                                        <TableCell>{stripNodeURl(sig.srcUrl)}</TableCell>
                                         <TableCell>
                                             <CopyableField text={sig.blockSignature.signer} />
                                         </TableCell>

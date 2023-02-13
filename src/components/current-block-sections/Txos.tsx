@@ -7,14 +7,20 @@ import {
     TableBody,
     TableCell,
     TableRow,
-    Grid
+    Grid,
+    useMediaQuery
 } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+
 import { StyledCard } from "pages/CurrentBlock";
 import CopyableField from "components/CopyableField";
 import { Block, BurnTx, TxOut } from "api/types";
 import { getTokenAmount, TOKENS } from "utils/tokens";
 
 export default function Txos({ blockContents, burns }: { blockContents: Block; burns: BurnTx[] }) {
+    const theme = useTheme();
+    const matches = useMediaQuery(theme.breakpoints.down("md"));
+
     if (!blockContents.outputs.length) {
         return null;
     }
@@ -26,7 +32,7 @@ export default function Txos({ blockContents, burns }: { blockContents: Block; b
             return (
                 <TableRow>
                     <TableCell>
-                        <CopyableField text={txout.publicKey} />
+                        <CopyableField text={txout.publicKey} abbreviate={matches} />
                     </TableCell>
                     <TableCell>
                         <Typography>Burn</Typography>
@@ -45,7 +51,7 @@ export default function Txos({ blockContents, burns }: { blockContents: Block; b
         return (
             <TableRow>
                 <TableCell>
-                    <CopyableField text={txout.publicKey} />
+                    <CopyableField text={txout.publicKey} abbreviate={matches} />
                 </TableCell>
                 <TableCell>
                     <CopyableField text={txout.targetKey} />
