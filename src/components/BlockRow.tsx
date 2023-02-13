@@ -1,10 +1,10 @@
 import { TableRow, TableCell } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
-import moment from "moment";
 
 import { Block } from "api/types";
 import CopyableField from "components/CopyableField";
+import CollapsableDate from "./CollapsableDate";
 
 type BlockRowProps = {
     block: Block;
@@ -27,12 +27,14 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     cursor: "pointer"
 }));
 
-export function getTimeStamp(block: Block): string {
+export function getTimeStamp(block: Block) {
     if (block.timestampResultCode !== "TimestampFound") {
         return "Timestamp not available";
     }
 
-    return moment(parseInt(block.timestamp) * 1000).format("MMM D YYYY, h:mm:ss A");
+    const date = new Date(parseInt(block.timestamp) * 1000);
+
+    return <CollapsableDate date={date} />;
 }
 
 export default function BlockRow({ block }: BlockRowProps) {

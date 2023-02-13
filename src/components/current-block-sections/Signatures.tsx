@@ -14,6 +14,7 @@ import moment from "moment";
 import { StyledCard } from "pages/CurrentBlock";
 import CopyableField from "components/CopyableField";
 import { Block } from "api/types";
+import CollapsableDate from "components/CollapsableDate";
 
 function stripNodeURl(url: string): string {
     // anything following the first instance of .com/ and string trailing /
@@ -55,9 +56,13 @@ export default function signatures({ blockContents }: { blockContents: Block }) 
                                             <CopyableField text={sig.blockSignature.signature} />
                                         </TableCell>
                                         <TableCell>
-                                            {moment(
-                                                parseInt(sig.blockSignature.signedAt) * 1000
-                                            ).format("MMM D YYYY, h:mm:ss A")}
+                                            <CollapsableDate
+                                                date={
+                                                    new Date(
+                                                        parseInt(sig.blockSignature.signedAt) * 1000
+                                                    )
+                                                }
+                                            />
                                         </TableCell>
                                     </TableRow>
                                 ))}

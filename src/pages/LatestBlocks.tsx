@@ -87,7 +87,7 @@ export default function LatestBlocks() {
                         <Table sx={{ borderCollapse: "separate", borderSpacing: "0px 12px" }}>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>Block Index</TableCell>
+                                    <TableCell>Index</TableCell>
                                     <TableCell>Hash</TableCell>
                                     <TableCell>TXOs</TableCell>
                                     <TableCell>IMGs</TableCell>
