@@ -45,7 +45,7 @@ jobs:
 
       - name: Generate Docker Tags
         id: docker_meta
-        users: docker/metadata-action@v4
+        uses: docker/metadata-action@v4
         with:
           action: generate-metadata
 
