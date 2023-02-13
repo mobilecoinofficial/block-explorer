@@ -9,7 +9,6 @@ import {
     TableRow,
     Grid
 } from "@mui/material";
-import moment from "moment";
 
 import { StyledCard } from "pages/CurrentBlock";
 import CopyableField from "components/CopyableField";
