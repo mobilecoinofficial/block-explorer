@@ -48,7 +48,7 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: mobilecoin/block-explorer
-          tags: ${{ github.ref_name }}
+          tags: ${{ github.ref_version }}
     
       - name: Setup Docker Buildx
         id: buildx
