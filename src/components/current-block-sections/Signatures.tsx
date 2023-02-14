@@ -10,7 +10,7 @@ import {
     Grid
 } from "@mui/material";
 
-import { StyledCard } from "pages/CurrentBlock";
+import { StyledCard, StyledCell } from "pages/CurrentBlock";
 import CopyableField from "components/CopyableField";
 import { Block } from "api/types";
 import CollapsableDate from "components/CollapsableDate";
@@ -35,7 +35,7 @@ export default function signatures({ blockContents }: { blockContents: Block }) 
                         Signatures
                     </Typography>
                     <TableContainer>
-                        <Table>
+                        <Table size="small">
                             <TableHead>
                                 <TableRow>
                                     <TableCell>URL</TableCell>
@@ -47,14 +47,14 @@ export default function signatures({ blockContents }: { blockContents: Block }) 
                             <TableBody>
                                 {blockContents.signatures.map((sig) => (
                                     <TableRow key={sig.blockSignature.signature}>
-                                        <TableCell>{stripNodeURl(sig.srcUrl)}</TableCell>
-                                        <TableCell>
+                                        <StyledCell>{stripNodeURl(sig.srcUrl)}</StyledCell>
+                                        <StyledCell>
                                             <CopyableField text={sig.blockSignature.signer} />
-                                        </TableCell>
-                                        <TableCell>
+                                        </StyledCell>
+                                        <StyledCell>
                                             <CopyableField text={sig.blockSignature.signature} />
-                                        </TableCell>
-                                        <TableCell>
+                                        </StyledCell>
+                                        <StyledCell>
                                             <CollapsableDate
                                                 date={
                                                     new Date(
@@ -62,7 +62,7 @@ export default function signatures({ blockContents }: { blockContents: Block }) 
                                                     )
                                                 }
                                             />
-                                        </TableCell>
+                                        </StyledCell>
                                     </TableRow>
                                 ))}
                             </TableBody>

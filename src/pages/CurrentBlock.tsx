@@ -1,5 +1,5 @@
 import { useLoaderData, useNavigate } from "react-router-dom";
-import { Box, Typography, Card, Tooltip, Button, Grid, Container } from "@mui/material";
+import { Box, Typography, Card, Tooltip, Button, Grid, Container, TableCell } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
@@ -19,6 +19,10 @@ export const StyledCard = styled(Card)(() => ({
     border: "1px solid #cecece",
     height: "100%"
     // backgroundColor: "inherit"
+}));
+
+export const StyledCell = styled(TableCell)(() => ({
+    border: "none"
 }));
 
 export default function BlockPage() {

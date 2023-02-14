@@ -10,7 +10,7 @@ import {
     Grid
 } from "@mui/material";
 
-import { StyledCard } from "pages/CurrentBlock";
+import { StyledCard, StyledCell } from "pages/CurrentBlock";
 import { MintInfoResponse } from "api/types";
 import { TOKENS } from "utils/tokens";
 import CopyableField from "components/CopyableField";
@@ -29,7 +29,7 @@ export default function MintConfigTxs({ mintInfo }: { mintInfo: MintInfoResponse
                         Mint Config Txs
                     </Typography>
                     <TableContainer>
-                        <Table>
+                        <Table size="small">
                             <TableHead>
                                 <TableRow>
                                     <TableCell>Mint Limit</TableCell>
@@ -41,27 +41,27 @@ export default function MintConfigTxs({ mintInfo }: { mintInfo: MintInfoResponse
                             <TableBody>
                                 {mintInfo.mintConfigTxs.map((mintConfigTx) => (
                                     <TableRow key={mintConfigTx.mintConfigTx.nonceHex}>
-                                        <TableCell>
+                                        <StyledCell>
                                             {mintConfigTx.mintConfigTx.totalMintLimit.toLocaleString(
                                                 "en-US"
                                             )}
-                                        </TableCell>
-                                        <TableCell>
+                                        </StyledCell>
+                                        <StyledCell>
                                             {TOKENS[mintConfigTx.mintConfigTx.tokenId].name}
-                                        </TableCell>
-                                        <TableCell>
+                                        </StyledCell>
+                                        <StyledCell>
                                             <CopyableField
                                                 text={mintConfigTx.mintConfigTx.nonceHex}
                                             />
-                                        </TableCell>
-                                        <TableCell>
+                                        </StyledCell>
+                                        <StyledCell>
                                             {mintConfigTx.mintConfigs.map((config, i) => (
                                                 <MintConfig
                                                     config={config}
                                                     key={`configTxconfig-${i}`}
                                                 />
                                             ))}
-                                        </TableCell>
+                                        </StyledCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
