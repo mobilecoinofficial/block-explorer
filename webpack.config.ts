@@ -53,7 +53,10 @@ const webpackConfig = (env): Configuration => ({
         }),
         new ForkTsCheckerWebpackPlugin(),
         new ESLintPlugin({ files: "./src/**/*.{ts,tsx,js,jsx}" }),
-        new Dotenv()
+        new Dotenv(),
+        new HtmlWebpackPlugin({
+            favicon: "./src/assets/favicon.ico"
+        })
     ]
 });
 
