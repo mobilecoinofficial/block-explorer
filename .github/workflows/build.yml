@@ -52,7 +52,7 @@ jobs:
     
       - name: dumpVar
         run: |
-          echo "tags = ${{ steps.docker_meta.outputs.tags }}"
+          echo "tags = ${{ steps.docker_meta.outputs }}"
 
   #     - name: Setup Docker Buildx
   #       id: buildx
