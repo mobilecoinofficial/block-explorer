@@ -97,7 +97,7 @@ describe("get counters", () => {
         const counters = await getCounters();
         const paths = objectPaths(counters);
         for (const path of paths) {
-            expect(typeof get(counters, path)).not.toEqual(typeof get(expectedCounters, path));
+            expect(typeof get(counters, path)).toEqual(typeof get(expectedCounters, path));
         }
     });
 });
