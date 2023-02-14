@@ -72,7 +72,7 @@ jobs:
           context: .
           file: Dockerfile
           labels: ${{ steps.docker_meta.outputs.labels }}
-          tags: ${{ env.DOCKERHUB_ORG }}/${{ env.REPO_NAME }}:${{ steps.docker_meta.outputs.tags }}
+          tags: ${{ env.DOCKERHUB_ORG }}/${{ env.REPO_NAME }}:${{ steps.docker_meta.outputs.version }}
           push: true
           # fix caching later
           # cache-from: type=registry,ref=${{ env.DOCKERHUB_ORG }}/${{ env.REPO_NAME }}:buildcache-${{ steps.version_output.outputs.version }}
@@ -86,7 +86,7 @@ jobs:
           chart_repo_password: ${{ secrets.HARBOR_PASSWORD }}
           chart_repo: ${{ env.CHART_REPO }}
           chart_app_version: ${{ steps.docker_meta.outputs.version }}
-          chart_version: ${{ github.ref_name }}
+          chart_version: ${{ github.ref_version }}
           chart_path: ${{ env.CHART_PATH }}
 
   deploy:
@@ -123,6 +123,6 @@ jobs:
           chart_repo_password: ${{ secrets.HARBOR_PASSWORD }}
           chart_repo: ${{ env.CHART_REPO }}
           chart_name: ${{ env.REPO_NAME}}
-          chart_version: ${{ github.ref_name }}
+          chart_version: ${{ github.ref_version }}
           chart_path: ${{ env.CHART_PATH }}
 
