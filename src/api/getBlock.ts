@@ -20,7 +20,9 @@ export default async function getBlock(blockIndex: string): Promise<Block> {
     });
 
     if (result) {
-        return mergeBlockResponse(camelCaseObjectKeys(result));
+        // return mergeBlockResponse(camelCaseObjectKeys(result));
+        // @ts-ignore
+        return { cheese: "124" };
     } else if (error) {
         throw new Error("FULL_SERVICE_BLOCK_NOT_FOUND");
     }
