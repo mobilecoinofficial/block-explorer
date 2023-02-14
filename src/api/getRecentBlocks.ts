@@ -17,11 +17,11 @@ export function mergeBlocksResponse(blocksResponse: BlocksResponse): Block[] {
     return blocks;
 }
 
-export default async function getRecentBlocks(): Promise<Block[]> {
+export default async function getRecentBlocks(limit = INITIAL_BLOCK_COUNT): Promise<Block[]> {
     const { result, error } = await makeFSRequest<BlocksResponse>({
         method: "get_recent_blocks",
         params: {
-            limit: 50
+            limit
         }
     });
 
