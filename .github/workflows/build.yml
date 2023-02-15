@@ -13,15 +13,6 @@ env:
 
 on:
   workflow_dispatch:
-  inputs:
-      chart_version:
-        description: Chart Version
-        required: true
-        type: string
-      docker_image_tag:
-        description: Docker image tag
-        required: true
-        type: string
   pull_request:
     paths-ignore:
       - '.lefthook/**'
