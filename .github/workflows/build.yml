@@ -123,6 +123,6 @@ jobs:
           chart_repo_password: ${{ secrets.HARBOR_PASSWORD }}
           chart_repo: ${{ env.CHART_REPO }}
           chart_name: ${{ env.REPO_NAME}}
-          chart_version: ${{ steps.docker_meta.outputs.version }}
+          chart_version: ${{ github.ref_name }}
           chart_path: ${{ env.CHART_PATH }}
 
