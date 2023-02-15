@@ -12,7 +12,7 @@ import {
 
 import { StyledCard, StyledCell } from "pages/CurrentBlock";
 import { MintInfoResponse } from "api/types";
-import { TOKENS } from "utils/tokens";
+import { TOKENS, getTokenAmount } from "utils/tokens";
 import CopyableField from "components/CopyableField";
 import MintConfig from "components/current-block-sections/MintConfig";
 
@@ -42,8 +42,9 @@ export default function MintConfigTxs({ mintInfo }: { mintInfo: MintInfoResponse
                                 {mintInfo.mintConfigTxs.map((mintConfigTx) => (
                                     <TableRow key={mintConfigTx.mintConfigTx.nonceHex}>
                                         <StyledCell>
-                                            {mintConfigTx.mintConfigTx.totalMintLimit.toLocaleString(
-                                                "en-US"
+                                            {getTokenAmount(
+                                                mintConfigTx.mintConfigTx.tokenId,
+                                                mintConfigTx.mintConfigTx.totalMintLimit
                                             )}
                                         </StyledCell>
                                         <StyledCell>
