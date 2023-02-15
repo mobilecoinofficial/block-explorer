@@ -35,9 +35,6 @@ on:
 
 jobs:
   build:
-    with:
-      chart_version: ${{ github.ref_name }}
-      docker_image_tag: ${{ github.ref_name }}
     runs-on: [self-hosted, Linux, large] # remove large instance after dev work
 
     steps:
