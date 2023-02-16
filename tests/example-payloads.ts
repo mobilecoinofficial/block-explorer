@@ -72,6 +72,56 @@ export const expectedBlock = {
                 signer: "08facaaa0701fe10c6e9e686b2d875394341579601fb28e50d4ca3821293a6bc",
                 signedAt: "1606253595"
             }
+        },
+        {
+            srcUrl: "https://ledger.mobilecoinww.com/node3.prod.mobilecoinww.com/",
+            archiveFilename: "00/00/00/00/00/00/00/0000000000000001.pb",
+            blockSignature: {
+                signature:
+                    "850fe4b1054a1aec96b3f4903259355daa98a0a395b835966df7250349b7e7cc58bd42e9768c65646b866777167a03dada17da1f60e300b04fc7a21a000f060e",
+                signer: "1718106df125f29105995f6d4aa77052ef2925a6b6cef72725aaae036b27fddc",
+                signedAt: "1606253595"
+            }
+        },
+        {
+            srcUrl: "https://bd-mobilecoin-ledger.s3.amazonaws.com/binance.mobilecoin.bdnodes.net/",
+            archiveFilename: "00/00/00/00/00/00/00/0000000000000001.pb",
+            blockSignature: {
+                signature:
+                    "300fe1098b842d654e4d914df273392b0b70e33c1da7ec243397c4f02a5253de81f54baf4fd3cdecefe589be8bb2f8e168ba54ea81179b13457b0766552c1e0a",
+                signer: "beef924d71452e8fa12cbd3c64a01c240cf1bc18600c573b986f5cb489b44330",
+                signedAt: "1606253595"
+            }
+        },
+        {
+            srcUrl: "https://bd-mobilecoin-ledger.s3.amazonaws.com/blockdaemon.mobilecoin.bdnodes.net/",
+            archiveFilename: "00/00/00/00/00/00/00/0000000000000001.pb",
+            blockSignature: {
+                signature:
+                    "1577ed81ae9c798376cbf242198f6bc36b74ad4d1569b3ed656f15a88be56339fd4e36921150d65bc327458301e62e0eaad7b08d5c8679f82d4a385c02d32500",
+                signer: "20448c853e52fd78369a87147177215a1e256363ad4f00bf7b976ff9d6d908ea",
+                signedAt: "1606253595"
+            }
+        },
+        {
+            srcUrl: "https://bd-mobilecoin-ledger.s3.amazonaws.com/ideasbeyondborders.mobilecoin.bdnodes.net/",
+            archiveFilename: "00/00/00/00/00/00/00/0000000000000001.pb",
+            blockSignature: {
+                signature:
+                    "140a6987f47792dcd04b9d73f407bcdd3aa1bbf09a4b6ed73d6d8a166f5b97d84317bfa5168e695979d78558070d05b2b5a9a180a7bbdf7893ae8c97309bd509",
+                signer: "fcefe249f009b033d5959cfa6649f39228b742b25869f8ab09f58587b2ff9363",
+                signedAt: "1606253595"
+            }
+        },
+        {
+            srcUrl: "https://bd-mobilecoin-ledger.s3.amazonaws.com/thelongnowfoundation.mobilecoin.bdnodes.net/",
+            archiveFilename: "00/00/00/00/00/00/00/0000000000000001.pb",
+            blockSignature: {
+                signature:
+                    "fe032fbd52f057cddbe58a2a4811e4b41d83b0661f523d1124258dc7567961e4c20666aaa42fd76c0c09eab8237f35936638db0691a45041a534a28830a95900",
+                signer: "8db4f43fb159f588fee811697bb967c3a781f20bb6f82a0402b76ebeccc8910f",
+                signedAt: "1606253595"
+            }
         }
     ],
     timestampResultCode: "TimestampFound"
@@ -160,6 +210,86 @@ export const expectedSearchResult = {
                     signature:
                         "bfcfe9708c09e694f844bbd7e3735789ef04dbfdb9593a0db4dff09966d99c00adbda3dc42c92db463fa3d7a6791463e2d113b2b40c05c14e26f861759fe960f",
                     signer: "4659d53799f344f84ed70d0f64990f51aa52d8700ec3a90decfd8221af7e78c8",
+                    signedAt: "1676336546"
+                }
+            },
+            {
+                srcUrl: "https://ledger.mobilecoinww.com/node3.prod.mobilecoinww.com/",
+                archiveFilename: "00/00/00/00/00/13/7b/0000000000137bd3.pb",
+                blockSignature: {
+                    signature:
+                        "fa4a2df43139142f321f0a8431598e53b6a8425139227282a06112ba8d9430057f52e83ec17a53d77f363b973f4b19c7537ec4209b06a3867187b6dbdd31e708",
+                    signer: "bda573a1c57d7241b095e84c058efe7dacffa9e8133382a3d342badd0d7b9e27",
+                    signedAt: "1676336546"
+                }
+            },
+            {
+                srcUrl: "https://bd-mobilecoin-ledger.s3.amazonaws.com/binance.mobilecoin.bdnodes.net/",
+                archiveFilename: "00/00/00/00/00/13/7b/0000000000137bd3.pb",
+                blockSignature: {
+                    signature:
+                        "3860bf1bbec35b250949c76a39b1ade53c356b500be1e4d903573817b70e3ea1f527e777d4874ca6311ebdd16d0a51c8c97eed3bc54d6fd06666921142e4a00e",
+                    signer: "74d9c4e851f1878740265be7e6dd0d08bdaa9950e7306d84b7d837b20d62d6dd",
+                    signedAt: "1676336546"
+                }
+            },
+            {
+                srcUrl: "https://s3-eu-west-1.amazonaws.com/dh-mobilecoin-eu/ams1-mc-node1.dreamhost.com/",
+                archiveFilename: "00/00/00/00/00/13/7b/0000000000137bd3.pb",
+                blockSignature: {
+                    signature:
+                        "756ee4d70d7ddbbbe3934b3b919f3354d96bb7dfe824372ff57edcd3a979a28e27b5cfef12e5294e948c90019af273a15a96be54c727df5da2d6dd5341950903",
+                    signer: "cd177e00330f36695b16d72ba04e37323f1f7506cd55ecf328f1abee8043a954",
+                    signedAt: "1676336546"
+                }
+            },
+            {
+                srcUrl: "https://bd-mobilecoin-ledger.s3.amazonaws.com/blockdaemon.mobilecoin.bdnodes.net/",
+                archiveFilename: "00/00/00/00/00/13/7b/0000000000137bd3.pb",
+                blockSignature: {
+                    signature:
+                        "c6f812745c59949719c1e938dc72fcbfd854d86199aef7f38750532d635f5118c3892e959324b019b89b788e505c2ab720ee1d925564f17ed747a286c7069502",
+                    signer: "8b9a44781d29ec70ef4ee68119dd2eea84db94724b2d43cd5cdecf0a172e44da",
+                    signedAt: "1676336546"
+                }
+            },
+            {
+                srcUrl: "https://bd-mobilecoin-ledger.s3.amazonaws.com/ideasbeyondborders.mobilecoin.bdnodes.net/",
+                archiveFilename: "00/00/00/00/00/13/7b/0000000000137bd3.pb",
+                blockSignature: {
+                    signature:
+                        "608952bf163be090434462cf77ff0434d29211c1c45cdb293e483e43e6e64d25269b252ba2fd8cc23b61fec8be9e4c7477964b04e5bdb5d328ec91a100b49b0e",
+                    signer: "5015413e95dc46919679533fe808a563a0208ab40b174bf67d796605e1eb558a",
+                    signedAt: "1676336546"
+                }
+            },
+            {
+                srcUrl: "https://bd-mobilecoin-ledger.s3.amazonaws.com/thelongnowfoundation.mobilecoin.bdnodes.net/",
+                archiveFilename: "00/00/00/00/00/13/7b/0000000000137bd3.pb",
+                blockSignature: {
+                    signature:
+                        "11936c3ac35a95545bc22267b062e884c4dfd3ec8aa1b8878c973d4b204697773ad4831dd7ba5e7b4f7b04d1a0a7b7ad714ace136eb3201172f8dd020abcf30f",
+                    signer: "e5e131620e92386e78c8341843dfbc09105679995fef8a24ceb813ab4749e3f5",
+                    signedAt: "1676336546"
+                }
+            },
+            {
+                srcUrl: "https://s3-eu-central-1.amazonaws.com/production-namda-payments-ledger/node1.consensus.mob.production.namda.net/",
+                archiveFilename: "00/00/00/00/00/13/7b/0000000000137bd3.pb",
+                blockSignature: {
+                    signature:
+                        "2fcf30e1c3ca148c5fdb2e49d89b01cb0e2dbca7b8979d6b1991fc7387dec8fab1071acd290f6b35ec948e6faebc2859634a8918aafe1a030d5d8da1ef5ec30a",
+                    signer: "2d2ca1c4287f5cdde080d299d9f72910722d830935b5a74dcd17bb7e6e247f41",
+                    signedAt: "1676336546"
+                }
+            },
+            {
+                srcUrl: "https://s3-eu-central-1.amazonaws.com/production-namda-payments-ledger/node2.consensus.mob.production.namda.net/",
+                archiveFilename: "00/00/00/00/00/13/7b/0000000000137bd3.pb",
+                blockSignature: {
+                    signature:
+                        "ba8ffb4611d008ee3f3682e9a97e2e73f29140e59c1e1e3326829c1130781da374fac6e2e2799f11a79f2ba2bec3c26b6d1f6563b1efc7592823a6fa962f1e06",
+                    signer: "53d80cfe41d32ad6f7d2600e443f1499c4c70ad59d006fae14fc273421216c51",
                     signedAt: "1676336546"
                 }
             }
