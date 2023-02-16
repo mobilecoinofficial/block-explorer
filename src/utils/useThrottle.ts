@@ -8,6 +8,7 @@ export default function useThrottle(cb, delay) {
     useEffect(() => {
         cbRef.current = cb;
     });
+    // eslint-disable-next-line
     return useCallback(
         throttle((...args) => cbRef.current(...args), delay, options),
         [delay]

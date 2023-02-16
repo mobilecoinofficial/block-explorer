@@ -36,22 +36,27 @@ const HeaderNumber = ({ title, value }: HeaderNumberProps) => (
 );
 
 export default function LatestBlocks() {
+    // state used for dynamically rendering top content on scroll
     const scrollHeight = useRef(0);
-    const distanceBottom = useRef(0);
-    const tableEl = useRef(null);
     const [renderTopContents, setRenderTopContents] = useState(true);
+
+    // state used for blocks loading
     const { preLoadedBlocks, networkStatus } = useSyncData();
     const [blocks, setBlocks] = useState<Block[]>(preLoadedBlocks as Block[]);
     const [hasMoreBlocks, setHasMoreBlocks] = useState<boolean>(true);
     const [loading, setLoading] = useState(false);
+    const distanceBottom = useRef(0);
+
+    // state used for both
+    const tableEl = useRef(null);
 
     const loadMoreBlocks = useCallback(async () => {
         setLoading(true);
-        let blockIndex = parseInt(blocks[blocks.length - 1].index) - INITIAL_BLOCK_COUNT;
+        let blockIndex = Number(blocks[blocks.length - 1].index) - INITIAL_BLOCK_COUNT;
         let limit = INITIAL_BLOCK_COUNT;
         if (blockIndex < 0) {
             blockIndex = 0;
-            limit = parseInt(blocks[blocks.length - 1].index);
+            limit = Number(blocks[blocks.length - 1].index);
         }
 
         const moreBlocks = await getBlocks(blockIndex, limit);
@@ -65,9 +70,12 @@ export default function LatestBlocks() {
     }, [blocks]);
 
     const throttledContentListener = useThrottle(() => {
+        // ignore sideways scrolling
         if (scrollHeight.current - tableEl.current.scrollTop === 0) {
             return;
         }
+        // anytime we're scrolling down, hide the top content.
+        // any time we're scrolling up, show the top content.
         const scrollDirection =
             scrollHeight.current - tableEl.current.scrollTop > 0 ? "up" : "down";
         if (scrollDirection === "up" && !renderTopContents) {
@@ -76,7 +84,7 @@ export default function LatestBlocks() {
             setRenderTopContents(false);
         }
         scrollHeight.current = tableEl.current.scrollTop;
-    }, 250);
+    }, 500);
 
     const throttledBlocksListener = useThrottle(() => {
         const bottom = tableEl.current.scrollHeight - tableEl.current.clientHeight;
