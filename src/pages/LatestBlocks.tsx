@@ -35,12 +35,12 @@ const HeaderNumber = ({ title, value }: HeaderNumberProps) => (
 );
 
 export default function LatestBlocks() {
-    const [scrollHeight, setScrollHeight] = useState(0);
+    const scrollHeight = useRef(0);
+    const distanceBottom = useRef(0);
     const tableEl = useRef(null);
     const [renderTopContents, setRenderTopContents] = useState(true);
     const { preLoadedBlocks, networkStatus } = useSyncData();
     const [blocks, setBlocks] = useState<Block[]>(preLoadedBlocks as Block[]);
-    const [distanceBottom, setDistanceBottom] = useState(0);
     const [hasMoreBlocks, setHasMoreBlocks] = useState<boolean>(true);
     const [loading, setLoading] = useState(false);
 
@@ -64,24 +64,29 @@ export default function LatestBlocks() {
     }, [blocks]);
 
     const throttledContentListener = useThrottle(() => {
-        const scrollDirection = scrollHeight - tableEl.current.scrollTop > 0 ? "up" : "down";
+        const scrollDirection =
+            scrollHeight.current - tableEl.current.scrollTop > 0 ? "up" : "down";
         if (scrollDirection === "up" && !renderTopContents) {
             setRenderTopContents(true);
         } else if (scrollDirection === "down" && renderTopContents) {
             setRenderTopContents(false);
         }
-        setScrollHeight(tableEl.current.scrollTop);
-    }, 1000);
+        scrollHeight.current = tableEl.current.scrollTop;
+    }, 250);
 
     const throttledBlocksListener = useThrottle(() => {
         const bottom = tableEl.current.scrollHeight - tableEl.current.clientHeight;
-        if (!distanceBottom) {
-            setDistanceBottom(Math.round(bottom * 0.2));
+        if (!distanceBottom.current) {
+            distanceBottom.current = Math.round(bottom * 0.2);
         }
-        if (tableEl.current.scrollTop > bottom - distanceBottom && hasMoreBlocks && !loading) {
+        if (
+            tableEl.current.scrollTop > bottom - distanceBottom.current &&
+            hasMoreBlocks &&
+            !loading
+        ) {
             loadMoreBlocks();
         }
-    }, 200);
+    }, 100);
 
     useLayoutEffect(() => {
         const tableRef = tableEl.current;
@@ -111,19 +116,24 @@ export default function LatestBlocks() {
 
     return (
         <Container sx={{ overflow: "hidden" }}>
-            <Collapse in={renderTopContents} timeout={1000}>
-                <Grid container sx={{ marginBottom: 2, marginTop: 1 }}>
-                    <Grid item xs={6} justifyContent="center" display="flex">
-                        <HeaderNumber
-                            title="Number of Blocks"
-                            value={networkStatus?.localBlockHeight}
-                        />
+            <Collapse in={renderTopContents} timeout={800}>
+                <div>
+                    <Grid container sx={{ marginBottom: 2, marginTop: 1 }}>
+                        <Grid item xs={6} justifyContent="center" display="flex">
+                            <HeaderNumber
+                                title="Number of Blocks"
+                                value={networkStatus?.localBlockHeight}
+                            />
+                        </Grid>
+                        <Grid item xs={6} justifyContent="center" display="flex">
+                            <HeaderNumber
+                                title="Transaction Outputs"
+                                value={networkStatus?.numTxos}
+                            />
+                        </Grid>
                     </Grid>
-                    <Grid item xs={6} justifyContent="center" display="flex">
-                        <HeaderNumber title="Transaction Outputs" value={networkStatus?.numTxos} />
-                    </Grid>
-                </Grid>
-                <Typography variant="h4">Latest Blocks</Typography>
+                    <Typography variant="h4">Latest Blocks</Typography>
+                </div>
             </Collapse>
             <TableContainer
                 sx={{ maxHeight: `calc(100vh - ${getTableHeightToSubtract()}px)` }}
