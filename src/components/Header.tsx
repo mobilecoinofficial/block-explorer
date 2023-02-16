@@ -16,13 +16,13 @@ const Search = styled("div")(({ theme }) => ({
     "&:hover": {
         backgroundColor: alpha(theme.palette.common.white, 0.25)
     },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-        marginLeft: theme.spacing(3),
-        width: "auto"
-    }
+    // marginRight: theme.spacing(2),
+    marginLeft: theme.spacing(2),
+    width: "100%"
+    // [theme.breakpoints.up("sm")]: {
+    //     marginLeft: theme.spacing(1),
+    //     width: "auto"
+    // }
 }));
 
 const SearchIconWrapper = styled("div")(({ theme }) => ({
@@ -91,8 +91,8 @@ export default function Header({ syncData }: { syncData: SyncData }) {
     }
     return (
         <AppBar>
-            <Container maxWidth="xl">
-                <Toolbar disableGutters>
+            <Container maxWidth="lg">
+                <Toolbar disableGutters sx={{ display: "flex", justifyContent: "space-between" }}>
                     <Box
                         display="flex"
                         alignItems="center"
