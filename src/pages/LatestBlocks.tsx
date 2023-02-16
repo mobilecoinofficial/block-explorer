@@ -1,4 +1,3 @@
-// import InfiniteScroll from "react-infinite-scroll-component";
 import { useState, useCallback, useRef, useLayoutEffect } from "react";
 import {
     Box,
@@ -19,6 +18,7 @@ import { Block } from "api/types";
 import { INITIAL_BLOCK_COUNT } from "api/getRecentBlocks";
 import getBlocks from "api/getBlocks";
 import BlockRow from "components/BlockRow";
+import useThrottle from "utils/useThrottle";
 
 type HeaderNumberProps = {
     title: string;
@@ -35,6 +35,7 @@ const HeaderNumber = ({ title, value }: HeaderNumberProps) => (
 );
 
 export default function LatestBlocks() {
+    const [scrollHeight, setScrollHeight] = useState(0);
     const tableEl = useRef(null);
     const [renderTopContents, setRenderTopContents] = useState(true);
     const { preLoadedBlocks, networkStatus } = useSyncData();
@@ -62,34 +63,35 @@ export default function LatestBlocks() {
         setLoading(false);
     }, [blocks]);
 
-    const scrollListener = useCallback(() => {
-        if (tableEl.current.scrollTop === 0 && !renderTopContents) {
+    const throttledContentListener = useThrottle(() => {
+        const scrollDirection = scrollHeight - tableEl.current.scrollTop > 0 ? "up" : "down";
+        if (scrollDirection === "up" && !renderTopContents) {
             setRenderTopContents(true);
-        } else if (renderTopContents) {
+        } else if (scrollDirection === "down" && renderTopContents) {
             setRenderTopContents(false);
         }
+        setScrollHeight(tableEl.current.scrollTop);
+    }, 1000);
 
-        // if (tableEl.current.scrollTop != 0 && renderTopContents) {
-        // }
+    const throttledBlocksListener = useThrottle(() => {
         const bottom = tableEl.current.scrollHeight - tableEl.current.clientHeight;
-        // if you want to change distanceBottom every time new data is loaded
-        // don't use the if statement
         if (!distanceBottom) {
-            // calculate distanceBottom that works for you
             setDistanceBottom(Math.round(bottom * 0.2));
         }
         if (tableEl.current.scrollTop > bottom - distanceBottom && hasMoreBlocks && !loading) {
             loadMoreBlocks();
         }
-    }, [hasMoreBlocks, loadMoreBlocks, loading, distanceBottom, renderTopContents]);
+    }, 200);
 
     useLayoutEffect(() => {
         const tableRef = tableEl.current;
-        tableRef.addEventListener("scroll", scrollListener);
+        tableRef.addEventListener("scroll", throttledContentListener);
+        tableRef.addEventListener("scroll", throttledBlocksListener);
         return () => {
-            tableRef.removeEventListener("scroll", scrollListener);
+            tableRef.removeEventListener("scroll", throttledContentListener);
+            tableRef.removeEventListener("scroll", throttledBlocksListener);
         };
-    }, [scrollListener]);
+    }, [throttledContentListener, throttledBlocksListener]);
 
     const getTableHeightToSubtract = useCallback(() => {
         // This is a little brittle a needs to be adjusted if we modify the top of this page.
@@ -109,8 +111,7 @@ export default function LatestBlocks() {
 
     return (
         <Container sx={{ overflow: "hidden" }}>
-            {/* <div style={{ display: renderTopContents ? "inherit" : "none" }}> */}
-            <Collapse in={renderTopContents} timeout={600}>
+            <Collapse in={renderTopContents} timeout={1000}>
                 <Grid container sx={{ marginBottom: 2, marginTop: 1 }}>
                     <Grid item xs={6} justifyContent="center" display="flex">
                         <HeaderNumber
@@ -124,7 +125,6 @@ export default function LatestBlocks() {
                 </Grid>
                 <Typography variant="h4">Latest Blocks</Typography>
             </Collapse>
-            {/* </div> */}
             <TableContainer
                 sx={{ maxHeight: `calc(100vh - ${getTableHeightToSubtract()}px)` }}
                 ref={tableEl}
