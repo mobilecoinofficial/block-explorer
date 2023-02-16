@@ -10,7 +10,8 @@ import {
     TableHead,
     TableRow,
     TableBody,
-    Collapse
+    Collapse,
+    LinearProgress
 } from "@mui/material";
 
 import { useSyncData } from "pages/Layout";
@@ -56,11 +57,11 @@ export default function LatestBlocks() {
         const moreBlocks = await getBlocks(blockIndex, limit);
 
         setBlocks([...blocks, ...moreBlocks.reverse()]);
+        setLoading(false);
 
         if (blocks[blocks.length - 1].index === "0") {
             setHasMoreBlocks(false);
         }
-        setLoading(false);
     }, [blocks]);
 
     const throttledContentListener = useThrottle(() => {
@@ -77,7 +78,7 @@ export default function LatestBlocks() {
     const throttledBlocksListener = useThrottle(() => {
         const bottom = tableEl.current.scrollHeight - tableEl.current.clientHeight;
         if (!distanceBottom.current) {
-            distanceBottom.current = Math.round(bottom * 0.2);
+            distanceBottom.current = Math.round(bottom * 0.6);
         }
         if (
             tableEl.current.scrollTop > bottom - distanceBottom.current &&
@@ -86,7 +87,7 @@ export default function LatestBlocks() {
         ) {
             loadMoreBlocks();
         }
-    }, 100);
+    }, 50);
 
     useLayoutEffect(() => {
         const tableRef = tableEl.current;
@@ -156,6 +157,7 @@ export default function LatestBlocks() {
                         ))}
                     </TableBody>
                 </Table>
+                {loading && <LinearProgress />}
             </TableContainer>
         </Container>
     );
