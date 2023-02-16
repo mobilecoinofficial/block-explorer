@@ -1,4 +1,5 @@
 import { Outlet, useLoaderData, useOutletContext } from "react-router-dom";
+import { Box, Container, Toolbar } from "@mui/material";
 
 import { SyncData } from "components/SyncStatus";
 import Header from "components/Header";
@@ -6,10 +7,13 @@ import Header from "components/Header";
 export default function Layout() {
     const syncData = useLoaderData() as SyncData;
     return (
-        <>
+        <Container maxWidth="xl">
             <Header syncData={syncData} />
-            <Outlet context={syncData} />
-        </>
+            <Toolbar />
+            <Box paddingTop={2}>
+                <Outlet context={syncData} />
+            </Box>
+        </Container>
     );
 }
 

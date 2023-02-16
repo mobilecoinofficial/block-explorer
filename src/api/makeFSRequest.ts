@@ -1,9 +1,17 @@
+import axios from "axios";
 import camelCaseObjectKeys from "utils/camelize";
 
 // Request to full-service
 type makeFSRequestArgs = {
     method: string;
     params: Record<string, string | number> | null;
+};
+
+type FSResponse<T> = {
+    data: {
+        result?: T;
+        error?: { data: { details: string } };
+    };
 };
 
 type makeFSRequestResult<T> = {
@@ -25,27 +33,24 @@ export default async function makeFSRequest<T>({
     params
 }: makeFSRequestArgs): Promise<makeFSRequestResult<T>> {
     try {
-        const response = await fetch(
-            process.env.REACT_APP_FULL_SERVICE_URL ??
+        const response: FSResponse<T> = await axios({
+            method: "post",
+            headers,
+            url:
+                process.env.REACT_APP_FULL_SERVICE_URL ??
                 "https://readonly-fs-mainnet.mobilecoin.com/wallet/v2",
-            {
-                method: "POST",
-                headers,
-                body: JSON.stringify({
-                    method,
-                    ...FSRequiredArgs,
-                    params
-                })
-            }
-        );
+            data: JSON.stringify({
+                method,
+                ...FSRequiredArgs,
+                params
+            })
+        });
 
-        const result = await response.json();
-
-        if (result.error) {
-            throw new Error(result.error.data?.details);
+        if (response.data?.error) {
+            throw new Error(response.data?.error?.data.details);
         }
 
-        return { result: camelCaseObjectKeys(result.result) };
+        return { result: camelCaseObjectKeys(response.data.result) };
     } catch (e) {
         throw new Error(e);
     }

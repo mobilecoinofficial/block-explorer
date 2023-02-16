@@ -43,7 +43,7 @@ export default function SyncStatus({ syncData }: { syncData: SyncData }) {
     if (syncAlert.length) {
         return (
             <Tooltip title={syncAlert}>
-                <SyncProblemIcon fontSize="large" sx={{ marginLeft: "auto" }} color="warning" />
+                <SyncProblemIcon fontSize="large" sx={{ marginLeft: 1 }} color="warning" />
             </Tooltip>
         );
     }

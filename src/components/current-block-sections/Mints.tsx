@@ -6,10 +6,11 @@ import {
     TableContainer,
     TableBody,
     TableCell,
-    TableRow
+    TableRow,
+    Grid
 } from "@mui/material";
 
-import { StyledCard } from "pages/CurrentBlock";
+import { StyledCard, StyledCell } from "pages/CurrentBlock";
 import { MintInfoResponse } from "api/types";
 import { TOKENS, getTokenAmount } from "utils/tokens";
 import CopyableField from "components/CopyableField";
@@ -21,44 +22,46 @@ export default function Mints({ mintInfo }: { mintInfo: MintInfoResponse }) {
     }
 
     return (
-        <StyledCard>
-            <CardContent>
-                <Typography variant="h6" gutterBottom>
-                    Mints
-                </Typography>
-                <TableContainer>
-                    <Table>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Amount</TableCell>
-                                <TableCell>Token</TableCell>
-                                <TableCell>Nonce</TableCell>
-                                <TableCell>Recipient Address</TableCell>
-                                <TableCell>Mint Config</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {mintInfo.mintTxs.map(({ mintTx, mintConfig }) => (
-                                <TableRow key={mintTx.nonceHex}>
-                                    <TableCell>
-                                        {getTokenAmount(mintTx.tokenId, mintTx.amount)}
-                                    </TableCell>
-                                    <TableCell>{TOKENS[mintTx.tokenId].name}</TableCell>
-                                    <TableCell>
-                                        <CopyableField text={mintTx.nonceHex} />
-                                    </TableCell>
-                                    <TableCell>
-                                        <CopyableField text={mintTx.recipientB58Addr} />
-                                    </TableCell>
-                                    <TableCell>
-                                        <MintConfig config={mintConfig} />
-                                    </TableCell>
+        <Grid item xs={12}>
+            <StyledCard>
+                <CardContent>
+                    <Typography variant="h6" gutterBottom>
+                        Mints
+                    </Typography>
+                    <TableContainer>
+                        <Table size="small">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Amount</TableCell>
+                                    <TableCell>Token</TableCell>
+                                    <TableCell>Nonce</TableCell>
+                                    <TableCell>Recipient Address</TableCell>
+                                    <TableCell>Mint Config</TableCell>
                                 </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </CardContent>
-        </StyledCard>
+                            </TableHead>
+                            <TableBody>
+                                {mintInfo.mintTxs.map(({ mintTx, mintConfig }) => (
+                                    <TableRow key={mintTx.nonceHex}>
+                                        <StyledCell>
+                                            {getTokenAmount(mintTx.tokenId, mintTx.amount)}
+                                        </StyledCell>
+                                        <StyledCell>{TOKENS[mintTx.tokenId].name}</StyledCell>
+                                        <StyledCell>
+                                            <CopyableField text={mintTx.nonceHex} />
+                                        </StyledCell>
+                                        <StyledCell>
+                                            <CopyableField text={mintTx.recipientB58Addr} />
+                                        </StyledCell>
+                                        <StyledCell>
+                                            <MintConfig config={mintConfig} />
+                                        </StyledCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </CardContent>
+            </StyledCard>
+        </Grid>
     );
 }

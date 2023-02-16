@@ -49,7 +49,8 @@ const webpackConfig = (env): Configuration => ({
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: "./public/index.html"
+            template: "./public/index.html",
+            favicon: "./src/assets/favicon.ico"
         }),
         new ForkTsCheckerWebpackPlugin(),
         new ESLintPlugin({ files: "./src/**/*.{ts,tsx,js,jsx}" }),
