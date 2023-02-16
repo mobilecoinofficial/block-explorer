@@ -10,7 +10,7 @@ import {
     Grid
 } from "@mui/material";
 
-import { StyledCard } from "pages/CurrentBlock";
+import { StyledCard, StyledCell } from "pages/CurrentBlock";
 import { MintInfoResponse } from "api/types";
 import { TOKENS, getTokenAmount } from "utils/tokens";
 import CopyableField from "components/CopyableField";
@@ -29,7 +29,7 @@ export default function Mints({ mintInfo }: { mintInfo: MintInfoResponse }) {
                         Mints
                     </Typography>
                     <TableContainer>
-                        <Table>
+                        <Table size="small">
                             <TableHead>
                                 <TableRow>
                                     <TableCell>Amount</TableCell>
@@ -42,19 +42,19 @@ export default function Mints({ mintInfo }: { mintInfo: MintInfoResponse }) {
                             <TableBody>
                                 {mintInfo.mintTxs.map(({ mintTx, mintConfig }) => (
                                     <TableRow key={mintTx.nonceHex}>
-                                        <TableCell>
+                                        <StyledCell>
                                             {getTokenAmount(mintTx.tokenId, mintTx.amount)}
-                                        </TableCell>
-                                        <TableCell>{TOKENS[mintTx.tokenId].name}</TableCell>
-                                        <TableCell>
+                                        </StyledCell>
+                                        <StyledCell>{TOKENS[mintTx.tokenId].name}</StyledCell>
+                                        <StyledCell>
                                             <CopyableField text={mintTx.nonceHex} />
-                                        </TableCell>
-                                        <TableCell>
+                                        </StyledCell>
+                                        <StyledCell>
                                             <CopyableField text={mintTx.recipientB58Addr} />
-                                        </TableCell>
-                                        <TableCell>
+                                        </StyledCell>
+                                        <StyledCell>
                                             <MintConfig config={mintConfig} />
-                                        </TableCell>
+                                        </StyledCell>
                                     </TableRow>
                                 ))}
                             </TableBody>

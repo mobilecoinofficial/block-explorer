@@ -4,14 +4,13 @@ import {
     Table,
     TableContainer,
     TableBody,
-    TableCell,
     TableRow,
     Grid,
     useMediaQuery
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 
-import { StyledCard } from "pages/CurrentBlock";
+import { StyledCard, StyledCell } from "pages/CurrentBlock";
 import { Block } from "api/types";
 import CopyableField from "components/CopyableField";
 
@@ -40,16 +39,16 @@ export default function KeyImages({ blockContents }: { blockContents: Block }) {
                         Key Images
                     </Typography>
                     <TableContainer>
-                        <Table>
+                        <Table size="small">
                             <TableBody>
                                 {blockContents.keyImages.map((k) => (
                                     <TableRow key={k}>
-                                        <TableCell sx={{ borderBottom: "none" }}>
+                                        <StyledCell>
                                             <CopyableField
                                                 text={removeProtoBuffFromKeyImage(k)}
                                                 abbreviate={matches}
                                             />
-                                        </TableCell>
+                                        </StyledCell>
                                     </TableRow>
                                 ))}
                             </TableBody>

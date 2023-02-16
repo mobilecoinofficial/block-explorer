@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 
-import { StyledCard } from "pages/CurrentBlock";
+import { StyledCard, StyledCell } from "pages/CurrentBlock";
 import CopyableField from "components/CopyableField";
 import { Block, BurnTx, TxOut } from "api/types";
 import { getTokenAmount, TOKENS } from "utils/tokens";
@@ -31,38 +31,38 @@ export default function Txos({ blockContents, burns }: { blockContents: Block; b
         if (matchingBurn) {
             return (
                 <TableRow>
-                    <TableCell>
+                    <StyledCell>
                         <CopyableField text={txout.publicKey} abbreviate={matches} />
-                    </TableCell>
-                    <TableCell>
+                    </StyledCell>
+                    <StyledCell>
                         <Typography>Burn</Typography>
-                    </TableCell>
-                    <TableCell>
+                    </StyledCell>
+                    <StyledCell>
                         <>
                             {getTokenAmount(matchingBurn.tokenId, matchingBurn.amount)}
                             &nbsp;
                             {TOKENS[matchingBurn.tokenId].name}
                         </>
-                    </TableCell>
+                    </StyledCell>
                 </TableRow>
             );
         }
 
         return (
             <TableRow>
-                <TableCell>
+                <StyledCell>
                     <CopyableField text={txout.publicKey} abbreviate={matches} />
-                </TableCell>
-                <TableCell>
+                </StyledCell>
+                <StyledCell>
                     <CopyableField text={txout.targetKey} />
-                </TableCell>
-                <TableCell>
+                </StyledCell>
+                <StyledCell>
                     {txout.maskedAmount ? (
                         <CopyableField text={txout.maskedAmount.maskedValue.toString()} />
                     ) : (
                         "not available"
                     )}
-                </TableCell>
+                </StyledCell>
             </TableRow>
         );
     }
@@ -75,7 +75,7 @@ export default function Txos({ blockContents, burns }: { blockContents: Block; b
                         Transaction Outputs
                     </Typography>
                     <TableContainer>
-                        <Table>
+                        <Table size="small">
                             <TableHead>
                                 <TableRow>
                                     <TableCell>TXO Public Key</TableCell>

@@ -25,7 +25,16 @@ describe("get block", () => {
         const blockData = await getBlock("1");
         const paths = objectPaths(blockData);
         for (const path of paths) {
-            expect(typeof get(blockData, path)).toEqual(typeof get(expectedBlock, path));
+            try {
+                expect(typeof get(blockData, path)).toEqual(typeof get(expectedBlock, path));
+            } catch (e) {
+                throw new Error(
+                    `No match in path: '${path}'. Actual: ${get(blockData, path)}, Expected: ${get(
+                        expectedBlock,
+                        path
+                    )}`
+                );
+            }
         }
     });
 });
@@ -36,8 +45,18 @@ describe("get blocks", () => {
         expect(blocksData.length).toEqual(1);
         const block = blocksData[0];
         const paths = objectPaths(block);
+
         for (const path of paths) {
-            expect(typeof get(block, path)).toEqual(typeof get(expectedBlock, path));
+            try {
+                expect(typeof get(block, path)).toEqual(typeof get(expectedBlock, path));
+            } catch (e) {
+                throw new Error(
+                    `No match in path: '${path}'. Actual: ${get(block, path)}, Expected: ${get(
+                        expectedBlock,
+                        path
+                    )}`
+                );
+            }
         }
     });
 });
@@ -54,7 +73,16 @@ describe("get Recent blocks", () => {
         const indexingIntoArrayRegex = /\.[0-9]/;
         for (const path of paths) {
             if (!path.match(indexingIntoArrayRegex)) {
-                expect(typeof get(block, path)).toEqual(typeof get(expectedBlock, path));
+                try {
+                    expect(typeof get(block, path)).toEqual(typeof get(expectedBlock, path));
+                } catch (e) {
+                    throw new Error(
+                        `No match in path: '${path}'. Actual: ${get(block, path)}, Expected: ${get(
+                            expectedBlock,
+                            path
+                        )}`
+                    );
+                }
             }
         }
     });
@@ -66,7 +94,18 @@ describe("search blocks", () => {
         const foundBlock = await searchBlock(txoPubKeyShouldExist);
         const paths = objectPaths(foundBlock);
         for (const path of paths) {
-            expect(typeof get(foundBlock, path)).toEqual(typeof get(expectedSearchResult, path));
+            try {
+                expect(typeof get(foundBlock, path)).toEqual(
+                    typeof get(expectedSearchResult, path)
+                );
+            } catch (e) {
+                throw new Error(
+                    `No match in path: '${path}'. Actual: ${get(foundBlock, path)}, Expected: ${get(
+                        expectedSearchResult,
+                        path
+                    )}`
+                );
+            }
         }
     });
 });
@@ -76,7 +115,16 @@ describe("get network status", () => {
         const status = await getNetworkStatus();
         const paths = objectPaths(status);
         for (const path of paths) {
-            expect(typeof get(status, path)).toEqual(typeof get(expectedNetworkStatus, path));
+            try {
+                expect(typeof get(status, path)).toEqual(typeof get(expectedNetworkStatus, path));
+            } catch (e) {
+                throw new Error(
+                    `No match in path: '${path}'. Actual: ${get(status, path)}, Expected: ${get(
+                        expectedNetworkStatus,
+                        path
+                    )}`
+                );
+            }
         }
     });
 });
@@ -87,7 +135,16 @@ describe("get burns", () => {
         const burns = await getBurns(blockWithBurn);
         const paths = objectPaths(burns);
         for (const path of paths) {
-            expect(typeof get(burns, path)).toEqual(typeof get(expectedBurns, path));
+            try {
+                expect(typeof get(burns, path)).toEqual(typeof get(expectedBurns, path));
+            } catch (e) {
+                throw new Error(
+                    `No match in path: '${path}'. Actual: ${get(burns, path)}, Expected: ${get(
+                        expectedBurns,
+                        path
+                    )}`
+                );
+            }
         }
     });
 });
@@ -97,7 +154,16 @@ describe("get counters", () => {
         const counters = await getCounters();
         const paths = objectPaths(counters);
         for (const path of paths) {
-            expect(typeof get(counters, path)).toEqual(typeof get(expectedCounters, path));
+            try {
+                expect(typeof get(counters, path)).toEqual(typeof get(expectedCounters, path));
+            } catch (e) {
+                throw new Error(
+                    `No match in path: '${path}'. Actual: ${get(counters, path)}, Expected: ${get(
+                        expectedCounters,
+                        path
+                    )}`
+                );
+            }
         }
     });
 });
@@ -108,15 +174,36 @@ describe("get mint info", () => {
         const mintInfo = await getMintInfo(blockWithMintTx);
         const paths = objectPaths(mintInfo);
         for (const path of paths) {
-            expect(typeof get(mintInfo, path)).toEqual(typeof get(expectedMintTxInfo, path));
+            try {
+                expect(typeof get(mintInfo, path)).toEqual(typeof get(expectedMintTxInfo, path));
+            } catch (e) {
+                throw new Error(
+                    `No match in path: '${path}'. Actual: ${get(mintInfo, path)}, Expected: ${get(
+                        expectedMintTxInfo,
+                        path
+                    )}`
+                );
+            }
         }
     });
+
     test("It returns the correct data format for a block with mint config tx", async () => {
         const blockWithMintConfigTx = "880535";
         const mintInfo = await getMintInfo(blockWithMintConfigTx);
         const paths = objectPaths(mintInfo);
         for (const path of paths) {
-            expect(typeof get(mintInfo, path)).toEqual(typeof get(expectedMintConfigTxInfo, path));
+            try {
+                expect(typeof get(mintInfo, path)).toEqual(
+                    typeof get(expectedMintConfigTxInfo, path)
+                );
+            } catch (e) {
+                throw new Error(
+                    `No match in path: '${path}'. Actual: ${get(mintInfo, path)}, Expected: ${get(
+                        expectedMintConfigTxInfo,
+                        path
+                    )}`
+                );
+            }
         }
     });
 });
