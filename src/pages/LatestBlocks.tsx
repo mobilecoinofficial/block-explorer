@@ -65,8 +65,11 @@ export default function LatestBlocks() {
     }, [blocks]);
 
     const throttledContentListener = useThrottle(() => {
+        if (scrollHeight.current - tableEl.current.scrollTop === 0) {
+            return;
+        }
         const scrollDirection =
-            scrollHeight.current - tableEl.current.scrollTop >= 0 ? "up" : "down";
+            scrollHeight.current - tableEl.current.scrollTop > 0 ? "up" : "down";
         if (scrollDirection === "up" && !renderTopContents) {
             setRenderTopContents(true);
         } else if (scrollDirection === "down" && renderTopContents) {
