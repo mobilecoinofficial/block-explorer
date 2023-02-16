@@ -66,7 +66,7 @@ export default function LatestBlocks() {
 
     const throttledContentListener = useThrottle(() => {
         const scrollDirection =
-            scrollHeight.current - tableEl.current.scrollTop > 0 ? "up" : "down";
+            scrollHeight.current - tableEl.current.scrollTop >= 0 ? "up" : "down";
         if (scrollDirection === "up" && !renderTopContents) {
             setRenderTopContents(true);
         } else if (scrollDirection === "down" && renderTopContents) {
