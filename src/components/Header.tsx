@@ -1,5 +1,14 @@
 import React, { useState } from "react";
-import { AppBar, Box, Container, Toolbar, Typography, InputBase, Snackbar } from "@mui/material";
+import {
+    AppBar,
+    Box,
+    Container,
+    Toolbar,
+    Typography,
+    InputBase,
+    Snackbar,
+    Alert
+} from "@mui/material";
 import { styled, alpha } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate } from "react-router-dom";
@@ -16,13 +25,8 @@ const Search = styled("div")(({ theme }) => ({
     "&:hover": {
         backgroundColor: alpha(theme.palette.common.white, 0.25)
     },
-    // marginRight: theme.spacing(2),
     marginLeft: theme.spacing(2),
     width: "100%"
-    // [theme.breakpoints.up("sm")]: {
-    //     marginLeft: theme.spacing(1),
-    //     width: "auto"
-    // }
 }));
 
 const SearchIconWrapper = styled("div")(({ theme }) => ({
@@ -131,8 +135,20 @@ export default function Header({ syncData }: { syncData: SyncData }) {
                 open={snackbarOpen}
                 autoHideDuration={6000}
                 onClose={() => setSnackbarOpen(false)}
-                message="Unable to find matching block"
-            />
+                sx={{ backgroundColor: "theme.palette.warning.main" }}
+                anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "center"
+                }}
+            >
+                <Alert
+                    severity="error"
+                    onClose={() => setSnackbarOpen(false)}
+                    sx={{ border: "1px solid black" }}
+                >
+                    Unable to find matching block
+                </Alert>
+            </Snackbar>
         </AppBar>
     );
 }
