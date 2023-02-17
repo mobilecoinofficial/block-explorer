@@ -6,8 +6,6 @@ env:
   TARGET_CLUSTER: utility-r1-d-k8s
   CHART_REPO: https://harbor.mobilecoin.com/chartrepo/mobilecoinofficial-private
   CHART_PATH: ./.internal-ci/charts/block-explorer
-  REACT_APP_RESERVE_AUDITOR_URL: https://auditor.mobilecoin.foundation/api
-  REACT_APP_FULL_SERVICE_URL: https://readonly-fs-mainnet.mobilecoin.com/wallet/v2
 
 
 
