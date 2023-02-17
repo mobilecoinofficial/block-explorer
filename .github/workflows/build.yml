@@ -1,0 +1,105 @@
+name: build
+
+
+on:
+  push:
+    tags:
+    - 'v*.*.*'
+    paths-ignore:
+      - '.lefthook/**'
+      - '.vscode/**'
+      - 'docs/**'
+      - '**.md'
+
+env:
+  DOCKERHUB_ORG: mobilecoin
+  REPO_NAME: block-explorer
+  TARGET_CLUSTER: utility-r1-d-k8s
+  CHART_REPO: https://harbor.mobilecoin.com/chartrepo/mobilecoinofficial-public
+  CHART_PATH: ./.internal-ci/helm/block-explorer
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: [self-hosted, Linux, small]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Generate Docker Tags
+        id: docker_meta
+        uses: docker/metadata-action@v4
+        with:
+          flavor: latest=true
+          images: mobilecoin/block-explorer
+          tags: |
+            type=ref,event=branch
+            type=semver,pattern=v{{version}}
+            type=sha
+    
+      - name: Setup Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and publish to DockerHub
+        uses: docker/build-push-action@v3
+        id: docker-push
+        with:
+          context: .
+          file: .internal-ci/docker/Dockerfile.block-explorer
+          labels: ${{ steps.docker_meta.outputs.labels }}
+          tags: ${{ steps.docker_meta.outputs.tags }}
+          push: true
+
+      - name: Package and publish chart
+        uses: mobilecoinofficial/gha-k8s-toolbox@v1
+        with:
+          action: helm-publish
+          chart_repo_username: ${{ secrets.HARBOR_USERNAME }}
+          chart_repo_password: ${{ secrets.HARBOR_PASSWORD }}
+          chart_repo: ${{ env.CHART_REPO }}
+          chart_app_version: ${{ github.ref_name }}
+          chart_version: ${{ github.ref_name }}
+          chart_path: ${{ env.CHART_PATH }}
+
+  deploy-stage:
+    needs:
+      - build
+    runs-on: [self-hosted, Linux, small]
+    steps:
+      - name: Create namespace
+        uses: mobilecoinofficial/gha-k8s-toolbox@v1
+        with:
+          action: namespace-create
+          namespace: block-explorer-stage
+          rancher_cluster: ${{ env.TARGET_CLUSTER }}
+          rancher_url: ${{ secrets.RANCHER_B_URL }}
+          rancher_token: ${{ secrets.RANCHER_B_TOKEN }}
+
+      - name: Deploy Staging
+        uses: mobilecoinofficial/gha-k8s-toolbox@v1
+        with:
+          action: helm-deploy
+          chart_repo: ${{ env.CHART_REPO }}
+          chart_name: ${{ env.REPO_NAME }}
+          chart_set: |
+            --set=ingress.host=block-explorer.stage.mobilecoin.foundation
+          chart_version: ${{ github.ref_name }}
+          release_name: ${{ env.REPO_NAME }}
+          namespace: block-explorer-stage
+          rancher_cluster: ${{ env.TARGET_CLUSTER }}
+          rancher_url: ${{ secrets.RANCHER_B_URL }}
+          rancher_token: ${{ secrets.RANCHER_B_TOKEN }}
+
