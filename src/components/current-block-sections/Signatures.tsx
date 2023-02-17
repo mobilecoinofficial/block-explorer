@@ -6,13 +6,21 @@ import {
     TableHead,
     TableBody,
     TableCell,
-    TableRow
+    TableRow,
+    Grid
 } from "@mui/material";
-import moment from "moment";
 
-import { StyledCard } from "pages/CurrentBlock";
+import { StyledCard, StyledCell } from "pages/CurrentBlock";
 import CopyableField from "components/CopyableField";
 import { Block } from "api/types";
+import CollapsableDate from "components/CollapsableDate";
+
+function stripNodeURl(url: string): string {
+    // anything following the first instance of .com/ and string trailing /
+    const nodeText = /(?<=\.com\/)(.*)(?=\/)/;
+    const match = url.match(nodeText);
+    return match ? match[0] : url;
+}
 
 export default function signatures({ blockContents }: { blockContents: Block }) {
     if (!blockContents.signatures?.length) {
@@ -20,42 +28,48 @@ export default function signatures({ blockContents }: { blockContents: Block }) 
     }
 
     return (
-        <StyledCard>
-            <CardContent>
-                <Typography variant="h6" gutterBottom>
-                    Signatures
-                </Typography>
-                <TableContainer>
-                    <Table>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>URL</TableCell>
-                                <TableCell>Signer</TableCell>
-                                <TableCell>Signature</TableCell>
-                                <TableCell>Timestamp</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {blockContents.signatures.map((sig) => (
-                                <TableRow key={sig.blockSignature.signature}>
-                                    <TableCell>{sig.srcUrl}</TableCell>
-                                    <TableCell>
-                                        <CopyableField text={sig.blockSignature.signer} />
-                                    </TableCell>
-                                    <TableCell>
-                                        <CopyableField text={sig.blockSignature.signature} />
-                                    </TableCell>
-                                    <TableCell>
-                                        {moment(
-                                            parseInt(sig.blockSignature.signedAt) * 1000
-                                        ).format("MMM D YYYY, h:mm:ss A")}
-                                    </TableCell>
+        <Grid item xs={12}>
+            <StyledCard>
+                <CardContent>
+                    <Typography variant="h6" gutterBottom>
+                        Signatures
+                    </Typography>
+                    <TableContainer>
+                        <Table size="small">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>URL</TableCell>
+                                    <TableCell>Signer</TableCell>
+                                    <TableCell>Signature</TableCell>
+                                    <TableCell>Timestamp</TableCell>
                                 </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </CardContent>
-        </StyledCard>
+                            </TableHead>
+                            <TableBody>
+                                {blockContents.signatures.map((sig) => (
+                                    <TableRow key={sig.blockSignature.signature}>
+                                        <StyledCell>{stripNodeURl(sig.srcUrl)}</StyledCell>
+                                        <StyledCell>
+                                            <CopyableField text={sig.blockSignature.signer} />
+                                        </StyledCell>
+                                        <StyledCell>
+                                            <CopyableField text={sig.blockSignature.signature} />
+                                        </StyledCell>
+                                        <StyledCell>
+                                            <CollapsableDate
+                                                date={
+                                                    new Date(
+                                                        parseInt(sig.blockSignature.signedAt) * 1000
+                                                    )
+                                                }
+                                            />
+                                        </StyledCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </CardContent>
+            </StyledCard>
+        </Grid>
     );
 }

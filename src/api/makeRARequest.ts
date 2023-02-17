@@ -1,3 +1,5 @@
+import axios from "axios";
+
 import camelCaseObjectKeys from "utils/camelize";
 
 // Request to Reserve Auditor
@@ -14,20 +16,19 @@ export default async function makeRARequest<T>({
     route
 }: makeRARequestArgs): Promise<makeRARequestResult<T>> {
     try {
-        const response = await fetch(
-            `${
+        const response = await axios({
+            method: "get",
+            url: `${
                 process.env.REACT_APP_RESERVE_AUDITOR_URL ??
                 "https://auditor.mobilecoin.foundation/api"
-            }/${route}`,
-            {
-                method: "GET"
-            }
-        );
+            }/${route}`
+        });
+
         if (response.status === 404) {
             throw new Error("RESERVE_AUDITOR_BLOCK_NOT_FOUND_ERROR");
         }
-        const result = await response.json();
-        return { result: camelCaseObjectKeys(result) };
+
+        return { result: camelCaseObjectKeys(response.data) };
     } catch (e) {
         throw new Error(e);
     }
