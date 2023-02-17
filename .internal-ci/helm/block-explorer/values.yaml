@@ -14,23 +14,17 @@ imagePullSecrets:
 nameOverride: ""
 fullnameOverride: ""
 
-podAnnotations: {}
+podAnnotations:
+  fluentbit.io/include: 'true'
+  fluentbit.io/exclude-jaeger-agent: 'true'
 
 podSecurityContext: {}
   # fsGroup: 2000
  
-
-service:
-  type: ClusterIP
-  port: 8080
-
 ingress:
-  enabled: true
-  className: ""
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
-  host: block-explorer.mobilecoin.com
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production-http
+  host: ""
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

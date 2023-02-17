@@ -10,10 +10,8 @@ spec:
       {{- include "block-explorer.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
       annotations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+        {{- toYaml .Values.podAnnotations | nindent 8 }}
       labels:
         {{- include "block-explorer.selectorLabels" . | nindent 8 }}
     spec:

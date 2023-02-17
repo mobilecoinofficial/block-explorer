@@ -1,0 +1,38 @@
+name: (Manual) Deploy
+
+run-name: Deploy ${{ github.ref_name }} to production.
+
+on:
+  workflow_dispatch: {}
+
+env:
+  TARGET_CLUSTER: utility-r1-d-k8s
+  CHART_REPO: https://harbor.mobilecoin.com/chartrepo/mobilecoinofficial-public
+
+jobs:
+  deploy-prod:
+    runs-on: [self-hosted, Linux, small]
+    steps:
+      - name: Create namespace
+        uses: mobilecoinofficial/gha-k8s-toolbox@v1
+        with:
+          action: namespace-create
+          namespace: block-explorer-prod
+          rancher_cluster: ${{ env.TARGET_CLUSTER }}
+          rancher_url: ${{ secrets.RANCHER_B_URL }}
+          rancher_token: ${{ secrets.RANCHER_B_TOKEN }}
+
+      - name: Deploy Prod
+        uses: mobilecoinofficial/gha-k8s-toolbox@v1
+        with:
+          action: helm-deploy
+          chart_repo: ${{ env.CHART_REPO }}
+          chart_name: block-explorer
+          chart_set: |
+            --set=ingress.host=block-explorer.mobilecoin.foundation
+          chart_version: ${{ github.ref_name }}
+          release_name: block-explorer
+          namespace: block-explorer-prod
+          rancher_cluster: ${{ env.TARGET_CLUSTER }}
+          rancher_url: ${{ secrets.RANCHER_B_URL }}
+          rancher_token: ${{ secrets.RANCHER_B_TOKEN }}
