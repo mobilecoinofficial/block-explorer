@@ -30,6 +30,7 @@ on:
     # never pushes here
     branches:
       - feature/
+      - cicd-work # remove me later
 
 jobs:
   build:
