@@ -19,11 +19,8 @@ const StyledTableCell = styled(TableCell)(() => ({
     borderBottom: borderStyle
 }));
 
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
+const StyledTableRow = styled(TableRow)(() => ({
     backgroundColor: "white",
-    "&:hover": {
-        backgroundColor: theme.palette.action.hover
-    },
     cursor: "pointer"
 }));
 
@@ -44,7 +41,7 @@ export default function BlockRow({ block }: BlockRowProps) {
     }
 
     return (
-        <StyledTableRow onClick={goToBlock}>
+        <StyledTableRow onClick={goToBlock} hover>
             <StyledTableCell style={{ borderLeft: borderStyle }}>{block.index}</StyledTableCell>
             <StyledTableCell>
                 <CopyableField text={block.contentsHash} />

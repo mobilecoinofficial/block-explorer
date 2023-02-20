@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { styled, alpha } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 import SyncStatus, { SyncData } from "components/SyncStatus";
 import MobileCoinLogo from "components/MobileCoinLogo";
@@ -90,9 +90,6 @@ export default function Header({ syncData }: { syncData: SyncData }) {
         setSnackbarOpen(true);
     }
 
-    function goHome() {
-        navigate("/blocks");
-    }
     return (
         <AppBar>
             <Container maxWidth="lg">
@@ -100,8 +97,9 @@ export default function Header({ syncData }: { syncData: SyncData }) {
                     <Box
                         display="flex"
                         alignItems="center"
-                        onClick={goHome}
-                        sx={{ cursor: "pointer" }}
+                        sx={{ color: "white", textDecoration: "none" }}
+                        component={Link}
+                        to="/blocks"
                     >
                         <MobileCoinLogo />
                         <Typography
