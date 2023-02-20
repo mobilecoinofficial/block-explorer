@@ -1,4 +1,4 @@
-import { useLoaderData, useNavigate } from "react-router-dom";
+import { useLoaderData, Link } from "react-router-dom";
 import { Box, Typography, Card, Tooltip, Button, Grid, Container, TableCell } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
@@ -26,7 +26,6 @@ export const StyledCell = styled(TableCell)(() => ({
 }));
 
 export default function BlockPage() {
-    const navigate = useNavigate();
     const { networkStatus } = useSyncData();
     const { blockContents, mintInfo, burns } = useLoaderData() as {
         blockContents: Block;
@@ -35,14 +34,8 @@ export default function BlockPage() {
     };
 
     const isPrevDisabled = Number(blockContents.index) === 0;
-    function goPrevious() {
-        navigate(`/blocks/${Number(blockContents.index) - 1}`);
-    }
     const isNextDisabled =
         Number(networkStatus.networkBlockHeight) <= Number(blockContents.index) + 1;
-    function goNext() {
-        navigate(`/blocks/${Number(blockContents.index) + 1}`);
-    }
 
     return (
         <Container>
@@ -58,10 +51,11 @@ export default function BlockPage() {
                     ) : (
                         <Tooltip title="Previous Block">
                             <Button
-                                onClick={goPrevious}
                                 variant="outlined"
                                 size="small"
                                 sx={{ minWidth: 0, marginRight: 1 }}
+                                component={Link}
+                                to={`/blocks/${Number(blockContents.index) - 1}`}
                             >
                                 <NavigateBeforeIcon color="primary" fontSize="small" />
                             </Button>
@@ -72,10 +66,11 @@ export default function BlockPage() {
                     ) : (
                         <Tooltip title="Next Block">
                             <Button
-                                onClick={goNext}
                                 variant="outlined"
                                 size="small"
                                 sx={{ minWidth: 0 }}
+                                component={Link}
+                                to={`/blocks/${Number(blockContents.index) + 1}`}
                             >
                                 <NavigateNextIcon color="primary" fontSize="small" />
                             </Button>
