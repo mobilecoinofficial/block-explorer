@@ -8,6 +8,7 @@ import {
     Typography
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { useSearchParams } from "react-router-dom";
 
 import CopyableField from "components/CopyableField";
 import { base64PEMEncode } from "utils/bytesToPEM";
@@ -18,13 +19,36 @@ const StyledAccordion = styled(Accordion)(() => ({
     boxShadow: "none"
 }));
 
+export const openConfigIdParamName = "open_config_ids";
+
 export default function MintConfig({ config }: { config: MintConfig }) {
     const sortedSigs = config.signerSet.signers.sort();
+    const [params, setParams] = useSearchParams();
+    const openConfigIds = params.getAll(`${openConfigIdParamName}[]`) ?? [];
+
+    const handleChange = (id: number) => (_event: React.SyntheticEvent, isExpanded: boolean) => {
+        if (isExpanded) {
+            params.append(`${openConfigIdParamName}[]`, `${id}`);
+            setParams(params);
+        } else {
+            const newIds = openConfigIds.filter((oid) => oid !== `${id}`);
+            params.delete(`${openConfigIdParamName}[]`);
+            if (newIds.length) {
+                for (const newId of newIds) {
+                    params.append(`${openConfigIdParamName}[]`, `${newId}`);
+                }
+            }
+        }
+        setParams(params);
+    };
 
     return (
-        <StyledAccordion>
+        <StyledAccordion
+            expanded={openConfigIds.includes(`${config.id}`) ?? false}
+            onChange={handleChange(config.id)}
+        >
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography>Mint Config</Typography>
+                <Typography>Config {config.id}</Typography>
             </AccordionSummary>
             <AccordionDetails>
                 <Box>

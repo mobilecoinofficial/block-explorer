@@ -13,6 +13,7 @@ import {
     Grid,
     Box
 } from "@mui/material";
+import { Link } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
@@ -20,7 +21,6 @@ import { StyledCard, StyledCell } from "pages/CurrentBlock";
 import { MintInfoResponse } from "api/types";
 import { TOKENS, getTokenAmount } from "utils/tokens";
 import CopyableField from "components/CopyableField";
-import MintConfig from "components/current-block-sections/MintConfig";
 import { base64PEMEncode } from "utils/bytesToPEM";
 
 const StyledAccordion = styled(Accordion)(() => ({
@@ -52,48 +52,65 @@ export default function Mints({ mintInfo }: { mintInfo: MintInfoResponse }) {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {mintInfo.mintTxs.map(({ mintTx, mintConfig, mintTxSigners }) => (
-                                    <TableRow key={mintTx.nonceHex}>
-                                        <StyledCell>
-                                            {getTokenAmount(mintTx.tokenId, mintTx.amount)}
-                                        </StyledCell>
-                                        <StyledCell>{TOKENS[mintTx.tokenId].name}</StyledCell>
-                                        <StyledCell>
-                                            <CopyableField text={mintTx.nonceHex} />
-                                        </StyledCell>
-                                        <StyledCell>
-                                            <CopyableField text={mintTx.recipientB58Addr} />
-                                        </StyledCell>
-                                        <StyledCell>
-                                            <StyledAccordion>
-                                                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                                                    <Typography>Signers</Typography>
-                                                </AccordionSummary>
-                                                <AccordionDetails>
-                                                    <Box>
-                                                        <Box
-                                                            display="flex"
-                                                            justifyContent={"space-between"}
-                                                            sx={{ marginTop: 1 }}
-                                                        >
-                                                            <Box>
-                                                                {mintTxSigners.sort().map((s) => (
-                                                                    <CopyableField
-                                                                        text={base64PEMEncode(s)}
-                                                                        key={base64PEMEncode(s)}
-                                                                    />
-                                                                ))}
+                                {mintInfo.mintTxs.map(
+                                    ({ mintTx, mintConfig, mintTxSigners, mintConfigTx }) => (
+                                        <TableRow key={mintTx.nonceHex}>
+                                            <StyledCell>
+                                                {getTokenAmount(mintTx.tokenId, mintTx.amount)}
+                                            </StyledCell>
+                                            <StyledCell>{TOKENS[mintTx.tokenId].name}</StyledCell>
+                                            <StyledCell>
+                                                <CopyableField text={mintTx.nonceHex} />
+                                            </StyledCell>
+                                            <StyledCell>
+                                                <CopyableField text={mintTx.recipientB58Addr} />
+                                            </StyledCell>
+                                            <StyledCell>
+                                                <StyledAccordion>
+                                                    <AccordionSummary
+                                                        expandIcon={<ExpandMoreIcon />}
+                                                    >
+                                                        <Typography>Signers</Typography>
+                                                    </AccordionSummary>
+                                                    <AccordionDetails>
+                                                        <Box>
+                                                            <Box
+                                                                display="flex"
+                                                                justifyContent={"space-between"}
+                                                                sx={{ marginTop: 1 }}
+                                                            >
+                                                                <Box>
+                                                                    {mintTxSigners
+                                                                        .sort()
+                                                                        .map((s) => (
+                                                                            <CopyableField
+                                                                                text={base64PEMEncode(
+                                                                                    s
+                                                                                )}
+                                                                                key={base64PEMEncode(
+                                                                                    s
+                                                                                )}
+                                                                            />
+                                                                        ))}
+                                                                </Box>
                                                             </Box>
                                                         </Box>
-                                                    </Box>
-                                                </AccordionDetails>
-                                            </StyledAccordion>
-                                        </StyledCell>
-                                        <StyledCell>
-                                            <MintConfig config={mintConfig} />
-                                        </StyledCell>
-                                    </TableRow>
-                                ))}
+                                                    </AccordionDetails>
+                                                </StyledAccordion>
+                                            </StyledCell>
+                                            <StyledCell>
+                                                <Link
+                                                    to={`/blocks/${mintConfigTx.blockIndex}?open_config_ids%5B%5D=${mintConfig.id}`}
+                                                    style={{
+                                                        color: "black"
+                                                    }}
+                                                >
+                                                    Block {mintConfigTx.blockIndex}
+                                                </Link>
+                                            </StyledCell>
+                                        </TableRow>
+                                    )
+                                )}
                             </TableBody>
                         </Table>
                     </TableContainer>

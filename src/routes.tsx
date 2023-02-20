@@ -14,6 +14,10 @@ const router = createBrowserRouter([
     {
         element: <Layout />,
         errorElement: <ErrorPage />,
+        shouldRevalidate: ({ nextUrl }) => {
+            // don't re-fetch header/blocks data if we are navigating between blocks
+            return nextUrl.pathname === "/blocks";
+        },
         loader: async () => {
             const networkStatus = await getNetworkStatus();
             const preLoadedBlocks = await getRecentBlocks();
@@ -31,10 +35,15 @@ const router = createBrowserRouter([
             },
             {
                 path: "blocks",
+                // receives blocks data from outlet context
                 element: <LatestBlocks />
             },
             {
                 path: "blocks/:blockIndex",
+                shouldRevalidate: ({ nextParams, currentParams }) => {
+                    // don't re-fetch data if we are just changing query params
+                    return nextParams.blockIndex !== currentParams.blockIndex;
+                },
                 loader: async ({ params }) => {
                     const blockContents = await getBlock(params.blockIndex);
                     const mintInfo = await getMintInfo(params.blockIndex);

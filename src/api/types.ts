@@ -114,6 +114,7 @@ export type MintConfigTx = {
 };
 
 export type MintConfig = {
+    id: number;
     tokenId: number;
     signerSet: {
         signers: number[][];
