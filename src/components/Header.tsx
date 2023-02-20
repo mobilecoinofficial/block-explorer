@@ -97,7 +97,7 @@ export default function Header({ syncData }: { syncData: SyncData }) {
                     <Box
                         display="flex"
                         alignItems="center"
-                        sx={{ cursor: "pointer", color: "white", textDecoration: "none" }}
+                        sx={{ color: "white", textDecoration: "none" }}
                         component={Link}
                         to="/blocks"
                     >
