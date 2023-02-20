@@ -19,6 +19,8 @@ const StyledAccordion = styled(Accordion)(() => ({
 }));
 
 export default function MintConfig({ config }: { config: MintConfig }) {
+    const sortedSigs = config.signerSet.signers.sort();
+
     return (
         <StyledAccordion>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
@@ -34,7 +36,7 @@ export default function MintConfig({ config }: { config: MintConfig }) {
                     <Box display="flex" justifyContent={"space-between"} sx={{ marginTop: 1 }}>
                         <Typography color="text.secondary">Signers</Typography>
                         <Box>
-                            {config.signerSet.signers.map((s) => (
+                            {sortedSigs.map((s) => (
                                 <CopyableField text={base64PEMEncode(s)} key={base64PEMEncode(s)} />
                             ))}
                         </Box>

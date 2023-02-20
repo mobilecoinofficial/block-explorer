@@ -1,4 +1,7 @@
 import {
+    Accordion,
+    AccordionSummary,
+    AccordionDetails,
     Typography,
     CardContent,
     Table,
@@ -7,14 +10,22 @@ import {
     TableBody,
     TableCell,
     TableRow,
-    Grid
+    Grid,
+    Box
 } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import { StyledCard, StyledCell } from "pages/CurrentBlock";
 import { MintInfoResponse } from "api/types";
 import { TOKENS, getTokenAmount } from "utils/tokens";
 import CopyableField from "components/CopyableField";
 import MintConfig from "components/current-block-sections/MintConfig";
+import { base64PEMEncode } from "utils/bytesToPEM";
+
+const StyledAccordion = styled(Accordion)(() => ({
+    boxShadow: "none"
+}));
 
 export default function Mints({ mintInfo }: { mintInfo: MintInfoResponse }) {
     if (!mintInfo.mintTxs.length) {
@@ -36,11 +47,12 @@ export default function Mints({ mintInfo }: { mintInfo: MintInfoResponse }) {
                                     <TableCell>Token</TableCell>
                                     <TableCell>Nonce</TableCell>
                                     <TableCell>Recipient Address</TableCell>
+                                    <TableCell>Signers</TableCell>
                                     <TableCell>Mint Config</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {mintInfo.mintTxs.map(({ mintTx, mintConfig }) => (
+                                {mintInfo.mintTxs.map(({ mintTx, mintConfig, mintTxSigners }) => (
                                     <TableRow key={mintTx.nonceHex}>
                                         <StyledCell>
                                             {getTokenAmount(mintTx.tokenId, mintTx.amount)}
@@ -51,6 +63,31 @@ export default function Mints({ mintInfo }: { mintInfo: MintInfoResponse }) {
                                         </StyledCell>
                                         <StyledCell>
                                             <CopyableField text={mintTx.recipientB58Addr} />
+                                        </StyledCell>
+                                        <StyledCell>
+                                            <StyledAccordion>
+                                                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                                                    <Typography>Signers</Typography>
+                                                </AccordionSummary>
+                                                <AccordionDetails>
+                                                    <Box>
+                                                        <Box
+                                                            display="flex"
+                                                            justifyContent={"space-between"}
+                                                            sx={{ marginTop: 1 }}
+                                                        >
+                                                            <Box>
+                                                                {mintTxSigners.sort().map((s) => (
+                                                                    <CopyableField
+                                                                        text={base64PEMEncode(s)}
+                                                                        key={base64PEMEncode(s)}
+                                                                    />
+                                                                ))}
+                                                            </Box>
+                                                        </Box>
+                                                    </Box>
+                                                </AccordionDetails>
+                                            </StyledAccordion>
                                         </StyledCell>
                                         <StyledCell>
                                             <MintConfig config={mintConfig} />

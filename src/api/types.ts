@@ -137,6 +137,7 @@ export type MintWithConfig = {
     mintTx: MintTx;
     mintConfig: MintConfig;
     mintConfigTx: MintConfigTx;
+    mintTxSigners: number[][];
 };
 
 export type MintConfigTxWithConfigs = {
