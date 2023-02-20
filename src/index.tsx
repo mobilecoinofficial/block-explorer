@@ -7,7 +7,7 @@ import { RouterProvider } from "react-router-dom";
 import "./style.css";
 
 import router from "routes";
-
+// adding this comment just to test deploying
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(
     <React.StrictMode>
