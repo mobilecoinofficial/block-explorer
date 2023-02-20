@@ -15,6 +15,7 @@ import { MintInfoResponse } from "api/types";
 import { TOKENS, getTokenAmount } from "utils/tokens";
 import CopyableField from "components/CopyableField";
 import MintConfig from "components/current-block-sections/MintConfig";
+import { TableCellContents } from "components/current-block-sections/Mints";
 
 export default function MintConfigTxs({ mintInfo }: { mintInfo: MintInfoResponse }) {
     if (!mintInfo.mintConfigTxs.length) {
@@ -40,15 +41,22 @@ export default function MintConfigTxs({ mintInfo }: { mintInfo: MintInfoResponse
                             </TableHead>
                             <TableBody>
                                 {mintInfo.mintConfigTxs.map((mintConfigTx) => (
-                                    <TableRow key={mintConfigTx.mintConfigTx.nonceHex}>
+                                    <TableRow
+                                        key={mintConfigTx.mintConfigTx.nonceHex}
+                                        sx={{ verticalAlign: "top" }}
+                                    >
                                         <StyledCell>
-                                            {getTokenAmount(
-                                                mintConfigTx.mintConfigTx.tokenId,
-                                                mintConfigTx.mintConfigTx.totalMintLimit
-                                            )}
+                                            <TableCellContents>
+                                                {getTokenAmount(
+                                                    mintConfigTx.mintConfigTx.tokenId,
+                                                    mintConfigTx.mintConfigTx.totalMintLimit
+                                                )}
+                                            </TableCellContents>
                                         </StyledCell>
                                         <StyledCell>
-                                            {TOKENS[mintConfigTx.mintConfigTx.tokenId].name}
+                                            <TableCellContents>
+                                                {TOKENS[mintConfigTx.mintConfigTx.tokenId].name}
+                                            </TableCellContents>
                                         </StyledCell>
                                         <StyledCell>
                                             <CopyableField

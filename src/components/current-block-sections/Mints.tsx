@@ -23,8 +23,14 @@ import { TOKENS, getTokenAmount } from "utils/tokens";
 import CopyableField from "components/CopyableField";
 import { base64PEMEncode } from "utils/bytesToPEM";
 
-const StyledAccordion = styled(Accordion)(() => ({
+export const StyledAccordion = styled(Accordion)(() => ({
     boxShadow: "none"
+}));
+
+export const TableCellContents = styled(Box)(() => ({
+    height: 36,
+    display: "flex",
+    alignItems: "center"
 }));
 
 export default function Mints({ mintInfo }: { mintInfo: MintInfoResponse }) {
@@ -54,11 +60,20 @@ export default function Mints({ mintInfo }: { mintInfo: MintInfoResponse }) {
                             <TableBody>
                                 {mintInfo.mintTxs.map(
                                     ({ mintTx, mintConfig, mintTxSigners, mintConfigTx }) => (
-                                        <TableRow key={mintTx.nonceHex}>
+                                        <TableRow
+                                            key={mintTx.nonceHex}
+                                            sx={{ verticalAlign: "top" }}
+                                        >
                                             <StyledCell>
-                                                {getTokenAmount(mintTx.tokenId, mintTx.amount)}
+                                                <TableCellContents>
+                                                    {getTokenAmount(mintTx.tokenId, mintTx.amount)}
+                                                </TableCellContents>
                                             </StyledCell>
-                                            <StyledCell>{TOKENS[mintTx.tokenId].name}</StyledCell>
+                                            <StyledCell>
+                                                <TableCellContents>
+                                                    {TOKENS[mintTx.tokenId].name}
+                                                </TableCellContents>
+                                            </StyledCell>
                                             <StyledCell>
                                                 <CopyableField text={mintTx.nonceHex} />
                                             </StyledCell>
@@ -66,9 +81,10 @@ export default function Mints({ mintInfo }: { mintInfo: MintInfoResponse }) {
                                                 <CopyableField text={mintTx.recipientB58Addr} />
                                             </StyledCell>
                                             <StyledCell>
-                                                <StyledAccordion>
+                                                <StyledAccordion disableGutters>
                                                     <AccordionSummary
                                                         expandIcon={<ExpandMoreIcon />}
+                                                        sx={{ minHeight: 0, height: 36 }}
                                                     >
                                                         <Typography>Signers</Typography>
                                                     </AccordionSummary>
@@ -99,14 +115,16 @@ export default function Mints({ mintInfo }: { mintInfo: MintInfoResponse }) {
                                                 </StyledAccordion>
                                             </StyledCell>
                                             <StyledCell>
-                                                <Link
-                                                    to={`/blocks/${mintConfigTx.blockIndex}?open_config_ids%5B%5D=${mintConfig.id}`}
-                                                    style={{
-                                                        color: "black"
-                                                    }}
-                                                >
-                                                    Block {mintConfigTx.blockIndex}
-                                                </Link>
+                                                <TableCellContents>
+                                                    <Link
+                                                        to={`/blocks/${mintConfigTx.blockIndex}?open_config_ids%5B%5D=${mintConfig.id}`}
+                                                        style={{
+                                                            color: "black"
+                                                        }}
+                                                    >
+                                                        Block {mintConfigTx.blockIndex}
+                                                    </Link>
+                                                </TableCellContents>
                                             </StyledCell>
                                         </TableRow>
                                     )

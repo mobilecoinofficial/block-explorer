@@ -1,23 +1,12 @@
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import {
-    Accordion,
-    AccordionSummary,
-    AccordionDetails,
-    Box,
-    Divider,
-    Typography
-} from "@mui/material";
-import { styled } from "@mui/material/styles";
+import { AccordionSummary, AccordionDetails, Box, Divider, Typography } from "@mui/material";
 import { useSearchParams } from "react-router-dom";
 
 import CopyableField from "components/CopyableField";
 import { base64PEMEncode } from "utils/bytesToPEM";
 import { MintConfig } from "api/types";
 import { getTokenAmount } from "utils/tokens";
-
-const StyledAccordion = styled(Accordion)(() => ({
-    boxShadow: "none"
-}));
+import { StyledAccordion } from "components/current-block-sections/Mints";
 
 export const openConfigIdParamName = "open_config_ids";
 
@@ -47,7 +36,7 @@ export default function MintConfig({ config }: { config: MintConfig }) {
             expanded={openConfigIds.includes(`${config.id}`) ?? false}
             onChange={handleChange(config.id)}
         >
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ minHeight: 0, height: 36 }}>
                 <Typography>Config {config.id}</Typography>
             </AccordionSummary>
             <AccordionDetails>
