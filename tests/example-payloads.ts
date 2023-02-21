@@ -543,6 +543,7 @@ export const expectedMintConfigTxInfo = {
             },
             mintConfigs: [
                 {
+                    id: 1,
                     tokenId: 1,
                     signerSet: {
                         signers: [
@@ -577,6 +578,7 @@ export const expectedMintConfigTxInfo = {
                     mintLimit: 1000000000000
                 },
                 {
+                    id: 2,
                     tokenId: 1,
                     signerSet: {
                         signers: [
