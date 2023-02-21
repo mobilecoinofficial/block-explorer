@@ -8,24 +8,20 @@ import { MintConfig } from "api/types";
 import { getTokenAmount } from "utils/tokens";
 import { StyledAccordion } from "components/current-block-sections/Mints";
 
-export const openConfigIdParamName = "open_config_ids";
+export const openConfigIdParamName = "open_config_ids[]";
 
 export default function MintConfig({ config }: { config: MintConfig }) {
-    const sortedSigs = config.signerSet.signers.sort();
     const [params, setParams] = useSearchParams();
-    const openConfigIds = params.getAll(`${openConfigIdParamName}[]`) ?? [];
+    const openConfigIds = params.getAll(`${openConfigIdParamName}`) ?? [];
 
     const handleChange = (id: number) => (_event: React.SyntheticEvent, isExpanded: boolean) => {
         if (isExpanded) {
-            params.append(`${openConfigIdParamName}[]`, `${id}`);
-            setParams(params);
+            params.append(openConfigIdParamName, `${id}`);
         } else {
             const newIds = openConfigIds.filter((oid) => oid !== `${id}`);
-            params.delete(`${openConfigIdParamName}[]`);
-            if (newIds.length) {
-                for (const newId of newIds) {
-                    params.append(`${openConfigIdParamName}[]`, `${newId}`);
-                }
+            params.delete(openConfigIdParamName);
+            for (const newId of newIds) {
+                params.append(openConfigIdParamName, newId);
             }
         }
         setParams(params);
@@ -33,8 +29,9 @@ export default function MintConfig({ config }: { config: MintConfig }) {
 
     return (
         <StyledAccordion
-            expanded={openConfigIds.includes(`${config.id}`) ?? false}
+            expanded={openConfigIds.includes(`${config.id}`)}
             onChange={handleChange(config.id)}
+            disableGutters
         >
             <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ minHeight: 0, height: 36 }}>
                 <Typography>Config {config.id}</Typography>
@@ -49,7 +46,7 @@ export default function MintConfig({ config }: { config: MintConfig }) {
                     <Box display="flex" justifyContent={"space-between"} sx={{ marginTop: 1 }}>
                         <Typography color="text.secondary">Signers</Typography>
                         <Box>
-                            {sortedSigs.map((s) => (
+                            {config.signerSet.signers.map((s) => (
                                 <CopyableField text={base64PEMEncode(s)} key={base64PEMEncode(s)} />
                             ))}
                         </Box>

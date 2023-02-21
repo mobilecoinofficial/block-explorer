@@ -22,6 +22,7 @@ import { MintInfoResponse } from "api/types";
 import { TOKENS, getTokenAmount } from "utils/tokens";
 import CopyableField from "components/CopyableField";
 import { base64PEMEncode } from "utils/bytesToPEM";
+import { openConfigIdParamName } from "components/current-block-sections/MintConfig";
 
 export const StyledAccordion = styled(Accordion)(() => ({
     boxShadow: "none"
@@ -117,7 +118,7 @@ export default function Mints({ mintInfo }: { mintInfo: MintInfoResponse }) {
                                             <StyledCell>
                                                 <TableCellContents>
                                                     <Link
-                                                        to={`/blocks/${mintConfigTx.blockIndex}?open_config_ids%5B%5D=${mintConfig.id}`}
+                                                        to={`/blocks/${mintConfigTx.blockIndex}?${openConfigIdParamName}=${mintConfig.id}`}
                                                         style={{
                                                             color: "black"
                                                         }}
