@@ -23,7 +23,7 @@ import {
 describe("get block", () => {
     test("It returns the correct data format", async () => {
         const blockData = await getBlock("1");
-        const paths = objectPaths(blockData);
+        const paths = objectPaths(expectedBlock);
         for (const path of paths) {
             try {
                 expect(typeof get(blockData, path)).toEqual(typeof get(expectedBlock, path));
@@ -44,7 +44,7 @@ describe("get blocks", () => {
         const blocksData = await getBlocks(1, 1);
         expect(blocksData.length).toEqual(1);
         const block = blocksData[0];
-        const paths = objectPaths(block);
+        const paths = objectPaths(expectedBlock);
 
         for (const path of paths) {
             try {
@@ -69,7 +69,7 @@ describe("get Recent blocks", () => {
         const blocksData = await getRecentBlocks(1);
         expect(blocksData.length).toEqual(1);
         const block = blocksData[0];
-        const paths = objectPaths(block);
+        const paths = objectPaths(expectedBlock);
         const indexingIntoArrayRegex = /\.[0-9]/;
         for (const path of paths) {
             if (!path.match(indexingIntoArrayRegex)) {
@@ -92,7 +92,7 @@ describe("search blocks", () => {
     const txoPubKeyShouldExist = "0abc6e419d52ffcf75fe1d4cace99082b28e5916cca41f164f0b2be7b55b8e25";
     test("It returns the correct data format", async () => {
         const foundBlock = await searchBlock(txoPubKeyShouldExist);
-        const paths = objectPaths(foundBlock);
+        const paths = objectPaths(expectedSearchResult);
         for (const path of paths) {
             try {
                 expect(typeof get(foundBlock, path)).toEqual(
@@ -113,7 +113,7 @@ describe("search blocks", () => {
 describe("get network status", () => {
     test("It returns the correct data format", async () => {
         const status = await getNetworkStatus();
-        const paths = objectPaths(status);
+        const paths = objectPaths(expectedNetworkStatus);
         for (const path of paths) {
             try {
                 expect(typeof get(status, path)).toEqual(typeof get(expectedNetworkStatus, path));
@@ -133,7 +133,7 @@ describe("get burns", () => {
     test("It returns the correct data format", async () => {
         const blockWithBurn = "883080";
         const burns = await getBurns(blockWithBurn);
-        const paths = objectPaths(burns);
+        const paths = objectPaths(expectedBurns);
         for (const path of paths) {
             try {
                 expect(typeof get(burns, path)).toEqual(typeof get(expectedBurns, path));
@@ -152,7 +152,7 @@ describe("get burns", () => {
 describe("get counters", () => {
     test("It returns the correct data format", async () => {
         const counters = await getCounters();
-        const paths = objectPaths(counters);
+        const paths = objectPaths(expectedCounters);
         for (const path of paths) {
             try {
                 expect(typeof get(counters, path)).toEqual(typeof get(expectedCounters, path));
@@ -172,7 +172,7 @@ describe("get mint info", () => {
     test("It returns the correct data format for a block with mint tx", async () => {
         const blockWithMintTx = "882233";
         const mintInfo = await getMintInfo(blockWithMintTx);
-        const paths = objectPaths(mintInfo);
+        const paths = objectPaths(expectedMintTxInfo);
         for (const path of paths) {
             try {
                 expect(typeof get(mintInfo, path)).toEqual(typeof get(expectedMintTxInfo, path));
@@ -190,8 +190,11 @@ describe("get mint info", () => {
     test("It returns the correct data format for a block with mint config tx", async () => {
         const blockWithMintConfigTx = "880535";
         const mintInfo = await getMintInfo(blockWithMintConfigTx);
-        const paths = objectPaths(mintInfo);
+        const paths = objectPaths(expectedMintConfigTxInfo);
         for (const path of paths) {
+            if (path.includes("mintConfigs.0")) {
+                console.log(path);
+            }
             try {
                 expect(typeof get(mintInfo, path)).toEqual(
                     typeof get(expectedMintConfigTxInfo, path)
@@ -213,6 +216,6 @@ function rKeys(o, path = "") {
     return Object.keys(o).map((key) => rKeys(o[key], path ? [path, key].join(".") : key));
 }
 
-const objectPaths = (o) => {
+const objectPaths = (o): string[] => {
     return rKeys(o).toString().split(",");
 };

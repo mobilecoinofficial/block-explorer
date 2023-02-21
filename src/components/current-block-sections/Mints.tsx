@@ -1,4 +1,7 @@
 import {
+    Accordion,
+    AccordionSummary,
+    AccordionDetails,
     Typography,
     CardContent,
     Table,
@@ -7,14 +10,29 @@ import {
     TableBody,
     TableCell,
     TableRow,
-    Grid
+    Grid,
+    Box
 } from "@mui/material";
+import { Link } from "react-router-dom";
+import { styled } from "@mui/material/styles";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import { StyledCard, StyledCell } from "pages/CurrentBlock";
 import { MintInfoResponse } from "api/types";
 import { TOKENS, getTokenAmount } from "utils/tokens";
 import CopyableField from "components/CopyableField";
-import MintConfig from "components/current-block-sections/MintConfig";
+import { base64PEMEncode } from "utils/bytesToPEM";
+import { openConfigIdParamName } from "components/current-block-sections/MintConfig";
+
+export const StyledAccordion = styled(Accordion)(() => ({
+    boxShadow: "none"
+}));
+
+export const TableCellContents = styled(Box)(() => ({
+    height: 36,
+    display: "flex",
+    alignItems: "center"
+}));
 
 export default function Mints({ mintInfo }: { mintInfo: MintInfoResponse }) {
     if (!mintInfo.mintTxs.length) {
@@ -36,27 +54,82 @@ export default function Mints({ mintInfo }: { mintInfo: MintInfoResponse }) {
                                     <TableCell>Token</TableCell>
                                     <TableCell>Nonce</TableCell>
                                     <TableCell>Recipient Address</TableCell>
+                                    <TableCell>Signers</TableCell>
                                     <TableCell>Mint Config</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {mintInfo.mintTxs.map(({ mintTx, mintConfig }) => (
-                                    <TableRow key={mintTx.nonceHex}>
-                                        <StyledCell>
-                                            {getTokenAmount(mintTx.tokenId, mintTx.amount)}
-                                        </StyledCell>
-                                        <StyledCell>{TOKENS[mintTx.tokenId].name}</StyledCell>
-                                        <StyledCell>
-                                            <CopyableField text={mintTx.nonceHex} />
-                                        </StyledCell>
-                                        <StyledCell>
-                                            <CopyableField text={mintTx.recipientB58Addr} />
-                                        </StyledCell>
-                                        <StyledCell>
-                                            <MintConfig config={mintConfig} />
-                                        </StyledCell>
-                                    </TableRow>
-                                ))}
+                                {mintInfo.mintTxs.map(
+                                    ({ mintTx, mintConfig, mintTxSigners, mintConfigTx }) => (
+                                        <TableRow
+                                            key={mintTx.nonceHex}
+                                            sx={{ verticalAlign: "top" }}
+                                        >
+                                            <StyledCell>
+                                                <TableCellContents>
+                                                    {getTokenAmount(mintTx.tokenId, mintTx.amount)}
+                                                </TableCellContents>
+                                            </StyledCell>
+                                            <StyledCell>
+                                                <TableCellContents>
+                                                    {TOKENS[mintTx.tokenId].name}
+                                                </TableCellContents>
+                                            </StyledCell>
+                                            <StyledCell>
+                                                <CopyableField text={mintTx.nonceHex} />
+                                            </StyledCell>
+                                            <StyledCell>
+                                                <CopyableField text={mintTx.recipientB58Addr} />
+                                            </StyledCell>
+                                            <StyledCell>
+                                                <StyledAccordion disableGutters>
+                                                    <AccordionSummary
+                                                        expandIcon={<ExpandMoreIcon />}
+                                                        sx={{ minHeight: 0, height: 36 }}
+                                                    >
+                                                        <Typography>Signers</Typography>
+                                                    </AccordionSummary>
+                                                    <AccordionDetails>
+                                                        <Box>
+                                                            <Box
+                                                                display="flex"
+                                                                justifyContent={"space-between"}
+                                                                sx={{ marginTop: 1 }}
+                                                            >
+                                                                <Box>
+                                                                    {mintTxSigners
+                                                                        .sort()
+                                                                        .map((s) => (
+                                                                            <CopyableField
+                                                                                text={base64PEMEncode(
+                                                                                    s
+                                                                                )}
+                                                                                key={base64PEMEncode(
+                                                                                    s
+                                                                                )}
+                                                                            />
+                                                                        ))}
+                                                                </Box>
+                                                            </Box>
+                                                        </Box>
+                                                    </AccordionDetails>
+                                                </StyledAccordion>
+                                            </StyledCell>
+                                            <StyledCell>
+                                                <TableCellContents>
+                                                    <Link
+                                                        to={`/blocks/${mintConfigTx.blockIndex}?${openConfigIdParamName}=${mintConfig.id}`}
+                                                        style={{
+                                                            color: "black"
+                                                        }}
+                                                    >
+                                                        Block {mintConfigTx.blockIndex}
+                                                    </Link>
+                                                </TableCellContents>
+                                            </StyledCell>
+                                        </TableRow>
+                                    )
+                                )}
                             </TableBody>
                         </Table>
                     </TableContainer>
