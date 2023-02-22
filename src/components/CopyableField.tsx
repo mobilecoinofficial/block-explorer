@@ -16,7 +16,7 @@ export default function CopyableField({
     }
 
     const renderedText = abbreviate ? abbreviateHash(text) : text;
-    const width = abbreviate ? 88 : null;
+    const width = abbreviate ? 90 : null;
 
     return (
         <Box display="flex" alignItems="center">

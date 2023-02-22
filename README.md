@@ -1,9 +1,11 @@
 # MobileCoin Block Explorer
 
 A web app for viewing the MobileCoin blockchain.
-Hosted at https://block-explorer.mobilecoin.com
 
-# Develop
+-   Prodiction: https://block-explorer.mobilecoin.foundation
+-   Staging: https://block-explorer.stage.mobilecoin.foundation
+
+# Developing
 
 ## Running the front-end
 
@@ -39,7 +41,11 @@ The block explorer defaults to using hosted versions of full-service and reserve
 
 -   follow the [setup instructions](https://github.com/mobilecoinofficial/reserve-auditor/blob/main/BUILD.md) to get the reserve auditor backend running.
 
-## Build & Deploy
+## Testing
 
--   Any commit to main will trigger an image build and upload to dockerhub. If you want to skip this, inlcude `skip docker` in the commit message.
--   To trigger a deploy, include the word `deploy` in the message for a commit on main.
+-   There are integration tests that ensure that the types returned from full-service and the reserve auditor match the types expected by the app.
+
+## Deploy
+
+-   Any commit to main will trigger a tagged build & deploy to staging.
+-   To deploy to production go to [the deploy workflow](https://github.com/mobilecoinofficial/block-explorer/actions/workflows/dispatch-deploy.yaml), click Run Workflow, and select the tag you want to deploy.
