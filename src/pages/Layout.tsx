@@ -5,13 +5,13 @@ import { SyncData } from "components/SyncStatus";
 import Header from "components/Header";
 
 export default function Layout() {
-    const syncData = useLoaderData() as SyncData;
+    // const syncData = useLoaderData() as SyncData;
     return (
         <Container maxWidth="xl">
-            <Header syncData={syncData} />
+            <Header />
             <Toolbar />
             <Box paddingTop={2}>
-                <Outlet context={syncData} />
+                <Outlet />
             </Box>
         </Container>
     );

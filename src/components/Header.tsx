@@ -53,7 +53,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     }
 }));
 
-export default function Header({ syncData }: { syncData: SyncData }) {
+export default function Header() {
     const navigate = useNavigate();
     const [query, setQuery] = useState("");
     const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -126,7 +126,6 @@ export default function Header({ syncData }: { syncData: SyncData }) {
                             value={query}
                         />
                     </Search>
-                    <SyncStatus syncData={syncData} />
                 </Toolbar>
             </Container>
             <Snackbar

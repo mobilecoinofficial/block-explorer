@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, useLayoutEffect } from "react";
+import { useState, useCallback, useRef, useLayoutEffect, Suspense } from "react";
 import {
     Box,
     Container,
@@ -13,9 +13,10 @@ import {
     Collapse,
     LinearProgress
 } from "@mui/material";
+import { useLoaderData, Await } from "react-router-dom";
 
-import { useSyncData } from "pages/Layout";
-import { Block } from "api/types";
+// import { useSyncData } from "pages/Layout";
+import { Block, NetworkStatus } from "api/types";
 import { INITIAL_BLOCK_COUNT } from "api/getRecentBlocks";
 import getBlocks from "api/getBlocks";
 import BlockRow from "components/BlockRow";
@@ -36,12 +37,43 @@ const HeaderNumber = ({ title, value }: HeaderNumberProps) => (
 );
 
 export default function LatestBlocks() {
+    const { networkStatus, preLoadedBlocks } = useLoaderData() as {
+        networkStatus: Promise<NetworkStatus>;
+        preLoadedBlocks: Promise<Block[]>;
+    };
+
+    return (
+        <Suspense fallback={<p>Loading package location...</p>}>
+            <Await resolve={Promise.all([networkStatus, preLoadedBlocks])}>
+                {(promised) => {
+                    return (
+                        <LatestBlocksLoaded
+                            networkStatus={promised[0]}
+                            preLoadedBlocks={promised[1]}
+                        />
+                    );
+                }}
+            </Await>
+        </Suspense>
+    );
+}
+
+function LatestBlocksLoaded({
+    networkStatus,
+    preLoadedBlocks
+}: {
+    networkStatus: NetworkStatus;
+    preLoadedBlocks: Block[];
+}) {
+    // const { networkStatus, preLoadedBlocks } = useLoaderData() as {
+    // networkStatus: NetworkStatus;
+    // preLoadedBlocks: Block[];
+    // };
+
     // state used for dynamically rendering top content on scroll
     const scrollHeight = useRef(0);
     const [renderTopContents, setRenderTopContents] = useState(true);
 
-    // state used for blocks loading
-    const { preLoadedBlocks, networkStatus } = useSyncData();
     const [blocks, setBlocks] = useState<Block[]>(preLoadedBlocks as Block[]);
     const [hasMoreBlocks, setHasMoreBlocks] = useState<boolean>(true);
     const [loading, setLoading] = useState(false);
