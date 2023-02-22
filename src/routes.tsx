@@ -9,27 +9,40 @@ import getBurns from "api/getBurns";
 import getNetworkStatus from "api/getNetworkStatus";
 import Layout from "pages/Layout";
 import getCounters from "api/getCounters";
+import { SolarPower } from "@mui/icons-material";
 
 const router = createBrowserRouter([
     {
+        path: "/",
         element: <Layout />,
+        loader: async () => {
+            const networkStatus = getNetworkStatus();
+            return defer({
+                networkStatus
+            });
+        },
+        // shouldRevalidate: ({ currentUrl, nextUrl }) => {
+        //     // don't re-fetch header/blocks data if we are navigating between blocks
+        //     console.log("here", nextUrl.pathname !== currentUrl.pathname);
+        //     return nextUrl.pathname !== currentUrl.pathname;
+        // },
         errorElement: <ErrorPage />,
         children: [
             {
-                path: "/",
+                index: true,
                 element: <Navigate to="/blocks" />
             },
             {
                 path: "blocks",
-                shouldRevalidate: ({ nextUrl }) => {
+                shouldRevalidate: ({ currentUrl, nextUrl }) => {
                     // don't re-fetch header/blocks data if we are navigating between blocks
-                    return nextUrl.pathname === "/blocks";
+                    return nextUrl.pathname !== currentUrl.pathname;
                 },
                 loader: async () => {
-                    const networkStatus = getNetworkStatus();
+                    // const networkStatus = getNetworkStatus();
                     const preLoadedBlocks = getRecentBlocks();
                     return defer({
-                        networkStatus,
+                        // networkStatus,
                         preLoadedBlocks
                     });
                 },
@@ -42,16 +55,22 @@ const router = createBrowserRouter([
                     return nextParams.blockIndex !== currentParams.blockIndex;
                 },
                 loader: async ({ params }) => {
-                    const blockContents = getBlock(params.blockIndex);
-                    const mintInfo = getMintInfo(params.blockIndex);
-                    const burns = getBurns(params.blockIndex);
-                    const networkStatus = getNetworkStatus();
-                    return defer({
+                    const blockContents = await getBlock(params.blockIndex);
+                    const mintInfo = await getMintInfo(params.blockIndex);
+                    const burns = await getBurns(params.blockIndex);
+                    // const networkStatus = getNetworkStatus();
+                    // return defer({
+                    //     blockContents,
+                    //     mintInfo,
+                    //     burns
+                    //     // networkStatus
+                    // });
+                    return {
                         blockContents,
                         mintInfo,
-                        burns,
-                        networkStatus
-                    });
+                        burns
+                        // networkStatus
+                    };
                 },
                 element: <CurrentBlock />
             }

@@ -13,7 +13,7 @@ import Signatures from "components/current-block-sections/Signatures";
 import Mints from "components/current-block-sections/Mints";
 import MintConfigTxs from "components/current-block-sections/MintConfigTxs";
 import CopyableField from "components/CopyableField";
-import { useSyncData } from "./Layout";
+import { useNetworkStatus } from "./Layout";
 
 export const StyledCard = styled(Card)(() => ({
     boxShadow: "none",
@@ -26,31 +26,29 @@ export const StyledCell = styled(TableCell)(() => ({
     border: "none"
 }));
 
-export default function BlockPage() {
-    const { blockContents, mintInfo, burns, networkStatus } = useLoaderData() as {
-        blockContents: Promise<Block>;
-        mintInfo: Promise<MintInfoResponse>;
-        burns: Promise<BurnTx[]>;
-        networkStatus: Promise<NetworkStatus>;
-    };
+// function BlockPage() {
+//     const { blockContents, mintInfo, burns } = useLoaderData() as {
+//         blockContents: Promise<Block>;
+//         mintInfo: Promise<MintInfoResponse>;
+//         burns: Promise<BurnTx[]>;
+//     };
 
-    return (
-        <Suspense fallback={<BlockPageLoading />}>
-            <Await resolve={Promise.all([blockContents, mintInfo, burns, networkStatus])}>
-                {(promised) => {
-                    return (
-                        <BlockPageLoaded
-                            blockContents={promised[0]}
-                            mintInfo={promised[1]}
-                            burns={promised[2]}
-                            networkStatus={promised[3]}
-                        />
-                    );
-                }}
-            </Await>
-        </Suspense>
-    );
-}
+//     return (
+//         <Suspense fallback={<BlockPageLoading />}>
+//             <Await resolve={Promise.all([blockContents, mintInfo, burns])}>
+//                 {(promised) => {
+//                     return (
+//                         <BlockPageLoaded
+//                             blockContents={promised[0]}
+//                             mintInfo={promised[1]}
+//                             burns={promised[2]}
+//                         />
+//                     );
+//                 }}
+//             </Await>
+//         </Suspense>
+//     );
+// }
 
 function BlockPageLoading() {
     const { blockIndex } = useParams();
@@ -58,30 +56,29 @@ function BlockPageLoading() {
         <Container>
             <Box sx={{ marginBottom: 1 }}>
                 <Typography variant="h4">Block {blockIndex}</Typography>
+                <Typography>...</Typography>
+                <CopyableField text={"......................"} />
             </Box>
         </Container>
     );
 }
 
-function BlockPageLoaded({
-    blockContents,
-    mintInfo,
-    burns,
-    networkStatus
-}: {
-    blockContents: Block;
-    mintInfo: MintInfoResponse;
-    burns: BurnTx[];
-    networkStatus: NetworkStatus;
-}) {
-    // const { networkStatus } = useSyncData();
-    // const { blockContents, mintInfo, burns, networkStatus } = useLoaderData() as {
+export default function BlockPageLoaded() {
+    //     blockContents,
+    //     mintInfo,
+    //     burns
+    // }: {
     //     blockContents: Block;
     //     mintInfo: MintInfoResponse;
     //     burns: BurnTx[];
-    //     networkStatus: NetworkStatus;
-    // };
-
+    // }) {
+    // const { networkStatus } = useSyncData();
+    const { blockContents, mintInfo, burns } = useLoaderData() as {
+        blockContents: Block;
+        mintInfo: MintInfoResponse;
+        burns: BurnTx[];
+    };
+    const networkStatus = useNetworkStatus();
     const isPrevDisabled = Number(blockContents.index) === 0;
     const isNextDisabled =
         Number(networkStatus.networkBlockHeight) <= Number(blockContents.index) + 1;

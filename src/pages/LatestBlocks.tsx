@@ -21,6 +21,7 @@ import { INITIAL_BLOCK_COUNT } from "api/getRecentBlocks";
 import getBlocks from "api/getBlocks";
 import BlockRow from "components/BlockRow";
 import useThrottle from "utils/useThrottle";
+import { useNetworkStatus } from "./Layout";
 
 type HeaderNumberProps = {
     title: string;
@@ -37,39 +38,28 @@ const HeaderNumber = ({ title, value }: HeaderNumberProps) => (
 );
 
 export default function LatestBlocks() {
-    const { networkStatus, preLoadedBlocks } = useLoaderData() as {
-        networkStatus: Promise<NetworkStatus>;
+    const { preLoadedBlocks } = useLoaderData() as {
         preLoadedBlocks: Promise<Block[]>;
     };
 
     return (
         <Suspense fallback={<p>Loading package location...</p>}>
-            <Await resolve={Promise.all([networkStatus, preLoadedBlocks])}>
-                {(promised) => {
-                    return (
-                        <LatestBlocksLoaded
-                            networkStatus={promised[0]}
-                            preLoadedBlocks={promised[1]}
-                        />
-                    );
+            <Await resolve={preLoadedBlocks}>
+                {(blocks) => {
+                    // console.log()
+                    return <LatestBlocksLoaded preLoadedBlocks={blocks} />;
                 }}
             </Await>
         </Suspense>
     );
 }
 
-function LatestBlocksLoaded({
-    networkStatus,
-    preLoadedBlocks
-}: {
-    networkStatus: NetworkStatus;
-    preLoadedBlocks: Block[];
-}) {
+function LatestBlocksLoaded({ preLoadedBlocks }: { preLoadedBlocks: Block[] }) {
     // const { networkStatus, preLoadedBlocks } = useLoaderData() as {
     // networkStatus: NetworkStatus;
     // preLoadedBlocks: Block[];
     // };
-
+    const networkStatus = useNetworkStatus();
     // state used for dynamically rendering top content on scroll
     const scrollHeight = useRef(0);
     const [renderTopContents, setRenderTopContents] = useState(true);

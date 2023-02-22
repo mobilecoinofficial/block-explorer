@@ -13,7 +13,7 @@ root.render(
     <React.StrictMode>
         <ThemeProvider theme={theme}>
             <CssBaseline enableColorScheme>
-                <RouterProvider router={router}></RouterProvider>
+                <RouterProvider router={router} />
             </CssBaseline>
         </ThemeProvider>
     </React.StrictMode>
