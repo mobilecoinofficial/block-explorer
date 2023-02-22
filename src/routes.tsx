@@ -8,7 +8,6 @@ import getMintInfo from "api/getMintInfo";
 import getBurns from "api/getBurns";
 import getNetworkStatus from "api/getNetworkStatus";
 import Layout from "pages/Layout";
-// import getCounters from "api/getCounters";
 
 const router = createBrowserRouter([
     {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     AppBar,
     Box,
@@ -13,10 +13,13 @@ import { styled, alpha } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate, Link } from "react-router-dom";
 
-// import SyncStatus, { SyncData } from "components/SyncStatus";
+import SyncStatus, { SyncData } from "components/SyncStatus";
 import MobileCoinLogo from "components/MobileCoinLogo";
 import searchBlock from "api/searchBlock";
 import getBlock from "api/getBlock";
+import { NetworkStatus } from "api/types";
+import getCounters from "api/getCounters";
+import getRecentBlocks from "api/getRecentBlocks";
 
 const Search = styled("div")(({ theme }) => ({
     position: "relative",
@@ -53,10 +56,26 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     }
 }));
 
-export default function Header() {
+export default function Header({ networkStatus }: { networkStatus: NetworkStatus }) {
     const navigate = useNavigate();
     const [query, setQuery] = useState("");
     const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [syncData, setSyncData] = useState<SyncData>(null);
+
+    useEffect(() => {
+        const getSyncData = async () => {
+            const counters = await getCounters();
+            const recentBlocks = await getRecentBlocks(5);
+            setSyncData({
+                networkStatus,
+                recentBlocks,
+                counters
+            });
+        };
+
+        getSyncData();
+    }, [networkStatus]);
+
     function handleSearchInputChange(event: React.ChangeEvent<HTMLInputElement>) {
         setQuery(event.target.value);
     }
@@ -126,6 +145,7 @@ export default function Header() {
                             value={query}
                         />
                     </Search>
+                    {syncData && <SyncStatus syncData={syncData} />}
                 </Toolbar>
             </Container>
             <Snackbar

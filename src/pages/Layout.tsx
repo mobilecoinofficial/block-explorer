@@ -13,7 +13,7 @@ export default function Layout() {
                 {(networkStatusLoaded) => {
                     return (
                         <Container maxWidth="xl">
-                            <Header />
+                            <Header networkStatus={networkStatusLoaded} />
                             <Toolbar />
                             <Box paddingTop={2}>
                                 <Outlet context={networkStatusLoaded} />
