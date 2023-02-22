@@ -35,7 +35,7 @@ export default function signatures({ blockContents }: { blockContents: Block }) 
                         Signatures
                     </Typography>
                     <TableContainer>
-                        <Table size="small">
+                        <Table size="small" padding="none">
                             <TableHead>
                                 <TableRow>
                                     <TableCell>URL</TableCell>

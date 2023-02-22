@@ -47,7 +47,7 @@ export default function Mints({ mintInfo }: { mintInfo: MintInfoResponse }) {
                         Mints
                     </Typography>
                     <TableContainer>
-                        <Table size="small">
+                        <Table size="small" padding="none">
                             <TableHead>
                                 <TableRow>
                                     <TableCell>Amount</TableCell>
@@ -85,7 +85,11 @@ export default function Mints({ mintInfo }: { mintInfo: MintInfoResponse }) {
                                                 <StyledAccordion disableGutters>
                                                     <AccordionSummary
                                                         expandIcon={<ExpandMoreIcon />}
-                                                        sx={{ minHeight: 0, height: 36 }}
+                                                        sx={{
+                                                            minHeight: 0,
+                                                            height: 36,
+                                                            paddingLeft: 0
+                                                        }}
                                                     >
                                                         <Typography>Signers</Typography>
                                                     </AccordionSummary>
