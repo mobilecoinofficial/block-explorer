@@ -20,8 +20,6 @@ function stripNodeURl(url: string): string {
     const urlPrefix = /[^(https://)](.*)[^.net/$|.com/$]/;
     const match = url.match(urlPrefix);
     return match ? match[0] : url;
-    // const strippedUrl = match ? match[0] : url;
-    // return truncate(strippedUrl, 16);
 }
 
 export default function signatures({ blockContents }: { blockContents: Block }) {
