@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate } from "react-router-dom";
+import { createBrowserRouter, Navigate, defer } from "react-router-dom";
 import getRecentBlocks from "api/getRecentBlocks";
 import getBlock from "api/getBlock";
 import LatestBlocks from "pages/LatestBlocks";
@@ -8,34 +8,34 @@ import getMintInfo from "api/getMintInfo";
 import getBurns from "api/getBurns";
 import getNetworkStatus from "api/getNetworkStatus";
 import Layout from "pages/Layout";
-import getCounters from "api/getCounters";
 
 const router = createBrowserRouter([
     {
+        path: "/",
         element: <Layout />,
-        errorElement: <ErrorPage />,
+        loader: async () => {
+            const networkStatus = getNetworkStatus();
+            return defer({
+                networkStatus
+            });
+        },
         shouldRevalidate: ({ nextUrl }) => {
-            // don't re-fetch header/blocks data if we are navigating between blocks
             return nextUrl.pathname === "/blocks";
         },
-        loader: async () => {
-            const networkStatus = await getNetworkStatus();
-            const preLoadedBlocks = await getRecentBlocks();
-            const counters = await getCounters();
-            return {
-                networkStatus,
-                preLoadedBlocks,
-                counters
-            };
-        },
+        errorElement: <ErrorPage />,
         children: [
             {
-                path: "/",
+                index: true,
                 element: <Navigate to="/blocks" />
             },
             {
                 path: "blocks",
-                // receives blocks data from outlet context
+                loader: async () => {
+                    const preLoadedBlocks = getRecentBlocks();
+                    return defer({
+                        preLoadedBlocks
+                    });
+                },
                 element: <LatestBlocks />
             },
             {

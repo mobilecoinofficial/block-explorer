@@ -12,7 +12,7 @@ import Signatures from "components/current-block-sections/Signatures";
 import Mints from "components/current-block-sections/Mints";
 import MintConfigTxs from "components/current-block-sections/MintConfigTxs";
 import CopyableField from "components/CopyableField";
-import { useSyncData } from "./Layout";
+import { useNetworkStatus } from "./Layout";
 
 export const StyledCard = styled(Card)(() => ({
     boxShadow: "none",
@@ -26,13 +26,12 @@ export const StyledCell = styled(TableCell)(() => ({
 }));
 
 export default function BlockPage() {
-    const { networkStatus } = useSyncData();
     const { blockContents, mintInfo, burns } = useLoaderData() as {
         blockContents: Block;
         mintInfo: MintInfoResponse;
         burns: BurnTx[];
     };
-
+    const networkStatus = useNetworkStatus();
     const isPrevDisabled = Number(blockContents.index) === 0;
     const isNextDisabled =
         Number(networkStatus.networkBlockHeight) <= Number(blockContents.index) + 1;
@@ -49,7 +48,7 @@ export default function BlockPage() {
                     {isPrevDisabled ? (
                         <div />
                     ) : (
-                        <Tooltip title="Previous Block">
+                        <Tooltip title="Prev block">
                             <Button
                                 variant="outlined"
                                 size="small"
@@ -64,7 +63,7 @@ export default function BlockPage() {
                     {isNextDisabled ? (
                         <div />
                     ) : (
-                        <Tooltip title="Next Block">
+                        <Tooltip title="Next block">
                             <Button
                                 variant="outlined"
                                 size="small"
