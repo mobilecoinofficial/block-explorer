@@ -16,9 +16,9 @@ import { Block } from "api/types";
 import CollapsableDate from "components/CollapsableDate";
 
 function stripNodeURl(url: string): string {
-    // anything following the first instance of .com/ and string trailing /
-    const nodeText = /(?<=\.com\/)(.*)(?=\/)/;
-    const match = url.match(nodeText);
+    // remove https:// and trailing /
+    const urlPrefix = /[^(https://)](.*)[^.net/$|.com/$]/;
+    const match = url.match(urlPrefix);
     return match ? match[0] : url;
 }
 
@@ -47,7 +47,9 @@ export default function signatures({ blockContents }: { blockContents: Block }) 
                             <TableBody>
                                 {blockContents.signatures.map((sig) => (
                                     <TableRow key={sig.blockSignature.signature}>
-                                        <StyledCell>{stripNodeURl(sig.srcUrl)}</StyledCell>
+                                        <StyledCell>
+                                            <CopyableField text={stripNodeURl(sig.srcUrl)} />
+                                        </StyledCell>
                                         <StyledCell>
                                             <CopyableField text={sig.blockSignature.signer} />
                                         </StyledCell>
