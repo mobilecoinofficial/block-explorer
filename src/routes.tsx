@@ -19,6 +19,9 @@ const router = createBrowserRouter([
                 networkStatus
             });
         },
+        shouldRevalidate: ({ nextUrl }) => {
+            return nextUrl.pathname === "/blocks";
+        },
         errorElement: <ErrorPage />,
         children: [
             {

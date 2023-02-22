@@ -17,7 +17,6 @@ export default function SyncStatus({ syncData }: { syncData: SyncData }) {
     useEffect(() => {
         function testSync() {
             let syncAlertMessage = "";
-
             const blockHeightDiff =
                 Number(networkStatus.networkBlockHeight) - Number(networkStatus.localBlockHeight);
             const AuditorHeightDiff =
@@ -34,6 +33,8 @@ export default function SyncStatus({ syncData }: { syncData: SyncData }) {
             }
             if (syncAlertMessage.length) {
                 setSyncAlert("Block Explorer is out of sync:" + syncAlertMessage);
+            } else {
+                setSyncAlert("");
             }
         }
 
