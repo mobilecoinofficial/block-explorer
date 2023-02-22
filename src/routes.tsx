@@ -20,11 +20,6 @@ const router = createBrowserRouter([
                 networkStatus
             });
         },
-        // shouldRevalidate: ({ currentUrl, nextUrl }) => {
-        //     // don't re-fetch header/blocks data if we are navigating between blocks
-        //     console.log("here", nextUrl.pathname !== currentUrl.pathname);
-        //     return nextUrl.pathname !== currentUrl.pathname;
-        // },
         errorElement: <ErrorPage />,
         children: [
             {
@@ -33,15 +28,9 @@ const router = createBrowserRouter([
             },
             {
                 path: "blocks",
-                shouldRevalidate: ({ currentUrl, nextUrl }) => {
-                    // don't re-fetch header/blocks data if we are navigating between blocks
-                    return nextUrl.pathname !== currentUrl.pathname;
-                },
                 loader: async () => {
-                    // const networkStatus = getNetworkStatus();
                     const preLoadedBlocks = getRecentBlocks();
                     return defer({
-                        // networkStatus,
                         preLoadedBlocks
                     });
                 },
@@ -57,18 +46,10 @@ const router = createBrowserRouter([
                     const blockContents = await getBlock(params.blockIndex);
                     const mintInfo = await getMintInfo(params.blockIndex);
                     const burns = await getBurns(params.blockIndex);
-                    // const networkStatus = getNetworkStatus();
-                    // return defer({
-                    //     blockContents,
-                    //     mintInfo,
-                    //     burns
-                    //     // networkStatus
-                    // });
                     return {
                         blockContents,
                         mintInfo,
                         burns
-                        // networkStatus
                     };
                 },
                 element: <CurrentBlock />
