@@ -16,19 +16,18 @@ export default function CopyableField({
     }
 
     const renderedText = abbreviate ? abbreviateHash(text) : text;
-    const width = abbreviate ? 90 : null;
 
     return (
         <Box display="flex" alignItems="center">
-            <Typography sx={{ fontSize: 14, width }}>{renderedText}</Typography>
             <Tooltip title={`Copy ${text} to clipboard`}>
-                <IconButton onClick={copyToClipboard}>
+                <IconButton onClick={copyToClipboard} edge="start" sx={{ paddingLeft: "12px" }}>
                     <ContentCopyIcon
                         sx={{ cursor: "pointer", color: "text.secondary" }}
                         fontSize="small"
                     />
                 </IconButton>
             </Tooltip>
+            <Typography sx={{ fontSize: 14 }}>{renderedText}</Typography>
         </Box>
     );
 }

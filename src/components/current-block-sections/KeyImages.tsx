@@ -39,7 +39,7 @@ export default function KeyImages({ blockContents }: { blockContents: Block }) {
                         Key Images
                     </Typography>
                     <TableContainer>
-                        <Table size="small">
+                        <Table size="small" padding="none">
                             <TableBody>
                                 {blockContents.keyImages.map((k) => (
                                     <TableRow key={k}>

@@ -1,5 +1,16 @@
 import { useLoaderData, Link } from "react-router-dom";
-import { Box, Typography, Card, Tooltip, Button, Grid, Container, TableCell } from "@mui/material";
+import {
+    Box,
+    Typography,
+    Card,
+    Tooltip,
+    Button,
+    Grid,
+    Container,
+    TableCell,
+    useMediaQuery,
+    useTheme
+} from "@mui/material";
 import { styled } from "@mui/material/styles";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
@@ -18,7 +29,6 @@ export const StyledCard = styled(Card)(() => ({
     boxShadow: "none",
     border: "1px solid #cecece",
     height: "100%"
-    // backgroundColor: "inherit"
 }));
 
 export const StyledCell = styled(TableCell)(() => ({
@@ -31,6 +41,8 @@ export default function BlockPage() {
         mintInfo: MintInfoResponse;
         burns: BurnTx[];
     };
+    const theme = useTheme();
+    const matches = useMediaQuery(theme.breakpoints.down("sm"));
     const networkStatus = useNetworkStatus();
     const isPrevDisabled = Number(blockContents.index) === 0;
     const isNextDisabled =
@@ -42,7 +54,7 @@ export default function BlockPage() {
                 <Box sx={{ marginBottom: 1 }}>
                     <Typography variant="h4">Block {blockContents.index}</Typography>
                     <Typography color="text.secondary">{getTimeStamp(blockContents)}</Typography>
-                    <CopyableField text={blockContents.contentsHash} />
+                    <CopyableField text={blockContents.contentsHash} abbreviate={matches} />
                 </Box>
                 <Box sx={{ display: "flex" }}>
                     {isPrevDisabled ? (

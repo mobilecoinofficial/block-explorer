@@ -30,7 +30,7 @@ export default function MintConfigTxs({ mintInfo }: { mintInfo: MintInfoResponse
                         Mint Config Txs
                     </Typography>
                     <TableContainer>
-                        <Table size="small">
+                        <Table size="small" padding="none">
                             <TableHead>
                                 <TableRow>
                                     <TableCell>Mint Limit</TableCell>

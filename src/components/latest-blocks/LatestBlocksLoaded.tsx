@@ -118,7 +118,7 @@ export default function LatestBlocksLoaded({ preLoadedBlocks }: { preLoadedBlock
                 sx={{ maxHeight: `calc(100vh - ${getTableHeightToSubtract()}px)` }}
                 ref={tableEl}
             >
-                <Table sx={{ borderCollapse: "separate", borderSpacing: "0px 12px" }} stickyHeader>
+                <Table stickyHeader size="small">
                     <TableHead>
                         <TableRow>
                             <TableCell>Index</TableCell>

@@ -75,7 +75,7 @@ export default function Txos({ blockContents, burns }: { blockContents: Block; b
                         Transaction Outputs
                     </Typography>
                     <TableContainer>
-                        <Table size="small">
+                        <Table size="small" padding="none">
                             <TableHead>
                                 <TableRow>
                                     <TableCell>TXO Public Key</TableCell>
