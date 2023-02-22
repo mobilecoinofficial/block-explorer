@@ -32,6 +32,7 @@ export default function MintConfig({ config }: { config: MintConfig }) {
             expanded={openConfigIds.includes(`${config.id}`)}
             onChange={handleChange(config.id)}
             disableGutters
+            sx={{ width: 250 }}
         >
             <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
