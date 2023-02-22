@@ -33,18 +33,25 @@ export default function MintConfig({ config }: { config: MintConfig }) {
             onChange={handleChange(config.id)}
             disableGutters
         >
-            <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ minHeight: 0, height: 36 }}>
+            <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                sx={{ minHeight: 0, height: 36, paddingLeft: 0 }}
+            >
                 <Typography>Config {config.id}</Typography>
             </AccordionSummary>
-            <AccordionDetails>
+            <AccordionDetails sx={{ paddingLeft: 0 }}>
                 <Box>
-                    <Box display="flex" justifyContent={"space-between"} sx={{ marginBottom: 1 }}>
-                        <Typography color="text.secondary">Limit:</Typography>
+                    <Box display="flex" sx={{ marginBottom: 1 }}>
+                        <Typography color="text.secondary" sx={{ width: 80 }}>
+                            Limit:
+                        </Typography>
                         <Typography>{getTokenAmount(config.tokenId, config.mintLimit)}</Typography>
                     </Box>
                     <Divider />
-                    <Box display="flex" justifyContent={"space-between"} sx={{ marginTop: 1 }}>
-                        <Typography color="text.secondary">Signers</Typography>
+                    <Box display="flex" sx={{ marginTop: 1 }}>
+                        <Typography color="text.secondary" sx={{ width: 80 }}>
+                            Signers
+                        </Typography>
                         <Box>
                             {config.signerSet.signers.map((s) => (
                                 <CopyableField text={base64PEMEncode(s)} key={base64PEMEncode(s)} />
