@@ -11,11 +11,11 @@ import {
     TableRow,
     TableBody,
     Collapse,
-    LinearProgress
+    LinearProgress,
+    Skeleton
 } from "@mui/material";
 import { useLoaderData, Await } from "react-router-dom";
 
-// import { useSyncData } from "pages/Layout";
 import { Block, NetworkStatus } from "api/types";
 import { INITIAL_BLOCK_COUNT } from "api/getRecentBlocks";
 import getBlocks from "api/getBlocks";
@@ -43,14 +43,64 @@ export default function LatestBlocks() {
     };
 
     return (
-        <Suspense fallback={<p>Loading package location...</p>}>
+        <Suspense fallback={<LatestBlocksLoading />}>
             <Await resolve={preLoadedBlocks}>
                 {(blocks) => {
-                    // console.log()
                     return <LatestBlocksLoaded preLoadedBlocks={blocks} />;
                 }}
             </Await>
         </Suspense>
+    );
+}
+
+function LatestBlocksLoading() {
+    const networkStatus = useNetworkStatus();
+    return (
+        <Container>
+            <TopContent networkStatus={networkStatus} />
+            <Skeleton animation="wave" component={Box} height={"100vh"} sx={{ top: "-200px" }} />
+        </Container>
+    );
+}
+
+function LatestBlocksTable({ blocks }: { blocks: Block[] }) {
+    return (
+        <Table sx={{ borderCollapse: "separate", borderSpacing: "0px 12px" }} stickyHeader>
+            <TableHead>
+                <TableRow>
+                    <TableCell>Index</TableCell>
+                    <TableCell>Hash</TableCell>
+                    <TableCell>TXOs</TableCell>
+                    <TableCell>IMGs</TableCell>
+                    <TableCell>SIGs</TableCell>
+                    <TableCell>Timestamp</TableCell>
+                </TableRow>
+            </TableHead>
+            <TableBody>
+                {blocks.map((block) => (
+                    <BlockRow block={block} key={block.id} />
+                ))}
+            </TableBody>
+        </Table>
+    );
+}
+
+function TopContent({ networkStatus }: { networkStatus: NetworkStatus }) {
+    return (
+        <div>
+            <Grid container sx={{ marginBottom: 2, marginTop: 1 }}>
+                <Grid item xs={6} justifyContent="center" display="flex">
+                    <HeaderNumber
+                        title="Number of Blocks"
+                        value={networkStatus?.localBlockHeight}
+                    />
+                </Grid>
+                <Grid item xs={6} justifyContent="center" display="flex">
+                    <HeaderNumber title="Transaction Outputs" value={networkStatus?.numTxos} />
+                </Grid>
+            </Grid>
+            <Typography variant="h4">Latest Blocks</Typography>
+        </div>
     );
 }
 
@@ -151,45 +201,13 @@ function LatestBlocksLoaded({ preLoadedBlocks }: { preLoadedBlocks: Block[] }) {
     return (
         <Container sx={{ overflow: "hidden" }}>
             <Collapse in={renderTopContents} timeout={800}>
-                <div>
-                    <Grid container sx={{ marginBottom: 2, marginTop: 1 }}>
-                        <Grid item xs={6} justifyContent="center" display="flex">
-                            <HeaderNumber
-                                title="Number of Blocks"
-                                value={networkStatus?.localBlockHeight}
-                            />
-                        </Grid>
-                        <Grid item xs={6} justifyContent="center" display="flex">
-                            <HeaderNumber
-                                title="Transaction Outputs"
-                                value={networkStatus?.numTxos}
-                            />
-                        </Grid>
-                    </Grid>
-                    <Typography variant="h4">Latest Blocks</Typography>
-                </div>
+                <TopContent networkStatus={networkStatus} />
             </Collapse>
             <TableContainer
                 sx={{ maxHeight: `calc(100vh - ${getTableHeightToSubtract()}px)` }}
                 ref={tableEl}
             >
-                <Table sx={{ borderCollapse: "separate", borderSpacing: "0px 12px" }} stickyHeader>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Index</TableCell>
-                            <TableCell>Hash</TableCell>
-                            <TableCell>TXOs</TableCell>
-                            <TableCell>IMGs</TableCell>
-                            <TableCell>SIGs</TableCell>
-                            <TableCell>Timestamp</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {blocks.map((block) => (
-                            <BlockRow block={block} key={block.id} />
-                        ))}
-                    </TableBody>
-                </Table>
+                <LatestBlocksTable blocks={blocks} />
                 {loading && <LinearProgress />}
             </TableContainer>
         </Container>

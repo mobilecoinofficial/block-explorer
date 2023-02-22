@@ -13,7 +13,7 @@ import { styled, alpha } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate, Link } from "react-router-dom";
 
-import SyncStatus, { SyncData } from "components/SyncStatus";
+// import SyncStatus, { SyncData } from "components/SyncStatus";
 import MobileCoinLogo from "components/MobileCoinLogo";
 import searchBlock from "api/searchBlock";
 import getBlock from "api/getBlock";

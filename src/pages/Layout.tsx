@@ -1,16 +1,14 @@
 import { Suspense } from "react";
 import { Outlet, useLoaderData, useOutletContext, Await } from "react-router-dom";
-import { Box, Container, Toolbar } from "@mui/material";
+import { AppBar, Box, Toolbar, CircularProgress, Typography, Container } from "@mui/material";
 
-import { SyncData } from "components/SyncStatus";
 import Header from "components/Header";
 import { NetworkStatus } from "api/types";
-import BlocksLoadingPage from "pages/BlocksLoadingPage";
 
 export default function Layout() {
     const { networkStatus } = useLoaderData() as { networkStatus: Promise<NetworkStatus> };
     return (
-        <Suspense fallback={<BlocksLoadingPage />}>
+        <Suspense fallback={<LoadingHeader />}>
             <Await resolve={networkStatus}>
                 {(networkStatusLoaded) => {
                     return (
@@ -25,6 +23,31 @@ export default function Layout() {
                 }}
             </Await>
         </Suspense>
+    );
+}
+
+function LoadingHeader() {
+    return (
+        <AppBar>
+            <Container maxWidth="lg">
+                <Toolbar disableGutters sx={{ display: "flex", justifyContent: "space-between" }}>
+                    <Box display="flex" alignItems="center">
+                        <CircularProgress sx={{ color: "white" }} size={45} />
+                        <Typography
+                            variant="h5"
+                            noWrap
+                            sx={{
+                                flexGrow: 1,
+                                display: { xs: "none", sm: "block" },
+                                marginLeft: 1
+                            }}
+                        >
+                            MobileCoin Block Explorer
+                        </Typography>
+                    </Box>
+                </Toolbar>
+            </Container>
+        </AppBar>
     );
 }
 

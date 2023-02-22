@@ -1,11 +1,10 @@
-import { Suspense } from "react";
-import { useLoaderData, Link, Await, useParams } from "react-router-dom";
+import { useLoaderData, Link } from "react-router-dom";
 import { Box, Typography, Card, Tooltip, Button, Grid, Container, TableCell } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 
-import { Block, BurnTx, MintInfoResponse, NetworkStatus } from "api/types";
+import { Block, BurnTx, MintInfoResponse } from "api/types";
 import { getTimeStamp } from "components/BlockRow";
 import Txos from "components/current-block-sections/Txos";
 import KeyImages from "components/current-block-sections/KeyImages";
@@ -26,53 +25,7 @@ export const StyledCell = styled(TableCell)(() => ({
     border: "none"
 }));
 
-// function BlockPage() {
-//     const { blockContents, mintInfo, burns } = useLoaderData() as {
-//         blockContents: Promise<Block>;
-//         mintInfo: Promise<MintInfoResponse>;
-//         burns: Promise<BurnTx[]>;
-//     };
-
-//     return (
-//         <Suspense fallback={<BlockPageLoading />}>
-//             <Await resolve={Promise.all([blockContents, mintInfo, burns])}>
-//                 {(promised) => {
-//                     return (
-//                         <BlockPageLoaded
-//                             blockContents={promised[0]}
-//                             mintInfo={promised[1]}
-//                             burns={promised[2]}
-//                         />
-//                     );
-//                 }}
-//             </Await>
-//         </Suspense>
-//     );
-// }
-
-function BlockPageLoading() {
-    const { blockIndex } = useParams();
-    return (
-        <Container>
-            <Box sx={{ marginBottom: 1 }}>
-                <Typography variant="h4">Block {blockIndex}</Typography>
-                <Typography>...</Typography>
-                <CopyableField text={"......................"} />
-            </Box>
-        </Container>
-    );
-}
-
-export default function BlockPageLoaded() {
-    //     blockContents,
-    //     mintInfo,
-    //     burns
-    // }: {
-    //     blockContents: Block;
-    //     mintInfo: MintInfoResponse;
-    //     burns: BurnTx[];
-    // }) {
-    // const { networkStatus } = useSyncData();
+export default function BlockPage() {
     const { blockContents, mintInfo, burns } = useLoaderData() as {
         blockContents: Block;
         mintInfo: MintInfoResponse;
@@ -95,28 +48,32 @@ export default function BlockPageLoaded() {
                     {isPrevDisabled ? (
                         <div />
                     ) : (
-                        <Button
-                            variant="outlined"
-                            size="small"
-                            sx={{ minWidth: 0, marginRight: 1 }}
-                            component={Link}
-                            to={`/blocks/${Number(blockContents.index) - 1}`}
-                        >
-                            <NavigateBeforeIcon color="primary" fontSize="small" />
-                        </Button>
+                        <Tooltip title="Prev block">
+                            <Button
+                                variant="outlined"
+                                size="small"
+                                sx={{ minWidth: 0, marginRight: 1 }}
+                                component={Link}
+                                to={`/blocks/${Number(blockContents.index) - 1}`}
+                            >
+                                <NavigateBeforeIcon color="primary" fontSize="small" />
+                            </Button>
+                        </Tooltip>
                     )}
                     {isNextDisabled ? (
                         <div />
                     ) : (
-                        <Button
-                            variant="outlined"
-                            size="small"
-                            sx={{ minWidth: 0 }}
-                            component={Link}
-                            to={`/blocks/${Number(blockContents.index) + 1}`}
-                        >
-                            <NavigateNextIcon color="primary" fontSize="small" />
-                        </Button>
+                        <Tooltip title="Next block">
+                            <Button
+                                variant="outlined"
+                                size="small"
+                                sx={{ minWidth: 0 }}
+                                component={Link}
+                                to={`/blocks/${Number(blockContents.index) + 1}`}
+                            >
+                                <NavigateNextIcon color="primary" fontSize="small" />
+                            </Button>
+                        </Tooltip>
                     )}
                 </Box>
             </Box>
