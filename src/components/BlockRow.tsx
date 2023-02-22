@@ -13,10 +13,10 @@ type BlockRowProps = {
 const borderStyle = "1px solid #cecece";
 
 const StyledTableCell = styled(TableCell)(() => ({
-    border: "none",
-    backgroundColor: "inherit",
-    borderTop: borderStyle,
-    borderBottom: borderStyle
+    // border: "none",
+    backgroundColor: "inherit"
+    // borderTop: borderStyle,
+    // borderBottom: borderStyle
 }));
 
 const StyledTableRow = styled(TableRow)(() => ({
