@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, useLayoutEffect } from "react";
+import { useState, useCallback, useRef, useLayoutEffect, useMemo } from "react";
 import {
     Container,
     Table,
@@ -18,6 +18,22 @@ import BlockRow from "components/BlockRow";
 import useThrottle from "utils/useThrottle";
 import { useNetworkStatus } from "pages/Layout";
 import TopContent from "components/latest-blocks/TopContent";
+
+export const getTableHeightToSubtract = (renderTopContents = false) => {
+    // This is a little brittle a needs to be adjusted if we modify the top of this page.
+    // We want the table to be as tall as possible, but we need to provide a fixed height
+    // in order for the infinite scroll to work
+    const headerHeight = 64;
+    const headerPadding = 16;
+    const topContentsHeight = 116;
+    const tableBottomPadding = 32;
+    let tableHeightToSubtract =
+        headerHeight + headerPadding + topContentsHeight + tableBottomPadding;
+    if (!renderTopContents) {
+        tableHeightToSubtract -= topContentsHeight;
+    }
+    return tableHeightToSubtract;
+};
 
 export default function LatestBlocksLoaded({ preLoadedBlocks }: { preLoadedBlocks: Block[] }) {
     const networkStatus = useNetworkStatus();
@@ -93,21 +109,10 @@ export default function LatestBlocksLoaded({ preLoadedBlocks }: { preLoadedBlock
         };
     }, [throttledContentListener, throttledBlocksListener]);
 
-    const getTableHeightToSubtract = useCallback(() => {
-        // This is a little brittle a needs to be adjusted if we modify the top of this page.
-        // We want the table to be as tall as possible, but we need to provide a fixed height
-        // in order for the infinite scroll to work
-        const headerHeight = 64;
-        const headerPadding = 16;
-        const topContentsHeight = 116;
-        const tableBottomPadding = 32;
-        let tableHeightToSubtract =
-            headerHeight + headerPadding + topContentsHeight + tableBottomPadding;
-        if (!renderTopContents) {
-            tableHeightToSubtract -= topContentsHeight;
-        }
-        return tableHeightToSubtract;
-    }, [renderTopContents]);
+    const tableHeightToSubtract = useMemo(
+        () => getTableHeightToSubtract(renderTopContents),
+        [renderTopContents]
+    );
 
     return (
         <Container sx={{ overflow: "hidden" }}>
@@ -115,7 +120,7 @@ export default function LatestBlocksLoaded({ preLoadedBlocks }: { preLoadedBlock
                 <TopContent networkStatus={networkStatus} />
             </Collapse>
             <TableContainer
-                sx={{ maxHeight: `calc(100vh - ${getTableHeightToSubtract()}px)` }}
+                sx={{ maxHeight: `calc(100vh - ${tableHeightToSubtract}px)` }}
                 ref={tableEl}
             >
                 <Table stickyHeader size="small">
