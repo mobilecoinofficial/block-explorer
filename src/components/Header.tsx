@@ -88,18 +88,19 @@ export default function Header({ networkStatus }: { networkStatus: NetworkStatus
     }
 
     async function search() {
-        if (!isNaN(Number(query))) {
+        const trimmedQuery = query.trim();
+        if (!isNaN(Number(trimmedQuery))) {
             try {
-                await getBlock(query);
+                await getBlock(trimmedQuery);
                 setQuery("");
-                navigate(`/blocks/${query}`);
+                navigate(`/blocks/${trimmedQuery}`);
                 return;
             } catch {
                 setSnackbarOpen(true);
             }
         }
 
-        const foundBlock = await searchBlock(query);
+        const foundBlock = await searchBlock(trimmedQuery);
         if (foundBlock) {
             setQuery("");
             navigate(`/blocks/${foundBlock.block.index}`);
