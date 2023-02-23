@@ -82,7 +82,7 @@ export default function Mints({ mintInfo }: { mintInfo: MintInfoResponse }) {
                                                 <CopyableField text={mintTx.recipientB58Addr} />
                                             </StyledCell>
                                             <StyledCell>
-                                                <StyledAccordion disableGutters>
+                                                <StyledAccordion disableGutters sx={{ width: 160 }}>
                                                     <AccordionSummary
                                                         expandIcon={<ExpandMoreIcon />}
                                                         sx={{
@@ -91,9 +91,11 @@ export default function Mints({ mintInfo }: { mintInfo: MintInfoResponse }) {
                                                             paddingLeft: 0
                                                         }}
                                                     >
-                                                        <Typography>Signers</Typography>
+                                                        <Typography>
+                                                            {mintTxSigners.length}
+                                                        </Typography>
                                                     </AccordionSummary>
-                                                    <AccordionDetails>
+                                                    <AccordionDetails sx={{ paddingLeft: 0 }}>
                                                         <Box>
                                                             <Box
                                                                 display="flex"
@@ -101,18 +103,14 @@ export default function Mints({ mintInfo }: { mintInfo: MintInfoResponse }) {
                                                                 sx={{ marginTop: 1 }}
                                                             >
                                                                 <Box>
-                                                                    {mintTxSigners
-                                                                        .sort()
-                                                                        .map((s) => (
-                                                                            <CopyableField
-                                                                                text={base64PEMEncode(
-                                                                                    s
-                                                                                )}
-                                                                                key={base64PEMEncode(
-                                                                                    s
-                                                                                )}
-                                                                            />
-                                                                        ))}
+                                                                    {mintTxSigners.map((s) => (
+                                                                        <CopyableField
+                                                                            text={base64PEMEncode(
+                                                                                s
+                                                                            )}
+                                                                            key={base64PEMEncode(s)}
+                                                                        />
+                                                                    ))}
                                                                 </Box>
                                                             </Box>
                                                         </Box>
