@@ -10,12 +10,12 @@ import {
     Grid
 } from "@mui/material";
 
-import { StyledCard, StyledCell } from "pages/CurrentBlock";
+import { StyledCard, StyledCell } from "components/current-block/CurrentBlock";
 import { MintInfoResponse } from "api/types";
 import { TOKENS, getTokenAmount } from "utils/tokens";
 import CopyableField from "components/CopyableField";
-import MintConfig from "components/current-block-sections/MintConfig";
-import { TableCellContents } from "components/current-block-sections/Mints";
+import MintConfig from "components/current-block/MintConfig";
+import { TableCellContents } from "components/current-block/Mints";
 
 export default function MintConfigTxs({ mintInfo }: { mintInfo: MintInfoResponse }) {
     if (!mintInfo.mintConfigTxs.length) {

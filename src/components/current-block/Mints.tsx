@@ -17,12 +17,12 @@ import { Link } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-import { StyledCard, StyledCell } from "pages/CurrentBlock";
+import { StyledCard, StyledCell } from "components/current-block/CurrentBlock";
 import { MintInfoResponse } from "api/types";
 import { TOKENS, getTokenAmount } from "utils/tokens";
 import CopyableField from "components/CopyableField";
 import { base64PEMEncode } from "utils/bytesToPEM";
-import { openConfigIdParamName } from "components/current-block-sections/MintConfig";
+import { openConfigIdParamName } from "components/current-block/MintConfig";
 
 export const StyledAccordion = styled(Accordion)(() => ({
     boxShadow: "none"

@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 
-import { StyledCard, StyledCell } from "pages/CurrentBlock";
+import { StyledCard, StyledCell } from "components/current-block/CurrentBlock";
 import { Block } from "api/types";
 import CopyableField from "components/CopyableField";
 
