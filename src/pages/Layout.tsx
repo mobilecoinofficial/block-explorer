@@ -4,11 +4,12 @@ import { AppBar, Box, Toolbar, CircularProgress, Typography, Container } from "@
 
 import Header from "components/Header";
 import { NetworkStatus } from "api/types";
+import MobileCoinLogo from "components/MobileCoinLogo";
 
 export default function Layout() {
     const { networkStatus } = useLoaderData() as { networkStatus: Promise<NetworkStatus> };
     return (
-        <Suspense fallback={<LoadingHeader />}>
+        <Suspense fallback={<StaticHeader loading />}>
             <Await resolve={networkStatus}>
                 {(networkStatusLoaded) => {
                     return (
@@ -26,13 +27,18 @@ export default function Layout() {
     );
 }
 
-function LoadingHeader() {
+export function StaticHeader({ loading }: { loading: boolean }) {
+    const logoComponent = loading ? (
+        <CircularProgress sx={{ color: "white" }} size={45} />
+    ) : (
+        <MobileCoinLogo />
+    );
     return (
         <AppBar>
             <Container maxWidth="lg">
                 <Toolbar disableGutters sx={{ display: "flex", justifyContent: "space-between" }}>
                     <Box display="flex" alignItems="center">
-                        <CircularProgress sx={{ color: "white" }} size={45} />
+                        {logoComponent}
                         <Typography
                             variant="h5"
                             noWrap
