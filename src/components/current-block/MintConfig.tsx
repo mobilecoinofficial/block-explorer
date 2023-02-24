@@ -6,7 +6,7 @@ import CopyableField from "components/CopyableField";
 import { base64PEMEncode } from "utils/bytesToPEM";
 import { MintConfig } from "api/types";
 import { getTokenAmount } from "utils/tokens";
-import { StyledAccordion } from "components/current-block-sections/Mints";
+import { StyledAccordion } from "components/current-block/Mints";
 
 export const openConfigIdParamName = "open_config_ids[]";
 

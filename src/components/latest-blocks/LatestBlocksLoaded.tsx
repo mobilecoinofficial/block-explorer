@@ -14,7 +14,7 @@ import {
 import { Block } from "api/types";
 import { INITIAL_BLOCK_COUNT } from "api/getRecentBlocks";
 import getBlocks from "api/getBlocks";
-import BlockRow from "components/BlockRow";
+import BlockRow from "components/latest-blocks/BlockRow";
 import useThrottle from "utils/useThrottle";
 import { useNetworkStatus } from "pages/Layout";
 import TopContent from "components/latest-blocks/TopContent";

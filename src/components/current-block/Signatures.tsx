@@ -10,7 +10,7 @@ import {
     Grid
 } from "@mui/material";
 
-import { StyledCard, StyledCell } from "pages/CurrentBlock";
+import { StyledCard, StyledCell } from "components/current-block/CurrentBlock";
 import CopyableField from "components/CopyableField";
 import { Block } from "api/types";
 import CollapsableDate from "components/CollapsableDate";

@@ -4,7 +4,7 @@ import { styled } from "@mui/material/styles";
 
 import { Block } from "api/types";
 import CopyableField from "components/CopyableField";
-import CollapsableDate from "./CollapsableDate";
+import CollapsableDate from "../CollapsableDate";
 
 type BlockRowProps = {
     block: Block;

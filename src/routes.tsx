@@ -1,24 +1,21 @@
-import { createBrowserRouter, Navigate, defer } from "react-router-dom";
-import getRecentBlocks from "api/getRecentBlocks";
-import getBlock from "api/getBlock";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import LatestBlocks from "pages/LatestBlocks";
 import CurrentBlock from "pages/CurrentBlock";
+import LatestBlock from "pages/LatestBlock";
 import ErrorPage from "pages/ErrorPage";
-import getMintInfo from "api/getMintInfo";
-import getBurns from "api/getBurns";
-import getNetworkStatus from "api/getNetworkStatus";
 import Layout from "pages/Layout";
+import {
+    layoutLoader,
+    latestBlockLoader,
+    recentBlocksLoader,
+    currentBlockLoader
+} from "api/loaders";
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: <Layout />,
-        loader: async () => {
-            const networkStatus = getNetworkStatus();
-            return defer({
-                networkStatus
-            });
-        },
+        loader: layoutLoader,
         shouldRevalidate: ({ nextUrl }) => {
             return nextUrl.pathname === "/blocks";
         },
@@ -30,13 +27,13 @@ const router = createBrowserRouter([
             },
             {
                 path: "blocks",
-                loader: async () => {
-                    const preLoadedBlocks = getRecentBlocks();
-                    return defer({
-                        preLoadedBlocks
-                    });
-                },
+                loader: recentBlocksLoader,
                 element: <LatestBlocks />
+            },
+            {
+                path: "blocks/latest",
+                loader: latestBlockLoader,
+                element: <LatestBlock />
             },
             {
                 path: "blocks/:blockIndex",
@@ -44,16 +41,7 @@ const router = createBrowserRouter([
                     // don't re-fetch data if we are just changing query params
                     return nextParams.blockIndex !== currentParams.blockIndex;
                 },
-                loader: async ({ params }) => {
-                    const blockContents = await getBlock(params.blockIndex);
-                    const mintInfo = await getMintInfo(params.blockIndex);
-                    const burns = await getBurns(params.blockIndex);
-                    return {
-                        blockContents,
-                        mintInfo,
-                        burns
-                    };
-                },
+                loader: currentBlockLoader,
                 element: <CurrentBlock />
             }
         ]
