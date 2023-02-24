@@ -15,7 +15,7 @@ import { styled } from "@mui/material/styles";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 
-import { getTimeStamp } from "components/BlockRow";
+import { getTimeStamp } from "components/latest-blocks/BlockRow";
 import Txos from "components/current-block/Txos";
 import KeyImages from "components/current-block/KeyImages";
 import Signatures from "components/current-block/Signatures";
