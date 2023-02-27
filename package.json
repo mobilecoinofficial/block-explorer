@@ -7,7 +7,7 @@
     "license": "MIT",
     "scripts": {
         "dev": "webpack-cli serve --mode=development --env development --env env chain=mainnet --hot",
-        "dev-testnet": "webpack-cli serve --mode=development --env development --env chain=testnet --hot",
+        "dev-testnet": "webpack-cli serve --mode=development --env development --env env chain=testnet --hot",
         "dev-local": "webpack-cli serve --mode=development --env development --env env chain=local --hot",
         "build": "webpack --mode=production --env production --progress chain=mainnet",
         "build-test": "webpack --mode=production --env production --progress chain=testnet",
