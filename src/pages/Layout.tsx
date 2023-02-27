@@ -1,10 +1,11 @@
 import { Suspense } from "react";
 import { Outlet, useLoaderData, useOutletContext, Await } from "react-router-dom";
-import { AppBar, Box, Toolbar, CircularProgress, Typography, Container } from "@mui/material";
+import { Box, Toolbar, CircularProgress, Typography, Container } from "@mui/material";
 
 import Header from "components/Header";
 import { NetworkStatus } from "api/types";
 import MobileCoinLogo from "components/MobileCoinLogo";
+import HeaderBase from "components/HeaderBase";
 
 export default function Layout() {
     const { networkStatus } = useLoaderData() as { networkStatus: Promise<NetworkStatus> };
@@ -34,7 +35,7 @@ export function StaticHeader({ loading }: { loading: boolean }) {
         <MobileCoinLogo />
     );
     return (
-        <AppBar>
+        <HeaderBase>
             <Container maxWidth="lg">
                 <Toolbar disableGutters sx={{ display: "flex", justifyContent: "space-between" }}>
                     <Box display="flex" alignItems="center">
@@ -53,7 +54,7 @@ export function StaticHeader({ loading }: { loading: boolean }) {
                     </Box>
                 </Toolbar>
             </Container>
-        </AppBar>
+        </HeaderBase>
     );
 }
 

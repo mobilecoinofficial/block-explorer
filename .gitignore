@@ -3,5 +3,4 @@ dist/
 .cache/
 .idea/
 package-lock.json
-.env
 .DS_Store

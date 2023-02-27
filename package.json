@@ -6,8 +6,12 @@
     "repository": "https://github.com/mobilecoinofficial/block-explorer",
     "license": "MIT",
     "scripts": {
-        "dev": "webpack-cli serve --mode=development --env development --hot",
-        "build": "webpack --mode=production --env production --progress",
+        "dev": "webpack-cli serve --mode=development --env development --env env chain=mainnet --hot",
+        "dev-testnet": "webpack-cli serve --mode=development --env development --env chain=testnet --hot",
+        "dev-local": "webpack-cli serve --mode=development --env development --env env chain=local --hot",
+        "build": "webpack --mode=production --env production --progress chain=mainnet",
+        "build-test": "webpack --mode=production --env production --progress chain=testnet",
+        "build-local": "webpack --mode=production --env production --progress chain=local",
         "lint": "eslint './src/**/*.{ts,tsx,js,jsx}'",
         "lint:fix": "eslint './src/**/*.{ts,tsx,js,jsx}' --fix",
         "test": "jest"

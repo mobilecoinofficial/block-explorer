@@ -1,14 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-    AppBar,
-    Box,
-    Container,
-    Toolbar,
-    Typography,
-    InputBase,
-    Snackbar,
-    Alert
-} from "@mui/material";
+import { Box, Container, Toolbar, Typography, InputBase, Snackbar, Alert } from "@mui/material";
 import { styled, alpha } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate, Link } from "react-router-dom";
@@ -20,6 +11,7 @@ import getBlock from "api/getBlock";
 import { NetworkStatus } from "api/types";
 import getCounters from "api/getCounters";
 import getRecentBlocks from "api/getRecentBlocks";
+import HeaderBase from "components/HeaderBase";
 
 const Search = styled("div")(({ theme }) => ({
     position: "relative",
@@ -111,7 +103,7 @@ export default function Header({ networkStatus }: { networkStatus: NetworkStatus
     }
 
     return (
-        <AppBar>
+        <HeaderBase>
             <Container maxWidth="lg">
                 <Toolbar disableGutters sx={{ display: "flex", justifyContent: "space-between" }}>
                     <Box
@@ -167,6 +159,6 @@ export default function Header({ networkStatus }: { networkStatus: NetworkStatus
                     Unable to find matching block
                 </Alert>
             </Snackbar>
-        </AppBar>
+        </HeaderBase>
     );
 }
