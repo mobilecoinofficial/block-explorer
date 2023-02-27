@@ -17,6 +17,9 @@ env:
   TARGET_CLUSTER: utility-r1-d-k8s
   CHART_REPO: https://harbor.mobilecoin.com/chartrepo/mobilecoinofficial-public
   CHART_PATH: ./.internal-ci/helm/block-explorer
+  RESERVE_AUDITOR_URL: https://auditor.mobilecoin.foundation/api
+  FULL_SERVICE_URL: https://readonly-fs-mainnet.mobilecoin.com/wallet/v2
+  MC_NETWORK=main
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -62,6 +65,10 @@ jobs:
           labels: ${{ steps.docker_meta.outputs.labels }}
           tags: ${{ steps.docker_meta.outputs.tags }}
           push: true
+          build-args: |
+            "MC_NETWORK"=${{ env.MC_NETWORK }}
+            "FULL_SERVICE_URL"=${{ env.FULL_SERVICE_URL }}
+            "RESERVE_AUDITOR_URL"=${{ env.RESERVE_AUDITOR_URL }}
 
       - name: Package and publish chart
         uses: mobilecoinofficial/gha-k8s-toolbox@v1
@@ -73,6 +80,11 @@ jobs:
           chart_app_version: ${{ github.ref_name }}
           chart_version: ${{ github.ref_name }}
           chart_path: ${{ env.CHART_PATH }}
+
+      - name: dumpVars
+        run: echo "network is $MC_NETWORK, fullservice url is $FULL_SERVICE_URL, reserveauditor is $RESERVE_AUDITOR_URL"
+
+
 
   deploy-stage:
     needs:
