@@ -34,7 +34,7 @@ export default function HeaderBase({ children }) {
     return (
         <>
             <AppBar sx={{ background }}>{children}</AppBar>
-            {chain !== "mainnet" && (
+            {network !== "mainnet" && (
                 <div
                     style={{
                         position: "fixed",
@@ -44,7 +44,7 @@ export default function HeaderBase({ children }) {
                         color: "orange"
                     }}
                 >
-                    {process.env.REACT_APP_CHAIN}
+                    {process.env.MC_NETWORK}
                 </div>
             )}
         </>
