@@ -19,10 +19,11 @@ const localBackground =
     "linear-gradient(to right, rgb(85, 205, 252), rgb(179, 157, 233), rgb(247, 168, 184), rgb(246, 216, 221), rgb(255, 255, 255) 45%, rgb(255, 255, 255), rgb(255, 255, 255) 55%, rgb(246, 216, 221), rgb(247, 168, 184), rgb(179, 157, 233), rgb(85, 205, 252))";
 
 export default function HeaderBase({ children }) {
-    const chain = process.env.MC_NETWORK;
+    const network = process.env.MC_NETWORK;
     let background: string;
-    switch (chain) {
-        case "testnet":
+    // can be "main" or "test"
+    switch (network) {
+        case "test":
             background = testnetBackground;
             break;
         case "local":
