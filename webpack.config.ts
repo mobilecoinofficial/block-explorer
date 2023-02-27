@@ -55,7 +55,7 @@ const webpackConfig = (env): Configuration => ({
         new ForkTsCheckerWebpackPlugin(),
         new ESLintPlugin({ files: "./src/**/*.{ts,tsx,js,jsx}" }),
         new Dotenv({
-            path: `./env-files/${env.chain}.env`
+            systemvars: true
         })
     ]
 });
