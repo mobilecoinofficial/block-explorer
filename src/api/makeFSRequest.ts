@@ -36,7 +36,7 @@ export default async function makeFSRequest<T>({
         const response: FSResponse<T> = await axios({
             method: "post",
             headers,
-            url: process.env.REACT_APP_FULL_SERVICE_URL,
+            url: process.env.FULL_SERVICE_URL,
             data: JSON.stringify({
                 method,
                 ...FSRequiredArgs,
