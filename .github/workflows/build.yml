@@ -66,9 +66,9 @@ jobs:
           tags: ${{ steps.docker_meta.outputs.tags }}
           push: true
           build-args: |
-            "MC_NETWORK"=${{ env.MC_NETWORK }}
-            "FULL_SERVICE_URL"=${{ env.FULL_SERVICE_URL }}
-            "RESERVE_AUDITOR_URL"=${{ env.RESERVE_AUDITOR_URL }}
+            MC_NETWORK=${{ env.MC_NETWORK }}
+            FULL_SERVICE_URL=${{ env.FULL_SERVICE_URL }}
+            RESERVE_AUDITOR_URL=${{ env.RESERVE_AUDITOR_URL }}
 
       - name: Package and publish chart
         uses: mobilecoinofficial/gha-k8s-toolbox@v1
