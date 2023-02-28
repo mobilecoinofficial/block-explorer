@@ -38,11 +38,11 @@ export default function Txos({ blockContents, burns }: { blockContents: Block; b
                         <Typography>Burn</Typography>
                     </StyledCell>
                     <StyledCell>
-                        <>
+                        <Typography>
                             {getTokenAmount(matchingBurn.burn.tokenId, matchingBurn.burn.amount)}
                             &nbsp;
                             {TOKENS[matchingBurn.burn.tokenId].name}
-                        </>
+                        </Typography>
                     </StyledCell>
                 </TableRow>
             );
