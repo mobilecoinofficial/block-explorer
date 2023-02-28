@@ -79,7 +79,7 @@ jobs:
           context: .
           file: .internal-ci/docker/Dockerfile.block-explorer
           labels: ${{ steps.docker_meta.outputs.labels }}
-          tags: ${{ steps.docker_meta.outputs.tags }}-${{ env.MC_NETWORK }}
+          tags: ${{ steps.docker_meta.outputs.ref_name }}-${{ matrix.env.MC_NETWORK }}
           push: true
           build-args: |
             MC_NETWORK=${{ matrix.env.MC_NETWORK }}
