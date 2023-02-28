@@ -1,6 +1,5 @@
 name: build
 
-
 on:
   push:
     tags:
@@ -17,9 +16,10 @@ env:
   TARGET_CLUSTER: utility-r1-d-k8s
   CHART_REPO: https://harbor.mobilecoin.com/chartrepo/mobilecoinofficial-public
   CHART_PATH: ./.internal-ci/helm/block-explorer
-  RESERVE_AUDITOR_URL: https://auditor.mobilecoin.foundation/api
-  FULL_SERVICE_URL: https://readonly-fs-mainnet.mobilecoin.com/wallet/v2
-  MC_NETWORK: main
+  MAIN_RESERVE_AUDITOR_URL: https://auditor.mobilecoin.foundation/api
+  MAIN_FULL_SERVICE_URL: https://readonly-fs-mainnet.mobilecoin.com/wallet/v2
+  TEST_RESERVE_AUDITOR_URL: https://auditor.mobilecoin.foundation/api
+  TEST_FULL_SERVICE_URL: https://readonly-fs-mainnet.mobilecoin.com/wallet/v2
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -27,8 +27,23 @@ concurrency:
 
 jobs:
   build:
+    permissions: # check what this does
+      contents: write
     runs-on: [self-hosted, Linux, small]
-
+    strategy:
+      matrix: 
+        network: [main, test]
+        include:
+          - network: main
+            env:
+              RESERVE_AUDITOR_URL: https://auditor.mobilecoin.foundation/api
+              FULL_SERVICE_URL: https://readonly-fs-mainnet.mobilecoin.com/wallet/v2
+              MC_NETWORK: main
+          - network: test
+            env:
+              RESERVE_AUDITOR_URL: https://auditor.test.mobilecoin.com/api
+              FULL_SERVICE_URL: https://readonly-fs-testnet.mobilecoin.com/wallet/v2
+              MC_NETWORK: test
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -43,7 +58,7 @@ jobs:
           images: mobilecoin/block-explorer
           tags: |
             type=ref,event=branch
-            type=semver,pattern=v{{version}}
+            type=semver,pattern=v{{version}},suffix=-${{ matrix.env.MC_NETWORK }}
             type=sha
     
       - name: Setup Docker Buildx
@@ -66,9 +81,9 @@ jobs:
           tags: ${{ steps.docker_meta.outputs.tags }}
           push: true
           build-args: |
-            MC_NETWORK=${{ env.MC_NETWORK }}
-            FULL_SERVICE_URL=${{ env.FULL_SERVICE_URL }}
-            RESERVE_AUDITOR_URL=${{ env.RESERVE_AUDITOR_URL }}
+            MC_NETWORK=${{ matrix.env.MC_NETWORK }}
+            FULL_SERVICE_URL=${{ matrix.env.FULL_SERVICE_URL }}
+            RESERVE_AUDITOR_URL=${{ matrix.env.RESERVE_AUDITOR_URL }}
 
       - name: Package and publish chart
         uses: mobilecoinofficial/gha-k8s-toolbox@v1
@@ -81,15 +96,20 @@ jobs:
           chart_version: ${{ github.ref_name }}
           chart_path: ${{ env.CHART_PATH }}
 
-      - name: dumpBuildVars
-        run: echo "network is $MC_NETWORK, fullservice url is $FULL_SERVICE_URL, reserveauditor is $RESERVE_AUDITOR_URL"
-
-
-
   deploy-stage:
     needs:
       - build
     runs-on: [self-hosted, Linux, small]
+    strategy:
+      matrix: 
+        network: [main, test]
+        include:
+          - network: main
+            env:
+              MC_NETWORK: main
+          - network: test
+            env:
+              MC_NETWORK: test
     steps:
       - name: Create namespace
         uses: mobilecoinofficial/gha-k8s-toolbox@v1
@@ -100,9 +120,6 @@ jobs:
           rancher_url: ${{ secrets.RANCHER_B_URL }}
           rancher_token: ${{ secrets.RANCHER_B_TOKEN }}
 
-      - name: dumpDeployVars
-        run: echo "network is $MC_NETWORK, fullservice url is $FULL_SERVICE_URL, reserveauditor is $RESERVE_AUDITOR_URL"
-
       - name: Deploy Staging
         uses: mobilecoinofficial/gha-k8s-toolbox@v1
         with:
@@ -110,9 +127,10 @@ jobs:
           chart_repo: ${{ env.CHART_REPO }}
           chart_name: ${{ env.REPO_NAME }}
           chart_set: |
-            --set=ingress.host=block-explorer.stage.mobilecoin.foundation
+            --set=ingress.host=block-explorer.stage.${{ matrix.env.MC_NETWORK }}.mobilecoin.foundation
+            --set=image.tag=${{ github.ref_name }}-${{ matrix.env.MC_NETWORK }}
           chart_version: ${{ github.ref_name }}
-          release_name: ${{ env.REPO_NAME }}
+          release_name: ${{ env.REPO_NAME }}-${{ matrix.env.MC_NETWORK }}
           namespace: block-explorer-stage
           rancher_cluster: ${{ env.TARGET_CLUSTER }}
           rancher_url: ${{ secrets.RANCHER_B_URL }}
