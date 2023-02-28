@@ -58,7 +58,7 @@ jobs:
           images: mobilecoin/block-explorer
           tags: |
             type=ref,event=branch
-            type=semver,pattern=v{{version}},suffix=${{ matrix.env.MC_NETWORK }}
+            type=semver,pattern=v{{version}},suffix=-${{ matrix.env.MC_NETWORK }}
             type=sha
     
       - name: Setup Docker Buildx
