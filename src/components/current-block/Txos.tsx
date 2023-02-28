@@ -26,7 +26,7 @@ export default function Txos({ blockContents, burns }: { blockContents: Block; b
     }
 
     function RenderOutput({ txout }: { txout: TxOut }) {
-        const matchingBurn = burns.find((burn) => burn.publicKeyHex === txout.publicKey);
+        const matchingBurn = burns.find(({ burn }) => burn.publicKeyHex === txout.publicKey);
 
         if (matchingBurn) {
             return (
@@ -39,9 +39,9 @@ export default function Txos({ blockContents, burns }: { blockContents: Block; b
                     </StyledCell>
                     <StyledCell>
                         <>
-                            {getTokenAmount(matchingBurn.tokenId, matchingBurn.amount)}
+                            {getTokenAmount(matchingBurn.burn.tokenId, matchingBurn.burn.amount)}
                             &nbsp;
-                            {TOKENS[matchingBurn.tokenId].name}
+                            {TOKENS[matchingBurn.burn.tokenId].name}
                         </>
                     </StyledCell>
                 </TableRow>
