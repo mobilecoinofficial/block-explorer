@@ -1,6 +1,5 @@
 name: build
 
-
 on:
   push:
     tags:
@@ -17,8 +16,10 @@ env:
   TARGET_CLUSTER: utility-r1-d-k8s
   CHART_REPO: https://harbor.mobilecoin.com/chartrepo/mobilecoinofficial-public
   CHART_PATH: ./.internal-ci/helm/block-explorer
-  RESERVE_AUDITOR_URL: https://auditor.mobilecoin.foundation/api
-  FULL_SERVICE_URL: https://readonly-fs-mainnet.mobilecoin.com/wallet/v2
+  MAIN_RESERVE_AUDITOR_URL: https://auditor.mobilecoin.foundation/api
+  MAIN_FULL_SERVICE_URL: https://readonly-fs-mainnet.mobilecoin.com/wallet/v2
+  TEST_RESERVE_AUDITOR_URL: https://auditor.mobilecoin.foundation/api
+  TEST_FULL_SERVICE_URL: https://readonly-fs-mainnet.mobilecoin.com/wallet/v2
   MC_NETWORK: main
 
 concurrency:
@@ -27,8 +28,23 @@ concurrency:
 
 jobs:
   build:
+    permissions: # check what this does
+      contents: write
     runs-on: [self-hosted, Linux, small]
-
+    strategy:
+      matrix: 
+        network: [main, test]
+        include:
+          - network: main
+            env:
+              RESERVE_AUDITOR_URL: https://auditor.mobilecoin.foundation/api
+              FULL_SERVICE_URL: https://readonly-fs-mainnet.mobilecoin.com/wallet/v2
+              MC_NETWORK: main
+          - network: test
+            env:
+              RESERVE_AUDITOR_URL: https://auditor.test.mobilecoin.com/api
+              FULL_SERVICE_URL: https://readonly-fs-testnet.mobilecoin.com/wallet/v2
+              MC_NETWORK: test
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -63,7 +79,7 @@ jobs:
           context: .
           file: .internal-ci/docker/Dockerfile.block-explorer
           labels: ${{ steps.docker_meta.outputs.labels }}
-          tags: ${{ steps.docker_meta.outputs.tags }}
+          tags: ${{ steps.docker_meta.outputs.tags }}-${{ env.MC_NETWORK }}
           push: true
           build-args: |
             MC_NETWORK=${{ env.MC_NETWORK }}
@@ -81,11 +97,6 @@ jobs:
           chart_version: ${{ github.ref_name }}
           chart_path: ${{ env.CHART_PATH }}
 
-      - name: dumpBuildVars
-        run: echo "network is $MC_NETWORK, fullservice url is $FULL_SERVICE_URL, reserveauditor is $RESERVE_AUDITOR_URL"
-
-
-
   deploy-stage:
     needs:
       - build
@@ -99,9 +110,6 @@ jobs:
           rancher_cluster: ${{ env.TARGET_CLUSTER }}
           rancher_url: ${{ secrets.RANCHER_B_URL }}
           rancher_token: ${{ secrets.RANCHER_B_TOKEN }}
-
-      - name: dumpDeployVars
-        run: echo "network is $MC_NETWORK, fullservice url is $FULL_SERVICE_URL, reserveauditor is $RESERVE_AUDITOR_URL"
 
       - name: Deploy Staging
         uses: mobilecoinofficial/gha-k8s-toolbox@v1
