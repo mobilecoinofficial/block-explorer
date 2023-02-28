@@ -22,9 +22,8 @@ import {
 
 describe("API integration tests for mainnet", () => {
     beforeAll(() => {
-        process.env.REACT_APP_RESERVE_AUDITOR_URL = "https://auditor.mobilecoin.foundation/api";
-        process.env.REACT_APP_FULL_SERVICE_URL =
-            "https://readonly-fs-mainnet.mobilecoin.com/wallet/v2";
+        process.env.RESERVE_AUDITOR_URL = "https://auditor.mobilecoin.foundation/api";
+        process.env.FULL_SERVICE_URL = "https://readonly-fs-mainnet.mobilecoin.com/wallet/v2";
     });
 
     describe("get block", () => {
