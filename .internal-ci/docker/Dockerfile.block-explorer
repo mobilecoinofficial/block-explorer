@@ -1,5 +1,13 @@
 # Install deps and build html + js
 FROM node:19.5.0-buster-slim AS builder
+ARG MC_NETWORK
+ARG RESERVE_AUDITOR_URL
+ARG FULL_SERVICE_URL
+
+ENV MC_NETWORK ${MC_NETWORK}
+ENV RESERVE_AUDITOR_URL ${RESERVE_AUDITOR_URL}
+ENV FULL_SERVICE_URL ${FULL_SERVICE_URL}
+
 WORKDIR /app
 COPY yarn.lock package.json /app/
 RUN yarn install

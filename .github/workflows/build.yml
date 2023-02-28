@@ -81,7 +81,7 @@ jobs:
           chart_version: ${{ github.ref_name }}
           chart_path: ${{ env.CHART_PATH }}
 
-      - name: dumpVars
+      - name: dumpBuildVars
         run: echo "network is $MC_NETWORK, fullservice url is $FULL_SERVICE_URL, reserveauditor is $RESERVE_AUDITOR_URL"
 
 
@@ -99,6 +99,9 @@ jobs:
           rancher_cluster: ${{ env.TARGET_CLUSTER }}
           rancher_url: ${{ secrets.RANCHER_B_URL }}
           rancher_token: ${{ secrets.RANCHER_B_TOKEN }}
+
+      - name: dumpDeployVars
+        run: echo "network is $MC_NETWORK, fullservice url is $FULL_SERVICE_URL, reserveauditor is $RESERVE_AUDITOR_URL"
 
       - name: Deploy Staging
         uses: mobilecoinofficial/gha-k8s-toolbox@v1
