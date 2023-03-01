@@ -4,90 +4,88 @@
 name: ci
 
 on:
-  pull_request:
-    paths-ignore:
-      - '.lefthook/**'
-      - '.vscode/**'
-      - 'docs/**'
-      - '**.md'
-    branches: [ "main" ]
+    pull_request:
+        paths-ignore:
+            - ".lefthook/**"
+            - ".vscode/**"
+            - "docs/**"
+            - "**.md"
+        branches: ["main"]
 
 jobs:
-  tests:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [16.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+    tests:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                node-version: [16.x]
+                # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
-    steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: yarn
-    - run: yarn build
-    - run: yarn test
+        steps:
+            - uses: actions/checkout@v3
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v3
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: "npm"
+            - run: yarn
+            - run: yarn test
 
-  lint-docker:
-    runs-on: [self-hosted, Linux, small]
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v3
+    lint-docker:
+        runs-on: [self-hosted, Linux, small]
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
 
-    - name: Run hadolint with reviewdog
-      uses: reviewdog/action-hadolint@v1
-      with:
-        fail_on_error: true
-        reporter: github-pr-review
-        exclude: |
-          *.dockerignore
-  
-  lint-actions:
-    runs-on: [self-hosted, Linux, small]
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v3
+            - name: Run hadolint with reviewdog
+              uses: reviewdog/action-hadolint@v1
+              with:
+                  fail_on_error: true
+                  reporter: github-pr-review
+                  exclude: |
+                      *.dockerignore
 
-    - name: Run actionlint with reviewdog
-      uses: reviewdog/action-actionlint@v1
-      with:
-        fail_on_error: true
-        reporter: github-pr-review
+    lint-actions:
+        runs-on: [self-hosted, Linux, small]
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
 
-  # no reviewdog for helm
-  lint-helm:
-    runs-on: [self-hosted, Linux, small]
-    container:
-      image: mobilecoin/gha-k8s-toolbox:v1
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v3
+            - name: Run actionlint with reviewdog
+              uses: reviewdog/action-actionlint@v1
+              with:
+                  fail_on_error: true
+                  reporter: github-pr-review
 
-    - name: Run helm lint
-      run: |
-        chart_base=".internal-ci/helm"
-        chart_files=$(find "${chart_base}" -name Chart.yaml -type f)
-        # helm lint on directories where there are chart.yaml files
-        for c in ${chart_files}
-        do
-          chart=$(dirname "${c}")
-          helm lint --quiet "${chart}"  2>&1
-        done
+    # no reviewdog for helm
+    lint-helm:
+        runs-on: [self-hosted, Linux, small]
+        container:
+            image: mobilecoin/gha-k8s-toolbox:v1
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
 
-  # Have one noop job at the end that passes if all the other checks pass.
-  # This is so we can just have one "standard" check to add to the branch protections.
-  workflow-ok:
-    needs:
-    - tests
-    - lint-docker
-    - lint-actions
-    - lint-helm
-    runs-on: [self-hosted, Linux, small]
-    steps:
-    - name: All Checks OK!
-      run: |
-        true
+            - name: Run helm lint
+              run: |
+                  chart_base=".internal-ci/helm"
+                  chart_files=$(find "${chart_base}" -name Chart.yaml -type f)
+                  # helm lint on directories where there are chart.yaml files
+                  for c in ${chart_files}
+                  do
+                    chart=$(dirname "${c}")
+                    helm lint --quiet "${chart}"  2>&1
+                  done
 
+    # Have one noop job at the end that passes if all the other checks pass.
+    # This is so we can just have one "standard" check to add to the branch protections.
+    workflow-ok:
+        needs:
+            - tests
+            - lint-docker
+            - lint-actions
+            - lint-helm
+        runs-on: [self-hosted, Linux, small]
+        steps:
+            - name: All Checks OK!
+              run: |
+                  true
