@@ -38,7 +38,11 @@ export default function Txos({ blockContents, burns }: { blockContents: Block; b
         const matchingBurn = burns.find(({ burn }) => burn.publicKeyHex === txout.publicKey);
 
         if (matchingBurn) {
-            const memo = String.fromCharCode(...matchingBurn.decodedBurnMemoBytes);
+            // remove null characters
+            const memo = String.fromCharCode(...matchingBurn.decodedBurnMemoBytes).replace(
+                /\0/g,
+                ""
+            );
             return (
                 <TableRow>
                     <StyledCell>
@@ -54,9 +58,7 @@ export default function Txos({ blockContents, burns }: { blockContents: Block; b
                             {TOKENS[matchingBurn.burn.tokenId].name}
                         </Typography>
                     </StyledCell>
-                    <StyledCell>
-                        <CopyableField text={memo} />
-                    </StyledCell>
+                    <StyledCell>{memo && <CopyableField text={memo} />}</StyledCell>
                 </TableRow>
             );
         }
