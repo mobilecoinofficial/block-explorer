@@ -30,6 +30,7 @@ jobs:
           chart_name: block-explorer
           chart_set: |
             --set=ingress.host=block-explorer.mobilecoin.foundation
+            --set=image.tag=${{ github.ref_name }}-main
           chart_version: ${{ github.ref_name }}
           release_name: block-explorer
           namespace: block-explorer-mainnet
@@ -57,6 +58,7 @@ jobs:
           chart_name: block-explorer
           chart_set: |
             --set=ingress.host=block-explorer.test.mobilecoin.com
+            --set=image.tag=${{ github.ref_name }}-test
           chart_version: ${{ github.ref_name }}
           release_name: block-explorer
           namespace: block-explorer-testnet
