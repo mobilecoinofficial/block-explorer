@@ -28,12 +28,7 @@ const webpackConfig = (env): Configuration => {
         // expect variables to be set in env for production builds
     } else {
         plugins.push(
-            new webpack.EnvironmentPlugin([
-                "FULL_SERVICE_URL",
-                "RESERVE_AUDITOR_URL",
-                "MC_NETWORK",
-                "CHEESE"
-            ])
+            new webpack.EnvironmentPlugin(["FULL_SERVICE_URL", "RESERVE_AUDITOR_URL", "MC_NETWORK"])
         );
     }
 
