@@ -36,9 +36,7 @@ export default async function makeFSRequest<T>({
         const response: FSResponse<T> = await axios({
             method: "post",
             headers,
-            url:
-                process.env.REACT_APP_FULL_SERVICE_URL ??
-                "https://readonly-fs-mainnet.mobilecoin.com/wallet/v2",
+            url: process.env.FULL_SERVICE_URL,
             data: JSON.stringify({
                 method,
                 ...FSRequiredArgs,

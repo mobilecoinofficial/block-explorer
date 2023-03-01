@@ -18,10 +18,7 @@ export default async function makeRARequest<T>({
     try {
         const response = await axios({
             method: "get",
-            url: `${
-                process.env.REACT_APP_RESERVE_AUDITOR_URL ??
-                "https://auditor.mobilecoin.foundation/api"
-            }/${route}`
+            url: `${process.env.RESERVE_AUDITOR_URL}/${route}`
         });
 
         if (response.status === 404) {
