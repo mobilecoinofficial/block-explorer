@@ -6,7 +6,7 @@ A web app for viewing the MobileCoin blockchain.
 -   Production testnet: https://block-explorer.test.mobilecoin.com
 
 -   Staging mainnet: https://block-explorer.stage.mobilecoin.foundation
--   Staging testnet:
+-   Staging testnet: https://block-explorer.stage.test.mobilecoin.com/blocks
 
 # Developing
 
