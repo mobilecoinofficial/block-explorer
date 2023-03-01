@@ -4,6 +4,6 @@ export function truncate(str: string, n: number) {
 
 export function abbreviateHash(hash: string) {
     const start = hash.slice(0, 5);
-    const end = hash.slice(hash.split("").length - 5, hash.split("").length);
+    const end = hash.slice(hash.length - 5, hash.length);
     return start + "..." + end;
 }
