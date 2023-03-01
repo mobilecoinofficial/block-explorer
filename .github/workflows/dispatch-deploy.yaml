@@ -17,7 +17,7 @@ jobs:
         uses: mobilecoinofficial/gha-k8s-toolbox@v1
         with:
           action: namespace-create
-          namespace: block-explorer-prod
+          namespace: block-explorer-mainnet
           rancher_cluster: ${{ env.TARGET_CLUSTER }}
           rancher_url: ${{ secrets.RANCHER_B_URL }}
           rancher_token: ${{ secrets.RANCHER_B_TOKEN }}
@@ -44,7 +44,7 @@ jobs:
         uses: mobilecoinofficial/gha-k8s-toolbox@v1
         with:
           action: namespace-create
-          namespace: block-explorer-prod
+          namespace: block-explorer-testnet
           rancher_cluster: ${{ env.TARGET_CLUSTER }}
           rancher_url: ${{ secrets.RANCHER_B_URL }}
           rancher_token: ${{ secrets.RANCHER_B_TOKEN }}
