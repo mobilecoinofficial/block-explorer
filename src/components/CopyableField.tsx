@@ -19,7 +19,7 @@ export default function CopyableField({
 
     return (
         <Box display="flex" alignItems="center">
-            <Tooltip title={`Copy ${text} to clipboard`}>
+            <Tooltip title={text}>
                 <IconButton onClick={copyToClipboard} edge="start" sx={{ paddingLeft: "12px" }}>
                     <ContentCopyIcon
                         sx={{ cursor: "pointer", color: "text.secondary" }}

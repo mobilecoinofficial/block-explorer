@@ -11,6 +11,7 @@ import {
     useMediaQuery
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
+import { useEffect, useState } from "react";
 
 import { StyledCard, StyledCell } from "components/current-block/CurrentBlock";
 import CopyableField from "components/CopyableField";
@@ -20,15 +21,24 @@ import { getTokenAmount, TOKENS } from "utils/tokens";
 export default function Txos({ blockContents, burns }: { blockContents: Block; burns: BurnTx[] }) {
     const theme = useTheme();
     const matches = useMediaQuery(theme.breakpoints.down("md"));
+    const [renderMemo, setRenderMemo] = useState(false);
 
-    if (!blockContents.outputs.length) {
-        return null;
-    }
+    useEffect(() => {
+        const txoPubKeys = blockContents.outputs.map((output) => output.publicKey);
+        const burnPubKeys = burns.map((burn) => burn.burn.publicKeyHex);
+        const intersection = txoPubKeys.find((txoPubKey) => burnPubKeys.includes(txoPubKey));
+        if (intersection) {
+            setRenderMemo(true);
+        } else {
+            setRenderMemo(false);
+        }
+    }, [burns, blockContents]);
 
     function RenderOutput({ txout }: { txout: TxOut }) {
         const matchingBurn = burns.find(({ burn }) => burn.publicKeyHex === txout.publicKey);
 
         if (matchingBurn) {
+            const memo = String.fromCharCode(...matchingBurn.decodedBurnMemoBytes);
             return (
                 <TableRow>
                     <StyledCell>
@@ -44,8 +54,15 @@ export default function Txos({ blockContents, burns }: { blockContents: Block; b
                             {TOKENS[matchingBurn.burn.tokenId].name}
                         </Typography>
                     </StyledCell>
+                    <StyledCell>
+                        <CopyableField text={memo} />
+                    </StyledCell>
                 </TableRow>
             );
+        }
+
+        if (!blockContents.outputs.length) {
+            return null;
         }
 
         return (
@@ -81,6 +98,7 @@ export default function Txos({ blockContents, burns }: { blockContents: Block; b
                                     <TableCell>TXO Public Key</TableCell>
                                     <TableCell>Target Address</TableCell>
                                     <TableCell>Amount</TableCell>
+                                    {renderMemo && <TableCell>Memo</TableCell>}
                                 </TableRow>
                             </TableHead>
                             <TableBody>
