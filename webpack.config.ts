@@ -7,7 +7,6 @@ import { TsconfigPathsPlugin } from "tsconfig-paths-webpack-plugin";
 import Dotenv from "dotenv-webpack";
 // needed for historyApiFallback
 import * as webpackDevServer from "webpack-dev-server";
-import EnvVarChecker from "./envVarChecker";
 
 const webpackConfig = (env): Configuration => {
     const plugins: any[] = [
