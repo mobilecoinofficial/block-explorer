@@ -6,5 +6,5 @@ export default async function getMintInfo(blockIndex: string): Promise<BurnTx[]>
         route: `burns?block_index=${blockIndex}`
     });
 
-    return result.burnTxs;
+    return result;
 }

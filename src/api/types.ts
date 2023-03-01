@@ -156,17 +156,18 @@ export type MintConfigResponse = {
 };
 
 export type BurnTx = {
-    id: number;
-    blockIndex: number;
-    tokenId: number;
-    amount: number;
-    publicKeyHex: string;
-    protobuf: number[];
+    burn: {
+        id: number;
+        blockIndex: number;
+        tokenId: number;
+        amount: number;
+        publicKeyHex: string;
+        protobuf: number[];
+    };
+    decodedBurnMemoBytes: number[];
 };
 
-export type BurnsResponse = {
-    burnTxs: BurnTx[];
-};
+export type BurnsResponse = BurnTx[];
 
 export type CountersResponse = {
     // Number of blocks synced so far by auditor
