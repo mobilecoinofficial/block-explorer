@@ -2,8 +2,8 @@
 
 A web app for viewing the MobileCoin blockchain.
 
--   Prodiction mainnet: https://block-explorer.mobilecoin.foundation
--   Prodiction testnet:
+-   Production mainnet: https://block-explorer.mobilecoin.foundation
+-   Production testnet:
 
 -   Staging mainnet: https://block-explorer.stage.mobilecoin.foundation
 -   Staging testnet:
