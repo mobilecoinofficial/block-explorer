@@ -1,4 +1,4 @@
-name: (Manual) Deploy
+name: (Manual) Production Deploy
 
 run-name: Deploy ${{ github.ref_name }} to production.
 
@@ -10,7 +10,7 @@ env:
   CHART_REPO: https://harbor.mobilecoin.com/chartrepo/mobilecoinofficial-public
 
 jobs:
-  deploy-prod:
+  deploy-mainnet:
     runs-on: [self-hosted, Linux, small]
     steps:
       - name: Create namespace
@@ -22,7 +22,7 @@ jobs:
           rancher_url: ${{ secrets.RANCHER_B_URL }}
           rancher_token: ${{ secrets.RANCHER_B_TOKEN }}
 
-      - name: Deploy Prod
+      - name: Deploy Prod Mainnet
         uses: mobilecoinofficial/gha-k8s-toolbox@v1
         with:
           action: helm-deploy
@@ -32,7 +32,34 @@ jobs:
             --set=ingress.host=block-explorer.mobilecoin.foundation
           chart_version: ${{ github.ref_name }}
           release_name: block-explorer
+          namespace: block-explorer-mainnet
+          rancher_cluster: ${{ env.TARGET_CLUSTER }}
+          rancher_url: ${{ secrets.RANCHER_B_URL }}
+          rancher_token: ${{ secrets.RANCHER_B_TOKEN }}
+
+  deploy-testnet:
+    runs-on: [self-hosted, Linux, small]
+    steps:
+      - name: Create namespace
+        uses: mobilecoinofficial/gha-k8s-toolbox@v1
+        with:
+          action: namespace-create
           namespace: block-explorer-prod
+          rancher_cluster: ${{ env.TARGET_CLUSTER }}
+          rancher_url: ${{ secrets.RANCHER_B_URL }}
+          rancher_token: ${{ secrets.RANCHER_B_TOKEN }}
+
+      - name: Deploy Prod Testnet
+        uses: mobilecoinofficial/gha-k8s-toolbox@v1
+        with:
+          action: helm-deploy
+          chart_repo: ${{ env.CHART_REPO }}
+          chart_name: block-explorer
+          chart_set: |
+            --set=ingress.host=block-explorer.test.mobilecoin.com
+          chart_version: ${{ github.ref_name }}
+          release_name: block-explorer
+          namespace: block-explorer-testnet
           rancher_cluster: ${{ env.TARGET_CLUSTER }}
           rancher_url: ${{ secrets.RANCHER_B_URL }}
           rancher_token: ${{ secrets.RANCHER_B_TOKEN }}
