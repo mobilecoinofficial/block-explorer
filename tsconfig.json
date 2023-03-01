@@ -17,5 +17,5 @@
         "moduleResolution": "node",
         "downlevelIteration": true
     },
-    "include": ["./src", "./webpack.config.ts", "./jest.config.ts", "./tests"]
+    "include": ["./src", "./webpack.config.ts", "./jest.config.ts", "./tests", "./envVarChecker"]
 }
