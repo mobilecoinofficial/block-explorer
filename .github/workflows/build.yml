@@ -23,8 +23,6 @@ concurrency:
 
 jobs:
   build:
-    permissions: # check what this does
-      contents: write
     runs-on: [self-hosted, Linux, small]
     strategy:
       matrix: 
