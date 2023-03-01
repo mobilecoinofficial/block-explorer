@@ -26,10 +26,9 @@ export default function HeaderBase({ children }) {
                 <div
                     style={{
                         position: "fixed",
-                        top: "40px",
-                        left: "380px",
-                        zIndex: 10000,
-                        color: "orange"
+                        top: "68px",
+                        right: "8px",
+                        zIndex: 10000
                     }}
                 >
                     testnet
