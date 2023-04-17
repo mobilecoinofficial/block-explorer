@@ -6,6 +6,12 @@ export const TOKENS = {
     0: {
         name: "MOB",
         precision: 1_000_000_000_000
+    },
+    // This should only appear on testnet
+    // Block 847220 has a mint of it
+    8192: {
+        name: "fauxUSD",
+        precision: 1_000_000
     }
 };
 
