@@ -203,9 +203,6 @@ describe("API integration tests for mainnet", () => {
             const mintInfo = await getMintInfo(blockWithMintConfigTx);
             const paths = objectPaths(expectedMintConfigTxInfo);
             for (const path of paths) {
-                if (path.includes("mintConfigs.0")) {
-                    console.log(path);
-                }
                 try {
                     expect(typeof get(mintInfo, path)).toEqual(
                         typeof get(expectedMintConfigTxInfo, path)

@@ -7,6 +7,7 @@ import getBurns from "api/getBurns";
 import getNetworkStatus from "api/getNetworkStatus";
 
 const getLatestBlock = async () => {
+    console.log("HHEYEYEYEYEY");
     const latestBlocks = await getRecentBlocks(1);
     const latestBlockIndex = latestBlocks[0].index;
     const blockContents = await getBlock(latestBlockIndex);

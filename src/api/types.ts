@@ -113,12 +113,16 @@ export type MintConfigTx = {
     protobuf: number[];
 };
 
+export type SignerSet = {
+    individualSigners: number[][];
+    threshold: number;
+    multiSigners: SignerSet[];
+};
+
 export type MintConfig = {
     id: number;
     tokenId: number;
-    signerSet: {
-        signers: number[][];
-    };
+    signerSet: SignerSet;
     mintLimit: number;
 };
 
