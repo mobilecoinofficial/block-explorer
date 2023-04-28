@@ -4,15 +4,28 @@ import { useSearchParams } from "react-router-dom";
 
 import CopyableField from "components/CopyableField";
 import { base64PEMEncode } from "utils/bytesToPEM";
-import { MintConfig } from "api/types";
+import { MintConfig, SignerSet } from "api/types";
 import { getTokenAmount } from "utils/tokens";
 import { StyledAccordion } from "components/current-block/Mints";
 
 export const openConfigIdParamName = "open_config_ids[]";
 
+export function extractSigners(signerSet: SignerSet): number[][] {
+    const allSigners: number[][] = [...signerSet.individualSigners];
+
+    for (const multiSignerSet of signerSet.multiSigners) {
+        allSigners.push(...extractSigners(multiSignerSet));
+    }
+
+    return allSigners;
+}
+
 export default function MintConfig({ config }: { config: MintConfig }) {
     const [params, setParams] = useSearchParams();
     const openConfigIds = params.getAll(`${openConfigIdParamName}`) ?? [];
+    const signerThreshold = config.signerSet.multiSigners.length
+        ? "Hierarchical"
+        : config.signerSet.threshold;
 
     const handleChange = (id: number) => (_event: React.SyntheticEvent, isExpanded: boolean) => {
         if (isExpanded) {
@@ -54,9 +67,17 @@ export default function MintConfig({ config }: { config: MintConfig }) {
                             Signers
                         </Typography>
                         <Box>
-                            {config.signerSet.signers.map((s) => (
+                            {extractSigners(config.signerSet).map((s) => (
                                 <CopyableField text={base64PEMEncode(s)} key={base64PEMEncode(s)} />
                             ))}
+                        </Box>
+                    </Box>
+                    <Box display="flex" sx={{ marginTop: 1 }}>
+                        <Typography color="text.secondary" sx={{ width: 80 }}>
+                            Threshold
+                        </Typography>
+                        <Box display="flex" justifyContent="flex-end" sx={{ width: "50%" }}>
+                            <Typography>{signerThreshold}</Typography>
                         </Box>
                     </Box>
                 </Box>

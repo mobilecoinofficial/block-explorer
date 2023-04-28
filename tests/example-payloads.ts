@@ -456,7 +456,7 @@ export const expectedMintTxInfo = {
             mintConfig: {
                 tokenId: 1,
                 signerSet: {
-                    signers: [
+                    individualSigners: [
                         [
                             220, 201, 156, 74, 96, 127, 92, 34, 62, 172, 158, 120, 117, 132, 204,
                             94, 205, 189, 226, 24, 125, 170, 208, 184, 197, 252, 95, 66, 98, 130,
@@ -482,6 +482,7 @@ export const expectedMintTxInfo = {
                             190, 47
                         ]
                     ],
+                    multiSigners: [],
                     threshold: 4
                 },
                 mintLimit: 1000000000000
@@ -554,7 +555,8 @@ export const expectedMintConfigTxInfo = {
                     id: 1,
                     tokenId: 1,
                     signerSet: {
-                        signers: [
+                        multiSigners: [],
+                        individualSigners: [
                             [
                                 57, 80, 2, 78, 32, 201, 122, 148, 253, 30, 250, 121, 77, 247, 79,
                                 32, 20, 206, 197, 232, 12, 67, 15, 153, 121, 143, 110, 88, 255, 26,
@@ -589,7 +591,7 @@ export const expectedMintConfigTxInfo = {
                     id: 2,
                     tokenId: 1,
                     signerSet: {
-                        signers: [
+                        individualSigners: [
                             [
                                 220, 201, 156, 74, 96, 127, 92, 34, 62, 172, 158, 120, 117, 132,
                                 204, 94, 205, 189, 226, 24, 125, 170, 208, 184, 197, 252, 95, 66,
@@ -616,6 +618,7 @@ export const expectedMintConfigTxInfo = {
                                 243, 190, 47
                             ]
                         ],
+                        multiSigners: [],
                         threshold: 4
                     },
                     mintLimit: 1000000000000
