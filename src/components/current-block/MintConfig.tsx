@@ -21,7 +21,6 @@ export function extractSigners(signerSet: SignerSet): number[][] {
 }
 
 export default function MintConfig({ config }: { config: MintConfig }) {
-    console.log(config);
     const [params, setParams] = useSearchParams();
     const openConfigIds = params.getAll(`${openConfigIdParamName}`) ?? [];
     const signerThreshold = config.signerSet.multiSigners.length
