@@ -54,7 +54,7 @@ export default function Header({ networkStatus }: { networkStatus: NetworkStatus
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [syncData, setSyncData] = useState<SyncData>(null);
     const isTestNet = process.env.MC_NETWORK === "test";
-    const headerText = isTestNet ? "Testnet Block Explorer" : "Mobilecoin Block Explorer";
+    const headerText = isTestNet ? "Testnet Block Explorer" : "MobileCoin Block Explorer";
 
     useEffect(() => {
         const getSyncData = async () => {
