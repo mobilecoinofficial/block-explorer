@@ -34,6 +34,8 @@ export function StaticHeader({ loading }: { loading: boolean }) {
     ) : (
         <MobileCoinLogo />
     );
+    const isTestNet = process.env.MC_NETWORK === "test";
+    const headerText = isTestNet ? "Testnet Block Explorer" : "MobileCoin Block Explorer";
     return (
         <HeaderBase>
             <Container maxWidth="lg">
@@ -49,7 +51,7 @@ export function StaticHeader({ loading }: { loading: boolean }) {
                                 marginLeft: 1
                             }}
                         >
-                            MobileCoin Block Explorer
+                            {headerText}
                         </Typography>
                     </Box>
                 </Toolbar>
