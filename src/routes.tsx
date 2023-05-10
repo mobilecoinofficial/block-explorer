@@ -3,12 +3,14 @@ import LatestBlocks from "pages/LatestBlocks";
 import CurrentBlock from "pages/CurrentBlock";
 import LatestBlock from "pages/LatestBlock";
 import ErrorPage from "pages/ErrorPage";
+import TxoNotFoundPage from "pages/TxoNotFoundPage";
 import Layout from "pages/Layout";
 import {
     layoutLoader,
     latestBlockLoader,
     recentBlocksLoader,
-    currentBlockLoader
+    currentBlockLoader,
+    byTxoCurrentBlockLoader
 } from "api/loaders";
 
 const router = createBrowserRouter([
@@ -43,6 +45,12 @@ const router = createBrowserRouter([
                 },
                 loader: currentBlockLoader,
                 element: <CurrentBlock />
+            },
+            {
+                path: "txos/:pubKeyOrKeyImage",
+                loader: byTxoCurrentBlockLoader,
+                element: <CurrentBlock />,
+                errorElement: <TxoNotFoundPage />
             }
         ]
     }
