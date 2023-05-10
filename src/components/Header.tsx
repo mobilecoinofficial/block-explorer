@@ -149,7 +149,7 @@ export default function Header({ networkStatus }: { networkStatus: NetworkStatus
                 onClose={() => setSnackbarOpen(false)}
                 sx={{ backgroundColor: "theme.palette.warning.main" }}
                 anchorOrigin={{
-                    vertical: "bottom",
+                    vertical: "top",
                     horizontal: "center"
                 }}
             >
