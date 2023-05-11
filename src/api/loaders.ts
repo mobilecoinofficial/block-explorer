@@ -5,18 +5,22 @@ import getBlock from "api/getBlock";
 import getMintInfo from "api/getMintInfo";
 import getBurns from "api/getBurns";
 import getNetworkStatus from "api/getNetworkStatus";
+import searchBlock from "api/searchBlock";
 
-const getLatestBlock = async () => {
-    const latestBlocks = await getRecentBlocks(1);
-    const latestBlockIndex = latestBlocks[0].index;
-    const blockContents = await getBlock(latestBlockIndex);
-    const mintInfo = await getMintInfo(latestBlockIndex);
-    const burns = await getBurns(latestBlockIndex);
+const getBlockInfo = async (blockIndex) => {
+    const blockContents = await getBlock(blockIndex);
+    const mintInfo = await getMintInfo(blockIndex);
+    const burns = await getBurns(blockIndex);
     return {
         blockContents,
         mintInfo,
         burns
     };
+};
+
+const getLatestBlock = async () => {
+    const latestBlocks = await getRecentBlocks(1);
+    return getBlockInfo(latestBlocks[0].index);
 };
 
 export async function latestBlockLoader() {
@@ -38,12 +42,14 @@ export async function recentBlocksLoader() {
 }
 
 export async function currentBlockLoader({ params }) {
-    const blockContents = await getBlock(params.blockIndex);
-    const mintInfo = await getMintInfo(params.blockIndex);
-    const burns = await getBurns(params.blockIndex);
-    return {
-        blockContents,
-        mintInfo,
-        burns
-    };
+    return getBlockInfo(params.blockIndex);
+}
+
+export async function byTxoCurrentBlockLoader({ params }) {
+    const foundBlock = await searchBlock(params.pubKeyOrKeyImage.trim());
+    if (foundBlock) {
+        return getBlockInfo(foundBlock.block.index);
+    } else {
+        throw new Error(params.pubKeyOrKeyImage);
+    }
 }
