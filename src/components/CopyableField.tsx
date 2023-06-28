@@ -5,9 +5,11 @@ import { abbreviateHash } from "utils/truncate";
 
 export default function CopyableField({
     text,
+    name,
     abbreviate = true
 }: {
     text: string;
+    name?: string;
     abbreviate?: boolean;
 }) {
     function copyToClipboard(e: React.MouseEvent<HTMLButtonElement>) {
@@ -16,6 +18,7 @@ export default function CopyableField({
     }
 
     const renderedText = abbreviate ? abbreviateHash(text) : text;
+    const renderedField = name ? name + ": " + renderedText : renderedText;
 
     return (
         <Box display="flex" alignItems="center">
@@ -27,7 +30,7 @@ export default function CopyableField({
                     />
                 </IconButton>
             </Tooltip>
-            <Typography sx={{ fontSize: 14 }}>{renderedText}</Typography>
+            <Typography sx={{ fontSize: 14 }}>{renderedField}</Typography>
         </Box>
     );
 }

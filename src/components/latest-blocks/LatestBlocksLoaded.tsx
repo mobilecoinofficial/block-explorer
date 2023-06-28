@@ -127,7 +127,7 @@ export default function LatestBlocksLoaded({ preLoadedBlocks }: { preLoadedBlock
                     <TableHead>
                         <TableRow>
                             <TableCell>Index</TableCell>
-                            <TableCell>Hash</TableCell>
+                            <TableCell>Id</TableCell>
                             <TableCell>TXOs</TableCell>
                             <TableCell>IMGs</TableCell>
                             <TableCell>SIGs</TableCell>
