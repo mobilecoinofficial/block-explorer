@@ -49,7 +49,7 @@ export default function CurrentBlock({ blockContents, mintInfo, burns }: BlockIn
                 <Box sx={{ marginBottom: 1 }}>
                     <Typography variant="h4">Block {blockContents.index}</Typography>
                     <Typography color="text.secondary">{getTimeStamp(blockContents)}</Typography>
-                    <CopyableField text={blockContents.contentsHash} abbreviate={matches} />
+                    <CopyableField text={blockContents.id} name="Id" abbreviate={matches} />
                 </Box>
                 <Box sx={{ display: "flex" }}>
                     {isPrevDisabled ? (

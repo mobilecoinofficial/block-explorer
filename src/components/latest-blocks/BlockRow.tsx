@@ -41,7 +41,7 @@ export default function BlockRow({ block }: BlockRowProps) {
         <StyledTableRow onClick={goToBlock} hover>
             <StyledTableCell style={{ borderLeft: borderStyle }}>{block.index}</StyledTableCell>
             <StyledTableCell>
-                <CopyableField text={block.contentsHash} />
+                <CopyableField text={block.id} />
             </StyledTableCell>
             <StyledTableCell>{block.outputs.length}</StyledTableCell>
             <StyledTableCell>{block.keyImages.length}</StyledTableCell>
