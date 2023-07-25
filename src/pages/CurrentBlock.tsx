@@ -7,6 +7,7 @@ export type BlockInfo = {
     blockContents: Block;
     mintInfo: MintInfoResponse;
     burns: BurnTx[];
+    highlightItem?: string;
 };
 
 export default function CurrentBlockPage() {

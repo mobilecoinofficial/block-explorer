@@ -97,7 +97,7 @@ export default function Header({ networkStatus }: { networkStatus: NetworkStatus
         const foundBlock = await searchBlock(trimmedQuery);
         if (foundBlock) {
             setQuery("");
-            navigate(`/blocks/${foundBlock.block.index}`);
+            navigate(`/txos/${trimmedQuery}`);
             return;
         }
 

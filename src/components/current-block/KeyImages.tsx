@@ -13,6 +13,7 @@ import { useTheme } from "@mui/material/styles";
 import { StyledCard, StyledCell } from "components/current-block/CurrentBlock";
 import { Block } from "api/types";
 import CopyableField from "components/CopyableField";
+import { highlightColor } from "theme";
 
 // handle full-service tech debt
 function removeProtoBuffFromKeyImage(keyImage: string) {
@@ -23,7 +24,13 @@ function removeProtoBuffFromKeyImage(keyImage: string) {
     return keyImage;
 }
 
-export default function KeyImages({ blockContents }: { blockContents: Block }) {
+export default function KeyImages({
+    blockContents,
+    highlightItem
+}: {
+    blockContents: Block;
+    highlightItem: string;
+}) {
     const theme = useTheme();
     const matches = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -42,7 +49,13 @@ export default function KeyImages({ blockContents }: { blockContents: Block }) {
                         <Table size="small" padding="none">
                             <TableBody>
                                 {blockContents.keyImages.map((k) => (
-                                    <TableRow key={k}>
+                                    <TableRow
+                                        key={k}
+                                        sx={{
+                                            bgcolor:
+                                                highlightItem === k ? highlightColor : "inherit"
+                                        }}
+                                    >
                                         <StyledCell>
                                             <CopyableField
                                                 text={removeProtoBuffFromKeyImage(k)}
