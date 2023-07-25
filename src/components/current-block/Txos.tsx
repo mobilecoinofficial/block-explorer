@@ -17,8 +17,17 @@ import { StyledCard, StyledCell } from "components/current-block/CurrentBlock";
 import CopyableField from "components/CopyableField";
 import { Block, BurnTx, TxOut } from "api/types";
 import { getTokenAmount, TOKENS } from "utils/tokens";
+import { highlightColor } from "theme";
 
-export default function Txos({ blockContents, burns }: { blockContents: Block; burns: BurnTx[] }) {
+export default function Txos({
+    blockContents,
+    burns,
+    highlightItem
+}: {
+    blockContents: Block;
+    burns: BurnTx[];
+    highlightItem: string;
+}) {
     const theme = useTheme();
     const matches = useMediaQuery(theme.breakpoints.down("md"));
     const [renderMemo, setRenderMemo] = useState(false);
@@ -36,6 +45,7 @@ export default function Txos({ blockContents, burns }: { blockContents: Block; b
 
     function RenderOutput({ txout }: { txout: TxOut }) {
         const matchingBurn = burns.find(({ burn }) => burn.publicKeyHex === txout.publicKey);
+        const rowBgColor = highlightItem === txout.publicKey ? highlightColor : "inherit";
 
         if (matchingBurn) {
             // remove null characters
@@ -44,7 +54,7 @@ export default function Txos({ blockContents, burns }: { blockContents: Block; b
                 ""
             );
             return (
-                <TableRow>
+                <TableRow sx={{ bgcolor: rowBgColor }}>
                     <StyledCell>
                         <CopyableField text={txout.publicKey} abbreviate={matches} />
                     </StyledCell>
@@ -68,7 +78,7 @@ export default function Txos({ blockContents, burns }: { blockContents: Block; b
         }
 
         return (
-            <TableRow>
+            <TableRow sx={{ bgcolor: rowBgColor }}>
                 <StyledCell>
                     <CopyableField text={txout.publicKey} abbreviate={matches} />
                 </StyledCell>

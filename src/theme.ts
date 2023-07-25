@@ -1,5 +1,7 @@
 import { createTheme } from "@mui/material/styles";
 
+export const highlightColor = "LemonChiffon";
+
 const theme = createTheme({
     palette: {
         primary: {

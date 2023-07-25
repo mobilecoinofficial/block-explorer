@@ -35,7 +35,7 @@ export const StyledCell = styled(TableCell)(() => ({
     border: "none"
 }));
 
-export default function CurrentBlock({ blockContents, mintInfo, burns }: BlockInfo) {
+export default function CurrentBlock({ blockContents, mintInfo, burns, highlightItem }: BlockInfo) {
     const theme = useTheme();
     const matches = useMediaQuery(theme.breakpoints.down("sm"));
     const networkStatus = useNetworkStatus();
@@ -86,8 +86,12 @@ export default function CurrentBlock({ blockContents, mintInfo, burns }: BlockIn
             </Box>
             <Box sx={{ marginTop: 2 }}>
                 <Grid container spacing={2}>
-                    <Txos blockContents={blockContents} burns={burns} />
-                    <KeyImages blockContents={blockContents} />
+                    <Txos
+                        blockContents={blockContents}
+                        burns={burns}
+                        highlightItem={highlightItem}
+                    />
+                    <KeyImages blockContents={blockContents} highlightItem={highlightItem} />
                     <Mints mintInfo={mintInfo} />
                     <MintConfigTxs mintInfo={mintInfo} />
                     <Signatures blockContents={blockContents} />

@@ -7,14 +7,15 @@ import getBurns from "api/getBurns";
 import getNetworkStatus from "api/getNetworkStatus";
 import searchBlock from "api/searchBlock";
 
-const getBlockInfo = async (blockIndex) => {
+const getBlockInfo = async (blockIndex, highlightItem?: string) => {
     const blockContents = await getBlock(blockIndex);
     const mintInfo = await getMintInfo(blockIndex);
     const burns = await getBurns(blockIndex);
     return {
         blockContents,
         mintInfo,
-        burns
+        burns,
+        highlightItem
     };
 };
 
@@ -47,8 +48,16 @@ export async function currentBlockLoader({ params }) {
 
 export async function byTxoCurrentBlockLoader({ params }) {
     const foundBlock = await searchBlock(params.pubKeyOrKeyImage.trim());
+    let highlightItem: string = null;
     if (foundBlock) {
-        return getBlockInfo(foundBlock.block.index);
+        highlightItem =
+            foundBlock.resultType == "TxOut"
+                ? foundBlock.blockContents.outputs[foundBlock.txOut.blockContentsTxOutIndex]
+                      .publicKey
+                : foundBlock.blockContents.keyImages[
+                      foundBlock.keyImage.blockContentsKeyImageIndex
+                  ];
+        return getBlockInfo(foundBlock.block.index, highlightItem);
     } else {
         throw new Error(params.pubKeyOrKeyImage);
     }
