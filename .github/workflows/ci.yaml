@@ -14,7 +14,7 @@ on:
 
 jobs:
   tests:
-    runs-on: mco-dev-large-x64
+    runs-on: ubuntu-latest
     env:
       RESERVE_AUDITOR_URL: https://auditor.mobilecoin.foundation/api
       FULL_SERVICE_URL: https://readonly-fs-mainnet.mobilecoin.com/wallet/v2
