@@ -13,7 +13,7 @@ on:
 env:
   DOCKERHUB_ORG: mobilecoin
   REPO_NAME: block-explorer
-  TARGET_CLUSTER: utility-r1-d-k8s
+  TARGET_CLUSTER: utility-r1-f-k8s
   CHART_REPO: https://harbor.mobilecoin.com/chartrepo/mobilecoinofficial-public
   CHART_PATH: ./.internal-ci/helm/block-explorer
 
