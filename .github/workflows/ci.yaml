@@ -36,7 +36,7 @@ jobs:
     - run: yarn test
 
   lint-docker:
-    runs-on: [self-hosted, Linux, small]
+    runs-on: ubuntu-latest
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -50,7 +50,7 @@ jobs:
           *.dockerignore
   
   lint-actions:
-    runs-on: [self-hosted, Linux, small]
+    runs-on: mco-dev-small-x64
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -63,7 +63,7 @@ jobs:
 
   # no reviewdog for helm
   lint-helm:
-    runs-on: [self-hosted, Linux, small]
+    runs-on: mco-dev-small-x64
     container:
       image: mobilecoin/gha-k8s-toolbox:v1
     steps:
@@ -89,7 +89,7 @@ jobs:
     - lint-docker
     - lint-actions
     - lint-helm
-    runs-on: [self-hosted, Linux, small]
+    runs-on: mco-dev-small-x64
     steps:
     - name: All Checks OK!
       run: |
