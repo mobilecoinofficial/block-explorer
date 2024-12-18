@@ -23,7 +23,7 @@ concurrency:
 
 jobs:
   build:
-    runs-on: [self-hosted, Linux, small]
+    runs-on: mco-dev-small-x64
     strategy:
       matrix: 
         network: [main, test]
@@ -93,7 +93,7 @@ jobs:
   deploy-stage:
     needs:
       - build
-    runs-on: [self-hosted, Linux, small]
+    runs-on: mco-dev-small-x64
     strategy:
       matrix: 
         network: [main, test]

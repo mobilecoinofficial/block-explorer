@@ -11,7 +11,7 @@ env:
 
 jobs:
   deploy-mainnet:
-    runs-on: [self-hosted, Linux, small]
+    runs-on: mco-dev-small-x64
     steps:
       - name: Create namespace
         uses: mobilecoinofficial/gha-k8s-toolbox@v1
@@ -39,7 +39,7 @@ jobs:
           rancher_token: ${{ secrets.RANCHER_B_TOKEN }}
 
   deploy-testnet:
-    runs-on: [self-hosted, Linux, small]
+    runs-on: mco-dev-small-x64
     steps:
       - name: Create namespace
         uses: mobilecoinofficial/gha-k8s-toolbox@v1

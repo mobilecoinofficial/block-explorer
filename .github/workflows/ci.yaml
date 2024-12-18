@@ -14,7 +14,7 @@ on:
 
 jobs:
   tests:
-    runs-on: ubuntu-latest
+    runs-on: mco-dev-large-x64
     env:
       RESERVE_AUDITOR_URL: https://auditor.mobilecoin.foundation/api
       FULL_SERVICE_URL: https://readonly-fs-mainnet.mobilecoin.com/wallet/v2
@@ -36,7 +36,7 @@ jobs:
     - run: yarn test
 
   lint-docker:
-    runs-on: [self-hosted, Linux, small]
+    runs-on: mco-dev-small-x64
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -50,7 +50,7 @@ jobs:
           *.dockerignore
   
   lint-actions:
-    runs-on: [self-hosted, Linux, small]
+    runs-on: mco-dev-small-x64
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -63,7 +63,7 @@ jobs:
 
   # no reviewdog for helm
   lint-helm:
-    runs-on: [self-hosted, Linux, small]
+    runs-on: mco-dev-small-x64
     container:
       image: mobilecoin/gha-k8s-toolbox:v1
     steps:
@@ -89,7 +89,7 @@ jobs:
     - lint-docker
     - lint-actions
     - lint-helm
-    runs-on: [self-hosted, Linux, small]
+    runs-on: mco-dev-small-x64
     steps:
     - name: All Checks OK!
       run: |
