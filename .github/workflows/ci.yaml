@@ -36,7 +36,7 @@ jobs:
     - run: yarn test
 
   lint-docker:
-    runs-on: mco-dev-small-x64
+    runs-on: ubuntu-latest
     steps:
     - name: Checkout
       uses: actions/checkout@v3
