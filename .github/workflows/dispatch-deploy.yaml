@@ -6,7 +6,7 @@ on:
   workflow_dispatch: {}
 
 env:
-  TARGET_CLUSTER: utility-r1-f-k8s
+  TARGET_CLUSTER: utility-r1-g-k8s
   CHART_REPO: https://harbor.mobilecoin.com/chartrepo/mobilecoinofficial-public
 
 jobs:
@@ -19,8 +19,8 @@ jobs:
           action: namespace-create
           namespace: block-explorer-mainnet
           rancher_cluster: ${{ env.TARGET_CLUSTER }}
-          rancher_url: ${{ secrets.RANCHER_B_URL }}
-          rancher_token: ${{ secrets.RANCHER_B_TOKEN }}
+          rancher_url: ${{ secrets.RANCHER_URL }}
+          rancher_token: ${{ secrets.RANCHER_TOKEN }}
 
       - name: Deploy Prod Mainnet
         uses: mobilecoinofficial/gha-k8s-toolbox@v1
@@ -35,8 +35,8 @@ jobs:
           release_name: block-explorer
           namespace: block-explorer-mainnet
           rancher_cluster: ${{ env.TARGET_CLUSTER }}
-          rancher_url: ${{ secrets.RANCHER_B_URL }}
-          rancher_token: ${{ secrets.RANCHER_B_TOKEN }}
+          rancher_url: ${{ secrets.RANCHER_URL }}
+          rancher_token: ${{ secrets.RANCHER_TOKEN }}
 
   deploy-testnet:
     runs-on: mco-dev-small-x64
@@ -47,8 +47,8 @@ jobs:
           action: namespace-create
           namespace: block-explorer-testnet
           rancher_cluster: ${{ env.TARGET_CLUSTER }}
-          rancher_url: ${{ secrets.RANCHER_B_URL }}
-          rancher_token: ${{ secrets.RANCHER_B_TOKEN }}
+          rancher_url: ${{ secrets.RANCHER_URL }}
+          rancher_token: ${{ secrets.RANCHER_TOKEN }}
 
       - name: Deploy Prod Testnet
         uses: mobilecoinofficial/gha-k8s-toolbox@v1
@@ -63,5 +63,5 @@ jobs:
           release_name: block-explorer
           namespace: block-explorer-testnet
           rancher_cluster: ${{ env.TARGET_CLUSTER }}
-          rancher_url: ${{ secrets.RANCHER_B_URL }}
-          rancher_token: ${{ secrets.RANCHER_B_TOKEN }}
+          rancher_url: ${{ secrets.RANCHER_URL }}
+          rancher_token: ${{ secrets.RANCHER_TOKEN }}

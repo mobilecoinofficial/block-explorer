@@ -13,7 +13,7 @@ on:
 env:
   DOCKERHUB_ORG: mobilecoin
   REPO_NAME: block-explorer
-  TARGET_CLUSTER: utility-r1-f-k8s
+  TARGET_CLUSTER: utility-r1-g-k8s
   CHART_REPO: https://harbor.mobilecoin.com/chartrepo/mobilecoinofficial-public
   CHART_PATH: ./.internal-ci/helm/block-explorer
 
@@ -111,8 +111,8 @@ jobs:
           action: namespace-create
           namespace: block-explorer-stage
           rancher_cluster: ${{ env.TARGET_CLUSTER }}
-          rancher_url: ${{ secrets.RANCHER_B_URL }}
-          rancher_token: ${{ secrets.RANCHER_B_TOKEN }}
+          rancher_url: ${{ secrets.RANCHER_URL }}
+          rancher_token: ${{ secrets.RANCHER_TOKEN }}
 
       - name: Deploy Staging
         uses: mobilecoinofficial/gha-k8s-toolbox@v1
@@ -127,6 +127,6 @@ jobs:
           release_name: ${{ env.REPO_NAME }}-${{ matrix.env.MC_NETWORK }}
           namespace: block-explorer-stage
           rancher_cluster: ${{ env.TARGET_CLUSTER }}
-          rancher_url: ${{ secrets.RANCHER_B_URL }}
-          rancher_token: ${{ secrets.RANCHER_B_TOKEN }}
+          rancher_url: ${{ secrets.RANCHER_URL }}
+          rancher_token: ${{ secrets.RANCHER_TOKEN }}
 
