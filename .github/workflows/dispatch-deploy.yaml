@@ -7,7 +7,11 @@ on:
 
 env:
   TARGET_CLUSTER: utility-r1-g-k8s
-  CHART_REPO: https://harbor.mobilecoin.com/chartrepo/mobilecoinofficial-public
+  CHART_REPO: ghcr.io/mobilecoinofficial/charts
+
+permissions:
+  contents: read
+  packages: read
 
 jobs:
   deploy-mainnet:
@@ -25,9 +29,11 @@ jobs:
       - name: Deploy Prod Mainnet
         uses: mobilecoinofficial/gha-k8s-toolbox@v1
         with:
-          action: helm-deploy
+          action: helm-deploy-oci
           chart_repo: ${{ env.CHART_REPO }}
           chart_name: block-explorer
+          chart_repo_username: ${{ github.actor }}
+          chart_repo_password: ${{ github.token }}
           chart_set: |
             --set=ingress.host=block-explorer.mobilecoin.foundation
             --set=image.tag=${{ github.ref_name }}-main
@@ -53,9 +59,11 @@ jobs:
       - name: Deploy Prod Testnet
         uses: mobilecoinofficial/gha-k8s-toolbox@v1
         with:
-          action: helm-deploy
+          action: helm-deploy-oci
           chart_repo: ${{ env.CHART_REPO }}
           chart_name: block-explorer
+          chart_repo_username: ${{ github.actor }}
+          chart_repo_password: ${{ github.token }}
           chart_set: |
             --set=ingress.host=block-explorer.test.mobilecoin.com
             --set=image.tag=${{ github.ref_name }}-test
