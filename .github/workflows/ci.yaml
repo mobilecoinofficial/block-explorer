@@ -27,13 +27,13 @@ jobs:
       uses: mobilecoinofficial/gh-actions/setup-node@v0
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'npm'
+        cache: 'yarn'
     - shell: bash
-      run: yarn
-    - shell: bash
-      run: yarn build
-    - shell: bash
-      run: yarn test
+      run: |
+        yarn
+        yarn build
+        yarn test
+
 
   lint-docker:
     runs-on: mco-dev-small-x64
