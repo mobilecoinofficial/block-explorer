@@ -28,11 +28,11 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - shell: /bin/bash
+    - shell: bash
       run: yarn
-    - shell: /bin/bash
+    - shell: bash
       run: yarn build
-    - shell: /bin/bash
+    - shell: bash
       run: yarn test
 
   lint-docker:
