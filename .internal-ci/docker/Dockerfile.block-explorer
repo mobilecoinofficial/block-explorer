@@ -4,22 +4,24 @@ ARG MC_NETWORK
 ARG RESERVE_AUDITOR_URL
 ARG FULL_SERVICE_URL
 
-ENV MC_NETWORK ${MC_NETWORK}
-ENV RESERVE_AUDITOR_URL ${RESERVE_AUDITOR_URL}
-ENV FULL_SERVICE_URL ${FULL_SERVICE_URL}
+ENV MC_NETWORK=${MC_NETWORK}
+ENV RESERVE_AUDITOR_URL=${RESERVE_AUDITOR_URL}
+ENV FULL_SERVICE_URL=${FULL_SERVICE_URL}
 
 WORKDIR /app
 COPY yarn.lock package.json /app/
 RUN yarn install
-COPY . . 
+COPY . .
 RUN yarn build
 
 # Run webserver
 # everything we need is in /app/dist
-FROM nginx:1.23.3
+FROM nginxinc/nginx-unprivileged:1.29.3-alpine
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 WORKDIR /usr/share/nginx/html
+USER 0
 RUN rm -rf ./*
+USER 101
 COPY --from=builder /app/dist .
 EXPOSE 8080
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
