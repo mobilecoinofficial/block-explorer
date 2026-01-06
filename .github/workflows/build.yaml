@@ -1,0 +1,111 @@
+# Copyright (c) 2022-2026 MobileCoin Inc.
+name: build
+
+on:
+  push:
+    tags:
+    - 'v*.*.*'
+    paths-ignore:
+      - '.lefthook/**'
+      - '.vscode/**'
+      - 'docs/**'
+      - '**.md'
+
+env:
+  DOCKER_ORG: mobilecoin
+  REPO: block-explorer
+  CHART_REPO: ghcr.io/mobilecoinofficial/charts
+  CHART_PATH: ./.internal-ci/helm/block-explorer
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: mco-dev-small-x64
+    strategy:
+      matrix:
+        network: [main, test]
+        include:
+        - network: main
+          reserve_auditor_url: https://auditor.mobilecoin.foundation/api
+          full_service_url: https://readonly-fs-mainnet.mobilecoin.com/wallet/v2
+        - network: test
+          reserve_auditor_url: https://auditor.test.mobilecoin.com/api
+          full_service_url: https://readonly-fs-testnet.mobilecoin.com/wallet/v2
+    steps:
+    - name: Checkout
+      uses: mobilecoinofficial/gh-actions/checkout@v0
+
+    - name: Docker
+      uses: mobilecoinofficial/gh-actions/docker@v0
+      with:
+        dockerfile: .internal-ci/docker/Dockerfile.${{ env.REPO }}
+        flavor: latest=true
+        images: ${{ env.DOCKER_ORG }}/${{ env.REPO }}
+        tags: |
+          type=ref,event=branch
+          type=semver,pattern=v{{version}},suffix=-${{ matrix.network }}
+          type=sha
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+        build_args: |
+          MC_NETWORK=${{ matrix.network }}
+          FULL_SERVICE_URL=${{ matrix.full_service_url }}
+          RESERVE_AUDITOR_URL=${{ matrix.reserve_auditor_url }}
+
+  publish_chart:
+    runs-on: mco-dev-small-x64
+    steps:
+    - name: Package and publish chart
+      uses: mobilecoinofficial/gha-k8s-toolbox@v1
+      with:
+        action: helm-publish-oci
+        chart_repo_username: ${{ github.actor }}
+        chart_repo_password: ${{ github.token }}
+        chart_repo: ${{ env.CHART_REPO }}
+        chart_app_version: ${{ github.ref_name }}
+        chart_version: ${{ github.ref_name }}
+        chart_path: ${{ env.CHART_PATH }}
+
+  deploy-stage:
+    needs:
+    - build
+    - publish_chart
+    runs-on: mco-dev-small-x64
+    strategy:
+      matrix:
+        network: [main, test]
+    steps:
+    - name: Create namespace
+      uses: mobilecoinofficial/gha-k8s-toolbox@v1
+      with:
+        action: namespace-create
+        namespace: block-explorer-stage
+        rancher_cluster: ${{ vars.RANCHER_CLUSTER }}
+        rancher_url: ${{ secrets.RANCHER_URL }}
+        rancher_token: ${{ secrets.RANCHER_TOKEN }}
+
+    - name: Deploy Staging
+      uses: mobilecoinofficial/gha-k8s-toolbox@v1
+      with:
+        action: helm-deploy-oci
+        chart_repo: ${{ env.CHART_REPO }}
+        chart_name: ${{ env.REPO }}
+        chart_repo_username: ${{ github.actor }}
+        chart_repo_password: ${{ github.token }}
+        chart_set: |
+          --set=ingress.host=block-explorer.stage.${{ matrix.network }}.mobilecoin.com
+          --set=image.tag=${{ github.ref_name }}-${{ matrix.network }}
+        chart_version: ${{ github.ref_name }}
+        release_name: ${{ env.REPO }}-${{ matrix.network }}
+        namespace: block-explorer-stage
+        rancher_cluster: ${{ vars.RANCHER_CLUSTER }}
+        rancher_url: ${{ secrets.RANCHER_URL }}
+        rancher_token: ${{ secrets.RANCHER_TOKEN }}
+

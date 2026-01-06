@@ -1,4 +1,4 @@
-# Copyright (c) 2022 MobileCoin Inc.
+# Copyright (c) 2022-2026 MobileCoin Inc.
 name: release
 
 on:
@@ -10,12 +10,10 @@ permissions:
   contents: write
 
 jobs:
-  gh-release:
+  release:
     runs-on: mco-dev-small-x64
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
     - name: Create a GitHub Release
-      uses: softprops/action-gh-release@v1
+      uses: mobilecoinofficial/gh-actions/gh-release@v0
       with:
         generate_release_notes: true
