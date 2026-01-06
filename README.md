@@ -12,12 +12,11 @@ A web app for viewing the MobileCoin blockchain.
 
 ## Running the front-end
 
-If you dont have `yarn` isntalled. Install yarn: `npm install --global yarn`
-
 1. Install dependencies by running the following in the root of the repo
 
 ```sh
-    yarn
+    # use npm ci to preserve locked versions (use npm install to update dependencies)
+    npm ci
 ```
 
 2. Add the environment config
@@ -46,7 +45,7 @@ FULL_SERVICE_URL=https://readonly-fs-testnet.mobilecoin.com/wallet/v2
 3. Start the dev server with
 
 ```sh
-    yarn dev
+    npm run dev
 ```
 
 ## Testing
@@ -60,7 +59,7 @@ FULL_SERVICE_URL=https://readonly-fs-testnet.mobilecoin.com/wallet/v2
 
 ## Getting the backends set up locally:
 
-This is not necessary unless you need to use different versions of the full-service and reserve-auditor APIs than what we host publically. If you want to connect to different versions of these services, you can specify them with the env vars `RESERVE_AUDITOR_URL` and `FULL_SERVICE_URL`.
+This is not necessary unless you need to use different versions of the full-service and reserve-auditor APIs than what we host publicly. If you want to connect to different versions of these services, you can specify them with the env vars `RESERVE_AUDITOR_URL` and `FULL_SERVICE_URL`.
 
 ### full-serice
 

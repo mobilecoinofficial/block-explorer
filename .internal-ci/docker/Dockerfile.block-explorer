@@ -9,10 +9,10 @@ ENV RESERVE_AUDITOR_URL=${RESERVE_AUDITOR_URL}
 ENV FULL_SERVICE_URL=${FULL_SERVICE_URL}
 
 WORKDIR /app
-COPY yarn.lock package.json /app/
-RUN yarn install
+COPY package-lock.json package.json /app/
+RUN npm ci
 COPY . .
-RUN yarn build
+RUN npm run build
 
 # Run webserver
 # everything we need is in /app/dist

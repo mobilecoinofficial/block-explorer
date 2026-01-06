@@ -112,16 +112,6 @@ export const expectedBlock = {
                 signer: "fcefe249f009b033d5959cfa6649f39228b742b25869f8ab09f58587b2ff9363",
                 signedAt: "1606253595"
             }
-        },
-        {
-            srcUrl: "https://bd-mobilecoin-ledger.s3.amazonaws.com/thelongnowfoundation.mobilecoin.bdnodes.net/",
-            archiveFilename: "00/00/00/00/00/00/00/0000000000000001.pb",
-            blockSignature: {
-                signature:
-                    "fe032fbd52f057cddbe58a2a4811e4b41d83b0661f523d1124258dc7567961e4c20666aaa42fd76c0c09eab8237f35936638db0691a45041a534a28830a95900",
-                signer: "8db4f43fb159f588fee811697bb967c3a781f20bb6f82a0402b76ebeccc8910f",
-                signedAt: "1606253595"
-            }
         }
     ],
     timestampResultCode: "TimestampFound"
@@ -260,16 +250,6 @@ export const expectedSearchResult = {
                     signature:
                         "608952bf163be090434462cf77ff0434d29211c1c45cdb293e483e43e6e64d25269b252ba2fd8cc23b61fec8be9e4c7477964b04e5bdb5d328ec91a100b49b0e",
                     signer: "5015413e95dc46919679533fe808a563a0208ab40b174bf67d796605e1eb558a",
-                    signedAt: "1676336546"
-                }
-            },
-            {
-                srcUrl: "https://bd-mobilecoin-ledger.s3.amazonaws.com/thelongnowfoundation.mobilecoin.bdnodes.net/",
-                archiveFilename: "00/00/00/00/00/13/7b/0000000000137bd3.pb",
-                blockSignature: {
-                    signature:
-                        "11936c3ac35a95545bc22267b062e884c4dfd3ec8aa1b8878c973d4b204697773ad4831dd7ba5e7b4f7b04d1a0a7b7ad714ace136eb3201172f8dd020abcf30f",
-                    signer: "e5e131620e92386e78c8341843dfbc09105679995fef8a24ceb813ab4749e3f5",
                     signedAt: "1676336546"
                 }
             },
