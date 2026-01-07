@@ -62,6 +62,9 @@ jobs:
   publish_chart:
     runs-on: mco-dev-small-x64
     steps:
+    - name: Checkout
+      uses: mobilecoinofficial/gh-actions/checkout@v0
+
     - name: Package and publish chart
       uses: mobilecoinofficial/gha-k8s-toolbox@v1
       with:
