@@ -1,4 +1,5 @@
 // Copied over from dekstop wallet
+// Utility functions for converting strings and object keys to camelCase.
 
 const convertToString = (input: unknown): string => {
     if (input) {
